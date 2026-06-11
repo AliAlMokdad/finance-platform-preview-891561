@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>International Finance Learning Platform · Danish Red Cross (Prototype)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --red:#E30A0B; --red-deep:#B30808; --red-soft:#FCEAEA;
@@ -191,6 +191,41 @@ html[dir="rtl"] .vs-play svg{margin-left:0;margin-right:3px}
 .vid-stage.playing{cursor:pointer}
 .vs-bar{position:absolute;bottom:0;left:0;right:0;height:4px;background:rgba(255,255,255,.15);z-index:3}
 .vs-bar i{display:block;height:100%;width:0;background:var(--red);transition:width .5s ease}
+/* arabic typography */
+html[dir="rtl"] body{font-family:'Cairo','Inter',-apple-system,'Segoe UI',Tahoma,sans-serif}
+html[dir="rtl"] .wl-title,html[dir="rtl"] .h1,html[dir="rtl"] .ln-h,html[dir="rtl"] .fin-h{letter-spacing:0}
+/* ============ COURSE MAP ============ */
+#s-map{padding-top:62px}
+.map-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:40px 22px 70px;max-width:680px;margin:0 auto;width:100%}
+.map-head{text-align:center;margin-bottom:34px}
+.map-title{font-size:clamp(26px,4vw,36px);font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.12;margin:10px 0 8px}
+.map-sub{font-size:15.5px;color:var(--g2);max-width:480px;margin:0 auto;line-height:1.55}
+.map-path{position:relative;width:100%;display:flex;flex-direction:column;gap:16px}
+.map-path::before{content:"";position:absolute;top:28px;bottom:28px;inset-inline-start:27px;width:2.5px;background:var(--g5);border-radius:2px;z-index:0}
+.map-st{position:relative;display:flex;gap:18px;align-items:center;background:var(--paper);border:1.5px solid var(--rule);
+  border-radius:18px;padding:18px 22px;box-shadow:var(--shadow);transition:.22s;z-index:1;width:100%;text-align:start}
+.map-st .bub{flex:0 0 auto;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-weight:700;font-size:18px;border:2px solid var(--g5);background:var(--canvas);color:var(--g3);transition:.25s}
+.map-st .inf{flex:1;min-width:0}
+.map-st .snm{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.map-st .sdt{font-family:var(--mono);font-size:11.5px;color:var(--g3);letter-spacing:.05em}
+.map-st .act{flex:0 0 auto;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  border-radius:18px;padding:7px 16px;border:1.5px solid var(--g5);color:var(--g4);background:#fff}
+.map-st.done{border-color:var(--green)}
+.map-st.done .bub{background:var(--green);border-color:var(--green);color:#fff}
+.map-st.done .act{border-color:var(--green);color:var(--green)}
+.map-st.cur{border-color:var(--red);box-shadow:0 8px 30px rgba(227,10,11,.14);cursor:pointer}
+.map-st.cur:hover{transform:translateY(-3px)}
+.map-st.cur .bub{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 0 0 6px var(--red-soft);animation:mapPulse 2.2s ease-in-out infinite}
+.map-st.cur .act{background:var(--red);border-color:var(--red);color:#fff}
+@keyframes mapPulse{0%,100%{box-shadow:0 0 0 5px var(--red-soft)}50%{box-shadow:0 0 0 10px rgba(227,10,11,.07)}}
+.map-st.lock{opacity:.55}
+.map-st.lock .bub{background:var(--g6)}
+.map-foot{margin-top:26px;font-family:var(--mono);font-size:11.5px;color:var(--g4);letter-spacing:.06em;text-align:center}
+.tb-map{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:6px 13px;font-family:var(--mono);font-size:11.5px;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);transition:.18s;box-shadow:var(--shadow)}
+.tb-map:hover{border-color:var(--red);color:var(--red)}
+@media (prefers-reduced-motion:reduce){.map-st.cur .bub{animation:none}}
 /* references */
 .ref-link{margin-top:14px;background:none;border:0;font-family:var(--mono);font-size:12.5px;color:var(--red);
   text-decoration:underline;text-underline-offset:3px;padding:0;letter-spacing:.02em}
@@ -333,6 +368,7 @@ html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
     <span><span data-s="brand">International Finance Learning Platform</span><span class="tb-sub" data-s="brandSub">Danish Red Cross · Prototype</span></span>
   </div>
   <div class="tb-mid"><div class="tb-dots" id="tbDots" aria-hidden="true"></div></div>
+  <button id="tbMap" class="tb-map" style="display:none" data-s="mapBtn">Map</button>
   <div class="tb-pts" title="">
     <svg class="tb-ring" viewBox="0 0 32 32" aria-hidden="true">
       <circle class="bg" cx="16" cy="16" r="13"></circle>
@@ -398,7 +434,8 @@ html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
   </div></div>
 </section>
 
-<!-- learn + finish screens injected by JS -->
+<!-- map + learn + finish screens injected by JS -->
+<section class="screen" id="s-map"></section>
 <section class="screen" id="s-learn"></section>
 <section class="screen" id="s-finish"></section>
 
@@ -549,7 +586,8 @@ function toast(msg, ms){
 /* ---------- router ---------- */
 function show(id){
   $all(".screen").forEach(function(s){ s.classList.toggle("show", s.id===id); });
-  $("#topbar").classList.toggle("show", id==="s-learn"||id==="s-finish");
+  $("#topbar").classList.toggle("show", id==="s-learn"||id==="s-finish"||id==="s-map");
+  var tm=$("#tbMap"); if(tm) tm.style.display=(id==="s-learn")?"":"none";
   window.scrollTo(0,0);
 }
 
@@ -667,6 +705,8 @@ en:{ checkBadge:"Quick game, not a test", continueBtn:"Continue", checkOrder:"Ch
   refLabel:"Reference", resource:"Resource", resourcesH:"Read the full resources",
   refToast:"Prototype: in production this opens the full source document.",
   skipSetup:"Skip (presenter)",
+  mapKicker:"Your journey", mapBtn:"Map", mapHint:"Stations unlock in order. Your progress saves itself.",
+  stDone:"Done", stLocked:"Locked", stepsLbl:"steps", doneIn:"Completed in about {n} minutes.", doneIn1:"Completed in about a minute.", doneIn11:"Completed in about {n} minutes.",
   certSaved:"Certificate downloaded.", certOpenTab:"Certificate opened in a new tab. Long-press or right-click to save it.",
   mailSub:"Certificate of completion:", mailOpened:"Your email app is opening with the message ready to send.",
   mailBody:"Hello,\n\n{name} has completed the module “{module}” on the International Finance Learning Platform with a score of {score}/100.\n\nThe certificate image can be downloaded from the platform and attached to this message.\n\nThis message was prepared by the Learning Platform prototype.",
@@ -686,6 +726,8 @@ da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"
   refLabel:"Reference", resource:"Ressource", resourcesH:"Læs de fulde ressourcer",
   refToast:"Prototype: i produktion åbner dette kildedokumentet.",
   skipSetup:"Spring over (vært)",
+  mapKicker:"Din rejse", mapBtn:"Kort", mapHint:"Stationerne åbner i rækkefølge. Din fremgang gemmes automatisk.",
+  stDone:"Færdig", stLocked:"Låst", stepsLbl:"trin", doneIn:"Gennemført på cirka {n} minutter.", doneIn1:"Gennemført på cirka et minut.", doneIn11:"Gennemført på cirka {n} minutter.",
   certSaved:"Kursusbeviset er hentet.", certOpenTab:"Kursusbeviset er åbnet i en ny fane. Hold fingeren nede eller højreklik for at gemme.",
   mailSub:"Kursusbevis:", mailOpened:"Din mail åbner med beskeden klar til afsendelse.",
   mailBody:"Hej,\n\n{name} har gennemført modulet “{module}” på International Finance Learning Platform med {score}/100 point.\n\nKursusbeviset kan hentes fra platformen og vedhæftes denne besked.\n\nBeskeden er klargjort af platformens prototype.",
@@ -705,6 +747,8 @@ fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:
   refLabel:"Référence", resource:"Ressource", resourcesH:"Lire les ressources complètes",
   refToast:"Prototype : en production, ceci ouvre le document source complet.",
   skipSetup:"Passer (présentateur)",
+  mapKicker:"Votre parcours", mapBtn:"Plan", mapHint:"Les étapes se déverrouillent dans l'ordre. Votre progression s'enregistre seule.",
+  stDone:"Terminé", stLocked:"Verrouillé", stepsLbl:"étapes", doneIn:"Terminé en environ {n} minutes.", doneIn1:"Terminé en environ une minute.", doneIn11:"Terminé en environ {n} minutes.",
   certSaved:"Certificat téléchargé.", certOpenTab:"Certificat ouvert dans un nouvel onglet. Appui long ou clic droit pour l'enregistrer.",
   mailSub:"Certificat d'achèvement :", mailOpened:"Votre messagerie s'ouvre avec le message prêt à envoyer.",
   mailBody:"Bonjour,\n\n{name} a terminé le module « {module} » sur l'International Finance Learning Platform avec un score de {score}/100.\n\nLe certificat peut être téléchargé depuis la plateforme et joint à ce message.\n\nMessage préparé par le prototype de la plateforme.",
@@ -724,6 +768,8 @@ ar:{ checkBadge:"لعبة سريعة، ليست اختباراً", continueBtn:"
   refLabel:"المرجع", resource:"مرجع", resourcesH:"اقرأ المراجع كاملة",
   refToast:"نموذج تجريبي: في النسخة النهائية يُفتح هنا المستند المصدر كاملاً.",
   skipSetup:"تخطّي (للعارض)",
+  mapKicker:"رحلتك", mapBtn:"الخريطة", mapHint:"تُفتح المحطات بالترتيب، ويُحفظ تقدمك تلقائياً.",
+  stDone:"تم", stLocked:"مقفلة", stepsLbl:"خطوات", doneIn:"أُنجزت في نحو {n} دقائق.", doneIn1:"أُنجزت في نحو دقيقة واحدة.", doneIn11:"أُنجزت في نحو {n} دقيقة.",
   certSaved:"تم تنزيل الشهادة.", certOpenTab:"فُتحت الشهادة في تبويب جديد. اضغط مطولاً أو بزر الفأرة الأيمن لحفظها.",
   mailSub:"شهادة إتمام:", mailOpened:"يفتح تطبيق البريد لديك والرسالة جاهزة للإرسال.",
   mailBody:"مرحباً،\n\nأتمّ {name} وحدة “{module}” على منصة تعلّم المالية الدولية بنتيجة {score}/100.\n\nيمكن تنزيل صورة الشهادة من المنصة وإرفاقها بهذه الرسالة.\n\nأُعدّت هذه الرسالة بواسطة النموذج التجريبي للمنصة.",
@@ -768,8 +814,8 @@ stations:[
   {t:"card",
    k:{en:"The three audits", ar:"أنواع التدقيق الثلاثة"},
    h:{en:"Three audits, one logic", ar:"ثلاثة تدقيقات، منطق واحد"},
-   b:{en:"DRC works with three kinds of audit. The <b>local audit</b> covers a partner's expenditures, the funds DRC transferred to the Host National Society. The <b>country office audit</b> happens every year, no exceptions: every DRC country office goes through an external financial and compliance audit of its accounts, covering bank, petty cash and inter-company transactions. And the <b>consolidated audit</b> covers everything at all levels: partner, country office, regional office and headquarters. Same logic each time: independent eyes confirm the records.",
-      ar:"يتعامل الصليب الأحمر الدنماركي مع ثلاثة أنواع من التدقيق. <b>التدقيق المحلي</b> يغطي نفقات الشريك، أي الأموال التي حوّلها الصليب الأحمر الدنماركي إلى الجمعية الوطنية المضيفة. و<b>تدقيق المكتب القُطري</b> يجري كل سنة دون استثناء: يخضع كل مكتب قُطري لتدقيق مالي وامتثالي خارجي لحساباته، يشمل حركة البنك والنثرية والحسابات البينية. أما <b>التدقيق الموحّد</b> فيغطي كل شيء وعلى كل المستويات: الشريك والمكتب القُطري والمكتب الإقليمي والمقر الرئيسي. والمنطق واحد في كل مرة: عيون مستقلة تؤكد صحة السجلات."},
+   b:{en:"DRC works with three kinds of audit. The <b>local audit</b> covers a partner's expenditures, the funds DRC transferred to the Host National Society. The <b>country office audit</b> happens every year: every DRC country office goes through an external financial and compliance audit of its accounts, covering bank, petty cash and inter-company transactions. And the <b>consolidated audit</b> covers everything at all levels: partner, country office, regional office and headquarters. Same logic each time: independent eyes confirm the records.",
+      ar:"يتعامل الصليب الأحمر الدنماركي مع ثلاثة أنواع من التدقيق. <b>التدقيق المحلي</b> يغطي نفقات الشريك، أي الأموال التي حوّلها الصليب الأحمر الدنماركي إلى الجمعية الوطنية المضيفة. و<b>تدقيق المكتب القُطري</b> يجري كل سنة: يخضع كل مكتب قُطري لتدقيق مالي وامتثالي خارجي لحساباته، يشمل حركة البنك والنثرية والحسابات البينية. أما <b>التدقيق الموحّد</b> فيغطي كل شيء وعلى كل المستويات: الشريك والمكتب القُطري والمكتب الإقليمي والمقر الرئيسي. والمنطق واحد في كل مرة: عيون مستقلة تؤكد صحة السجلات."},
    r:2},
   {t:"check", game:"sort", pts:25,
    h:{en:"True, or not quite?", ar:"صحيح، أم ليس تماماً؟"},
@@ -812,7 +858,7 @@ stations:[
 {nm:{en:"The audit itself", ar:"التدقيق نفسه"}, steps:[
   {t:"card",
    k:{en:"From kick-off to exit", ar:"من الافتتاح إلى الختام"},
-   h:{en:"Five days that reward twelve months", ar:"أيام قليلة تكافئ عملاً لشهور"},
+   h:{en:"A few days that reward twelve months", ar:"أيام قليلة تكافئ عملاً لشهور"},
    b:{en:"Before the auditors arrive, the financial statements are prepared and quality assured: cash transfers and opening balances reconciled against Kompas and the previous audit. Then the <b>kick-off meeting, at least one week before the audit starts</b>, agrees logistics, counterparts and the documents to prepare. During the <b>on-site fieldwork the auditors lead</b>: supporting documents are available and the focal points stay reachable for interviews, sampling and testing. The <b>exit meeting</b> wraps up the fieldwork and summarises the findings. Then comes the draft report, and the team sends <b>one coordinated set of comments</b> back to the auditors. For audits performed at headquarters, the Head of International Finance, with the International Controller and Adviser, agrees the timing and the audit fees.",
       ar:"قبل وصول المدققين، تُجهَّز البيانات المالية وتخضع لضمان الجودة: تُسوَّى التحويلات النقدية والأرصدة الافتتاحية مع كومباس ومع التدقيق السابق. ثم يأتي <b>الاجتماع الافتتاحي، قبل أسبوع على الأقل من بدء التدقيق</b>، للاتفاق على الترتيبات والأشخاص المعنيين والمستندات المطلوب تجهيزها. وأثناء <b>العمل الميداني يقود المدققون العملية</b>: تكون المستندات الداعمة متاحة ويبقى المعنيون جاهزين للمقابلات وأخذ العينات والاختبارات. ثم يلخّص <b>الاجتماع الختامي</b> العملَ الميداني والملاحظات. بعدها يصدر مشروع التقرير، فيرسل الفريق <b>مجموعة واحدة منسّقة من التعليقات</b> إلى المدققين. وفي التدقيقات التي تُجرى في المقر الرئيسي، يتفق رئيس المالية الدولية مع المراقب والمستشار الدولي على التوقيت وأتعاب التدقيق."},
    r:4},
@@ -972,16 +1018,85 @@ function confetti(count){
   })();
 }
 
+/* ---------- subtle success sounds (tiny WebAudio, no files) ---------- */
+var AC=null;
+function ding(kind){
+  try{
+    if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)();
+    var t0=AC.currentTime;
+    function tone(f,t,d,g){
+      var o=AC.createOscillator(), gn=AC.createGain();
+      o.type="sine"; o.frequency.value=f;
+      gn.gain.setValueAtTime(0.0001,t); gn.gain.exponentialRampToValueAtTime(g||0.05,t+0.015);
+      gn.gain.exponentialRampToValueAtTime(0.0001,t+d);
+      o.connect(gn); gn.connect(AC.destination); o.start(t); o.stop(t+d+0.05);
+    }
+    if(kind==="ok"){ tone(880,t0,0.16); tone(1318,t0+0.09,0.22); }
+    if(kind==="finish"){ tone(659,t0,0.22); tone(880,t0+0.13,0.22); tone(1108,t0+0.26,0.3); tone(1318,t0+0.4,0.42,0.06); }
+  }catch(e){}
+}
+
+/* ---------- course map ---------- */
+function stationMeta(){
+  var steps=stepsFlat(), out=[];
+  MODULE.stations.forEach(function(st,si){
+    var idxs=[]; steps.forEach(function(sp,i){ if(sp._st===si) idxs.push(i); });
+    var first=idxs[0], last=idxs[idxs.length-1];
+    var done=S.step>last || S.finished;
+    var cur=!done && S.step>=first;
+    out.push({si:si, st:st, first:first, last:last, n:idxs.length, done:done, cur:cur||(si===0&&S.step===0&&!done)});
+  });
+  /* exactly one current: the first not-done */
+  var seen=false;
+  out.forEach(function(m){ if(m.done){ m.cur=false; return; } if(!seen){ m.cur=true; seen=true; } else { m.cur=false; } });
+  return out;
+}
+function showMap(){
+  shutUp(); clearTimeout(VID_T);
+  var metas=stationMeta();
+  var mins=[4,3,3,4];
+  var h='<div class="map-wrap"><div class="map-head">'+
+    '<div class="kicker">'+T("mapKicker")+'</div>'+
+    '<h2 class="map-title">'+L(MODULE.title)+'</h2>'+
+    '<p class="map-sub">'+L(MODULE.subtitle)+'</p></div>'+
+    '<div class="map-path">'+
+    metas.map(function(m){
+      var stt=m.done?"done":(m.cur?"cur":"lock");
+      var act=m.done?T("stDone"):(m.cur?(S.step>m.first?T("continueBtn"):T("start")):T("stLocked"));
+      var bub=m.done?"✓":(m.si+1);
+      return '<button class="map-st '+stt+'" data-st="'+m.si+'" '+(m.cur?'':'disabled')+'>'+
+        '<span class="bub">'+bub+'</span>'+
+        '<span class="inf"><span class="snm">'+L(m.st.nm)+'</span>'+
+        '<span class="sdt">'+m.n+' '+T("stepsLbl")+' · ~'+(mins[m.si]||3)+' '+T("min")+'</span></span>'+
+        '<span class="act">'+act+'</span></button>';
+    }).join("")+
+    '</div><div class="map-foot">'+T("mapHint")+'</div></div>';
+  $("#s-map").innerHTML=h;
+  show("s-map"); buildDots(); ringTo(S.pts);
+  $all(".map-st.cur").forEach(function(b){
+    b.addEventListener("click",function(){ renderStep(S.step); });
+  });
+}
+function advanceTo(i){
+  var steps=stepsFlat();
+  if(i>=steps.length){ finishCourse(); return; }
+  var prev=steps[S.step], nxt=steps[i];
+  S.step=i; save();
+  if(prev && nxt._st!==prev._st){ ding("ok"); showMap(); }
+  else renderStep(i);
+}
 function startCourse(){
   if(!MODULE){ toast("Module content loading error",3000); return; }
-  show("s-learn"); buildDots(); ringTo(S.pts);
-  renderStep(S.step||0);
+  if(!S.startedAt){ S.startedAt=Date.now(); save(); }
+  buildDots(); ringTo(S.pts);
+  showMap();
 }
 
 function renderStep(i){
   shutUp(); clearTimeout(VID_T);
   var steps=stepsFlat();
   if(i>=steps.length){ finishCourse(); return; }
+  show("s-learn");
   S.step=i; save(); buildDots();
   var sp=steps[i];
   var st=MODULE.stations[sp._st];
@@ -1035,7 +1150,7 @@ function wireStep(sp,i){
     tb.addEventListener("click", function(){ if(SPEAKING){ shutUp(); tb.classList.remove("on"); $("[data-tlabel]",tb).textContent=T("listen"); } else speak(plainText(sp)); });
   }
   var nb=$("#nextBtn");
-  if(nb) nb.addEventListener("click", function(){ renderStep(i+1); });
+  if(nb) nb.addEventListener("click", function(){ advanceTo(i+1); });
   var rl=$("[data-reflink]");
   if(rl) rl.addEventListener("click", function(){ toast(T("refToast"),3200); });
   if(sp.t==="card"&&S.style==="listen"){ clearTimeout(TTS_T); TTS_T=setTimeout(function(){ speak(plainText(sp)); }, 600); }
@@ -1112,11 +1227,12 @@ function checkHTML(sp,i){
 function ckDone(sp,i,earned,anchor){
   S.done["c"+i]=earned; save();
   addPts(earned, anchor||$("#lnCard"));
-  setTimeout(function(){ renderStep(i+1); }, 1250);
+  ding("ok");
+  setTimeout(function(){ advanceTo(i+1); }, 1250);
 }
 
 function wireCheck(sp,i){
-  if(S.done["c"+i]!==undefined){ var nb=$("#nextBtn"); if(nb) nb.addEventListener("click",function(){ renderStep(i+1); }); return; }
+  if(S.done["c"+i]!==undefined){ var nb=$("#nextBtn"); if(nb) nb.addEventListener("click",function(){ advanceTo(i+1); }); return; }
 
   /* presenter skip: see the game, skip playing it */
   var ks=$("#ckSkip");
@@ -1124,7 +1240,7 @@ function wireCheck(sp,i){
     if(S.done["c"+i]!==undefined) return;
     S.done["c"+i]=sp.pts; save();
     addPts(sp.pts, ks);
-    setTimeout(function(){ renderStep(i+1); }, 750);
+    setTimeout(function(){ advanceTo(i+1); }, 750);
   });
 
   /* ---- SORT: true / not-quite card stack ---- */
@@ -1241,7 +1357,7 @@ function wireCheck(sp,i){
           var earned=tries2===1?sp.pts:(tries2===2?Math.round(sp.pts*0.72):Math.round(sp.pts*0.5));
           S.done["c"+i]=earned; save(); addPts(earned,d);
           $("#doorFoot").style.display="flex";
-          $("#nextBtn2").addEventListener("click",function(){ renderStep(i+1); });
+          $("#nextBtn2").addEventListener("click",function(){ advanceTo(i+1); });
         } else {
           d.classList.add("open-bad");
           var fb2=$("#doorFb"); fb2.innerHTML=L(sp.doors[di].why); fb2.classList.add("show");
@@ -1294,6 +1410,11 @@ function wireCheck(sp,i){
 /* =================================================================
    FINISH + CERTIFICATE
    ================================================================= */
+function fmtDoneIn(n){
+  if(n===1) return T("doneIn1");
+  if((S.lang||"en")==="ar" && n>=11) return T("doneIn11").replace("{n}", String(n));
+  return T("doneIn").replace("{n}", String(n));
+}
 function tier(){
   if(S.pts>=92) return {cls:"gold", lbl:T("tierGold")};
   if(S.pts>=75) return {cls:"silver", lbl:T("tierSilver")};
@@ -1312,7 +1433,7 @@ function finishCourse(){
     '<div class="fin-score"><span id="scoreNum">0</span> <small>'+T("scoreOf")+'</small></div>'+
     '<div class="fin-tier '+tr.cls+'">'+(tr.cls==="gold"?"★ ":"")+tr.lbl+'</div>'+
     '<h2 class="fin-h">'+T("finishH")+' '+esc(S.name.split(" ")[0])+'</h2>'+
-    '<p class="fin-sub">'+T("finishSub")+'</p>'+
+    '<p class="fin-sub">'+T("finishSub")+(S.startedAt?' '+fmtDoneIn(Math.max(1,Math.round((Date.now()-S.startedAt)/60000))):'')+'</p>'+
     '<div class="fin-cta"><button class="btn" id="dlCert">'+T("downloadCert")+'</button>'+
     '<button class="btn ghost" id="mgrCert">'+T("notifyMgr")+'</button></div>'+
     '<div class="cert-frame"><canvas id="certCv" width="1500" height="1060"></canvas></div>'+
@@ -1322,7 +1443,7 @@ function finishCourse(){
   show("s-finish");
   /* count-up */
   var n=0, target=S.pts, el=$("#scoreNum");
-  var iv=setInterval(function(){ n+=2; if(n>=target){ n=target; clearInterval(iv); confetti(110); } el.textContent=n; },24);
+  var iv=setInterval(function(){ n+=2; if(n>=target){ n=target; clearInterval(iv); confetti(110); ding("finish"); } el.textContent=n; },24);
   /* wire buttons FIRST so a drawing error can never disable them */
   $("#dlCert").addEventListener("click",function(){
     var cv=$("#certCv");
@@ -1434,6 +1555,7 @@ function rRect(x,a,b,w,h,r){ x.beginPath(); x.moveTo(a+r,b); x.arcTo(a+w,b,a+w,b
   if(b) b.src=RK_LOGO;
   var pre=new Image(); pre.src=RK_LOGO; window.RK_IMG=pre;
 })();
+(function mapInit(){ var tm=$("#tbMap"); if(tm) tm.addEventListener("click", showMap); })();
 
 (function resume(){
   if(S.finished&&S.name){ applyStrings(); finishCourse(); return; }
