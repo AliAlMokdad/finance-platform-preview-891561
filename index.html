@@ -595,6 +595,7 @@ function parkModState(){
   S.m[S.cur]={step:S.step, pts:S.pts, done:JSON.parse(JSON.stringify(S.done||{})), finished:S.finished, startedAt:S.startedAt};
 }
 function setModule(i){
+  try{ clearTimeout(ADV_T); }catch(e){}
   parkModState();
   S.cur=i;
   var st=S.m[i]||{step:0, pts:0, done:{}, finished:false, startedAt:null};
@@ -1117,7 +1118,7 @@ function pickVoice(lang){
 try{ window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged=function(){}; }catch(e){}
 if(typeof AUDIO==="undefined"){ var AUDIO={}; }
 /* embedded neural narration player: real human-sounding clips, generated once, played locally */
-var AUD=null, AUD_GEN=0, CARD_GEN=0;
+var AUD=null, AUD_GEN=0, CARD_GEN=0, ADV_T=null;
 function audioLangOk(){ var l=S.lang||"en"; return l==="en"||l==="ar"; }
 function clipKey(stepIdx,beat){ return "m"+S.cur+"_s"+stepIdx+"_b"+beat+"_"+(S.lang||"en"); }
 function stopClips(){ AUD_GEN++; CARD_GEN++; try{ if(AUD){ AUD.pause(); AUD.removeAttribute("src"); AUD.load&&AUD.load(); } }catch(e){} }
@@ -1275,7 +1276,7 @@ function modState(i){
   return S.m[i]||{step:0, pts:0, finished:false};
 }
 function showLib(){
-  shutUp(); clearTimeout(VID_T);
+  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T);
   var icons=["&#9878;","&#10227;"];
   var totals=MODULES.map(function(m){ var n=0; m.stations.forEach(function(st){ n+=st.steps.length; }); return n; });
   var cards=MODULES.map(function(m,i){
@@ -1315,7 +1316,7 @@ function showLib(){
   });
 }
 function showMap(){
-  shutUp(); clearTimeout(VID_T);
+  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T);
   var metas=stationMeta();
   var mins=[4,3,3,4];
   var h='<div class="map-wrap"><div class="map-head">'+
@@ -1358,7 +1359,7 @@ function startCourse(){
 }
 
 function renderStep(i){
-  shutUp(); clearTimeout(VID_T);
+  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T);
   var steps=stepsFlat();
   if(i>=steps.length){ finishCourse(); return; }
   show("s-learn");
@@ -1495,7 +1496,7 @@ function ckDone(sp,i,earned,anchor){
   S.done["c"+i]=earned; save();
   addPts(earned, anchor||$("#lnCard"));
   ding("ok");
-  setTimeout(function(){ advanceTo(i+1); }, 1250);
+  clearTimeout(ADV_T); ADV_T=setTimeout(function(){ advanceTo(i+1); }, 1250);
 }
 
 function wireCheck(sp,i){
@@ -1507,7 +1508,7 @@ function wireCheck(sp,i){
     if(S.done["c"+i]!==undefined) return;
     S.done["c"+i]=sp.pts; save();
     addPts(sp.pts, ks);
-    setTimeout(function(){ advanceTo(i+1); }, 750);
+    clearTimeout(ADV_T); ADV_T=setTimeout(function(){ advanceTo(i+1); }, 750);
   });
 
   /* ---- SORT: true / not-quite card stack ---- */
