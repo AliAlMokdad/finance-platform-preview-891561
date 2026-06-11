@@ -90,8 +90,8 @@ input,select{font-family:inherit}
 .tb-dot{width:9px;height:9px;border-radius:50%;background:var(--g5);transition:.3s}
 .tb-dot.done{background:var(--red)}
 .tb-dot.cur{background:var(--red);transform:scale(1.45);box-shadow:0 0 0 4px var(--red-soft)}
-.tb-ff{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:6px 13px;font-size:15px;color:var(--ink);transition:.18s;box-shadow:var(--shadow)}
-.tb-ff:hover{border-color:var(--red);color:var(--red)}
+.ck-skip{font-family:var(--mono);font-size:12px;color:var(--g3);background:none;border:1px dashed var(--g4);border-radius:10px;padding:7px 15px;transition:.18s;letter-spacing:.03em}
+.ck-skip:hover{color:var(--ink);border-color:var(--ink)}
 .tb-pts{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--rule);border-radius:24px;padding:6px 15px 6px 8px;box-shadow:var(--shadow)}
 .tb-ring{width:30px;height:30px;transform:rotate(-90deg)}
 .tb-ring .bg{fill:none;stroke:var(--g6);stroke-width:3.5}
@@ -333,7 +333,6 @@ html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
     <span><span data-s="brand">International Finance Learning Platform</span><span class="tb-sub" data-s="brandSub">Danish Red Cross · Prototype</span></span>
   </div>
   <div class="tb-mid"><div class="tb-dots" id="tbDots" aria-hidden="true"></div></div>
-  <button id="ffBtn" class="tb-ff" title="Presenter skip" style="display:none">&#9197;</button>
   <div class="tb-pts" title="">
     <svg class="tb-ring" viewBox="0 0 32 32" aria-hidden="true">
       <circle class="bg" cx="16" cy="16" r="13"></circle>
@@ -381,8 +380,7 @@ html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
       <input id="inMgr" type="email" placeholder="manager@rodekors.dk">
       <div class="hint" data-s="mgrHint">Your manager gets a short note when you start, and your certificate when you finish.</div>
       <div class="errmsg" data-s="emailErr2">That email does not look right yet.</div></div>
-    <div class="row"><button class="btn ghost" id="adminSkip" style="display:none">&#9889; <span data-s="skipSetup">Skip (presenter)</span></button>
-      <button class="btn ghost" id="regBack" data-s="back">Back</button>
+    <div class="row"><button class="btn ghost" id="regBack" data-s="back">Back</button>
       <button class="btn" id="regNext" data-s="continue">Continue</button></div>
     <p class="proto-note" data-s="protoNote">Prototype note: your details stay in this browser only. In production this connects to the HR and learning systems.</p>
   </div></div>
@@ -552,8 +550,6 @@ function toast(msg, ms){
 function show(id){
   $all(".screen").forEach(function(s){ s.classList.toggle("show", s.id===id); });
   $("#topbar").classList.toggle("show", id==="s-learn"||id==="s-finish");
-  var ff=$("#ffBtn");
-  if(ff) ff.style.display=(id==="s-learn" && (S.name||"").trim().toLowerCase().indexOf("ali")===0)?"":"none";
   window.scrollTo(0,0);
 }
 
@@ -628,31 +624,8 @@ $("#regNext").addEventListener("click", function(){
   toast(T("mgrPing")+" "+m+" "+T("protoSend"), 4200);
 });
 
-/* ---------- presenter admin mode ---------- */
-function isAdmin(){ return ($("#inName")?($("#inName").value||""):(S.name||"")).trim().toLowerCase().indexOf("ali")===0; }
-function adminCheck(){ var b=$("#adminSkip"); if(b) b.style.display=isAdmin()?"":"none"; }
-$("#inName").addEventListener("input", adminCheck);
-adminCheck();
-$("#adminSkip").addEventListener("click", function(){
-  S.name=$("#inName").value.trim()||"Ali Al Mokdad";
-  var e=$("#inEmail").value.trim(), m=$("#inMgr").value.trim();
-  S.email=emailOk(e)?e:"almok@rodekors.dk";
-  S.mgr=emailOk(m)?m:"manager@rodekors.dk";
-  if(!S.style) S.style="read";
-  save();
-  startCourse();
-});
-function ffStep(){
-  var steps=stepsFlat();
-  if(S.step>=steps.length){ finishCourse(); return; }
-  var sp=steps[S.step];
-  if(sp.t==="check" && S.done["c"+S.step]===undefined){
-    S.done["c"+S.step]=sp.pts;
-    S.pts=Math.min(100,S.pts+sp.pts);
-    save(); ringTo(S.pts);
-  }
-  renderStep(S.step+1);
-}
+/* ---------- presenter admin mode: skip is offered on the checks only ---------- */
+function isAdmin(){ return (S.name||"").trim().toLowerCase().indexOf("ali")===0; }
 
 /* ---------- learning style ---------- */
 var ICONS={
@@ -1111,6 +1084,7 @@ function checkHTML(sp,i){
   if(sp.game==="match"){
     h+='<div class="match" id="match"></div>';
   }
+  if(isAdmin()) h+='<div style="text-align:center;margin-top:18px"><button class="ck-skip" id="ckSkip">&#9889; '+T("skipSetup")+'</button></div>';
   return h;
 }
 
@@ -1123,12 +1097,22 @@ function ckDone(sp,i,earned,anchor){
 function wireCheck(sp,i){
   if(S.done["c"+i]!==undefined){ var nb=$("#nextBtn"); if(nb) nb.addEventListener("click",function(){ renderStep(i+1); }); return; }
 
+  /* presenter skip: see the game, skip playing it */
+  var ks=$("#ckSkip");
+  if(ks) ks.addEventListener("click", function(){
+    if(S.done["c"+i]!==undefined) return;
+    S.done["c"+i]=sp.pts; save();
+    addPts(sp.pts, ks);
+    setTimeout(function(){ renderStep(i+1); }, 750);
+  });
+
   /* ---- SORT: true / not-quite card stack ---- */
   if(sp.game==="sort"){
     var idx=0, score=0, per=Math.floor(sp.pts/sp.items.length);
     var stage=$("#sortStage"), fb=$("#sortFb"), prog=$("#sortProg");
     prog.innerHTML=sp.items.map(function(){return '<span class="sort-pip"></span>';}).join("");
     function deal(){
+      if(!$("#sortStage")||S.done["c"+i]!==undefined) return; /* skipped or navigated away */
       if(idx>=sp.items.length){
         $("#sYes").disabled=true; $("#sNo").disabled=true;
         ckDone(sp,i,Math.min(score,sp.pts),stage);
@@ -1406,7 +1390,6 @@ function rRect(x,a,b,w,h,r){ x.beginPath(); x.moveTo(a+r,b); x.arcTo(a+w,b,a+w,b
   if(b) b.src=RK_LOGO;
   var pre=new Image(); pre.src=RK_LOGO; window.RK_IMG=pre;
 })();
-(function ffInit(){ var ff=$("#ffBtn"); if(ff) ff.addEventListener("click", ffStep); })();
 
 (function resume(){
   if(S.finished&&S.name){ applyStrings(); finishCourse(); return; }
