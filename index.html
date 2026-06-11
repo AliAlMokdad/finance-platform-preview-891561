@@ -838,6 +838,7 @@ var MODULES = [
 {
 title:{en:"The Audit Journey: From Appointment to Action", ar:"رحلة التدقيق: من التعيين إلى خطة العمل"},
 subtitle:{en:"How a Danish Red Cross audit works, from the first decision to the lessons learned", ar:"كيف يسير التدقيق في الصليب الأحمر الدنماركي، من القرار الأول إلى الدروس المستفادة"},
+finText:{en:"You walked the audit from appointment to action. That is how findings become improvements.", ar:"مشيت رحلة التدقيق من التعيين إلى خطة العمل. هكذا تتحول الملاحظات إلى تحسينات."},
 cycle:[
   {n:"1", nm:{en:"Prepare", ar:"التحضير"}},
   {n:"2", nm:{en:"Kick-off", ar:"الاجتماع الافتتاحي"}},
@@ -957,6 +958,7 @@ next:[
 {
 title:{en:"Follow the Money: Your First Project", da:"Følg pengene: dit første projekt", fr:"Suivez l'argent : votre premier projet", ar:"تتبّع المال: مشروعك الأول"},
 subtitle:{en:"How money moves through a Danish Red Cross international project", da:"Sådan bevæger pengene sig gennem et internationalt Røde Kors-projekt", fr:"Comment l'argent circule dans un projet international de la Croix-Rouge danoise", ar:"كيف يتحرك المال عبر مشروع دولي للصليب الأحمر الدنماركي"},
+finText:{en:"You followed the money through a whole project. That is the foundation everything else builds on.", da:"Du fulgte pengene gennem et helt projekt. Det er fundamentet, alt andet bygger på.", fr:"Vous avez suivi l'argent à travers tout un projet. C'est la base de tout le reste.", ar:"تابعت المال عبر مشروع كامل. هذا هو الأساس الذي يُبنى عليه كل شيء."},
 cycle:[
   {n:"I", nm:{en:"Inception", da:"Idé", fr:"Conception", ar:"التأسيس"}},
   {n:"II", nm:{en:"Initiation", da:"Opstart", fr:"Initiation", ar:"الانطلاق"}},
@@ -1711,7 +1713,7 @@ function finishCourse(){
     '<div class="fin-score"><span id="scoreNum">0</span> <small>'+T("scoreOf")+'</small></div>'+
     '<div class="fin-tier '+tr.cls+'">'+(tr.cls==="gold"?"★ ":"")+tr.lbl+'</div>'+
     '<h2 class="fin-h">'+T("finishH")+' '+esc(S.name.split(" ")[0])+'</h2>'+
-    '<p class="fin-sub">'+T("finishSub")+(S.startedAt?' '+fmtDoneIn(Math.max(1,Math.round((Date.now()-S.startedAt)/60000))):'')+'</p>'+
+    '<p class="fin-sub">'+(MODULE.finText?L(MODULE.finText):T("finishSub"))+(S.startedAt?' '+fmtDoneIn(Math.max(1,Math.round((Date.now()-S.startedAt)/60000))):'')+'</p>'+
     '<div class="fin-cta"><button class="btn" id="dlCert">'+T("downloadCert")+'</button>'+
     '<button class="btn ghost" id="mgrCert">'+T("notifyMgr")+'</button></div>'+
     '<div class="cert-frame"><canvas id="certCv" width="1500" height="1060"></canvas></div>'+
