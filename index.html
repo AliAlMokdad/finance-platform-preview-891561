@@ -683,8 +683,8 @@ function show(id){
     });
   });
 
-  $("#startBtn").addEventListener("click", function(){
-    if(!S.lang){ menu.classList.add("open"); $("#langBtn").style.animation="none"; void $("#langBtn").offsetWidth; $("#langBtn").style.animation="pulse .5s ease 2"; return; }
+  $("#startBtn").addEventListener("click", function(e){
+    if(!S.lang){ e.stopPropagation(); menu.classList.add("open"); $("#langBtn").style.animation="none"; void $("#langBtn").offsetWidth; $("#langBtn").style.animation="pulse .5s ease 2"; toast("Pick your language first · اختر لغتك أولاً",2800); return; }
     show("s-register");
     setTimeout(function(){ $("#inName").focus(); }, 350);
   });
@@ -761,7 +761,7 @@ en:{ checkBadge:"Quick game, not a test", continueBtn:"Continue", checkOrder:"Ch
   nextUp:"Recommended next", lockedSoon:"Coming next", restart:"Start over from the beginning",
   certTitle:"CERTIFICATE OF COMPLETION", certHas:"has completed", certAt:"International Finance Learning Platform · Danish Red Cross",
   certScore:"Score", certDate:"Date", halfway:"Halfway there. Keep going.", protoOnly:"Prototype",
-  m1:"Module 1", min:"min" },
+  m1:"Module 1", modN:"Module {n}", min:"min" },
 da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"Tjek min rækkefølge",
   sortYes:"Rigtigt", sortNo:"Ikke helt", nice:"Flot.", almost:"Tæt på. Kig en gang til.",
   goodSave:"Godt fanget. Værd at huske.", station:"Station", listen:"Lyt", stop:"Stop",
@@ -783,7 +783,7 @@ da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"
   nextUp:"Anbefalet næste skridt", lockedSoon:"Kommer snart", restart:"Begynd forfra",
   certTitle:"KURSUSBEVIS", certHas:"har gennemført", certAt:"International Finance Learning Platform · Røde Kors",
   certScore:"Resultat", certDate:"Dato", halfway:"Halvvejs. Bliv ved.", protoOnly:"Prototype",
-  m1:"Modul 1", min:"min" },
+  m1:"Modul 1", modN:"Modul {n}", min:"min" },
 fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:"Vérifier mon ordre",
   sortYes:"Vrai", sortNo:"Pas tout à fait", nice:"Bien vu.", almost:"Presque. Regardez encore.",
   goodSave:"Bien repéré. À retenir.", station:"Étape", listen:"Écouter", stop:"Arrêter",
@@ -805,7 +805,7 @@ fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:
   nextUp:"Recommandé ensuite", lockedSoon:"Bientôt", restart:"Recommencer depuis le début",
   certTitle:"CERTIFICAT D'ACHÈVEMENT", certHas:"a terminé", certAt:"International Finance Learning Platform · Croix-Rouge danoise",
   certScore:"Score", certDate:"Date", halfway:"À mi-chemin. Continuez.", protoOnly:"Prototype",
-  m1:"Module 1", min:"min" },
+  m1:"Module 1", modN:"Module {n}", min:"min" },
 ar:{ checkBadge:"لعبة سريعة، ليست اختباراً", continueBtn:"متابعة", checkOrder:"تحقق من ترتيبي",
   sortYes:"صحيح", sortNo:"ليس تماماً", nice:"أحسنت.", almost:"اقتربت. انظر مرة أخرى.",
   goodSave:"التقاطة جيدة. تستحق التذكر.", station:"محطة", listen:"استمع", stop:"إيقاف",
@@ -827,7 +827,7 @@ ar:{ checkBadge:"لعبة سريعة، ليست اختباراً", continueBtn:"
   nextUp:"المقترح تالياً", lockedSoon:"قريباً", restart:"البدء من جديد",
   certTitle:"شهادة إتمام", certHas:"قد أتمّ", certAt:"منصة تعلّم المالية الدولية · الصليب الأحمر الدنماركي",
   certScore:"النتيجة", certDate:"التاريخ", halfway:"في منتصف الطريق. واصل.", protoOnly:"نموذج تجريبي",
-  m1:"الوحدة 1", min:"د" }
+  m1:"الوحدة 1", modN:"الوحدة {n}", min:"د" }
 };
 Object.keys(STR2).forEach(function(l){ Object.keys(STR2[l]).forEach(function(k){ STR[l][k]=STR2[l][k]; }); });
 
@@ -1808,7 +1808,7 @@ function drawCert(){
   x.fillStyle="#34312f"; x.font="600 32px Inter, sans-serif";
   x.fillText(L(MODULE.title), W/2, 640);
   x.fillStyle="#8B8784"; x.font="500 22px Inter, sans-serif";
-  x.fillText(T("m1")+" · "+L(MODULE.subtitle), W/2, 682);
+  x.fillText(T("modN").replace("{n}", String(S.cur+1))+" · "+L(MODULE.subtitle), W/2, 682);
   /* score + date */
   var d=new Date(); var ds=d.getDate()+"."+(d.getMonth()+1)+"."+d.getFullYear();
   x.font="600 24px 'JetBrains Mono', monospace"; x.fillStyle="#292729";
