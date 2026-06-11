@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>International Finance Learning Platform · Danish Red Cross (Prototype)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#E30A0B; --red-deep:#B30808; --red-soft:#FCEAEA;
+  --ink:#292729; --body:#34312f; --canvas:#FAF7F4; --paper:#FFFFFF;
+  --g2:#6B6866; --g3:#8B8784; --g4:#B5B0AC; --g5:#DDD7D2; --g6:#F1EDE9;
+  --night:#141216; --rule:#E8E2DC;
+  --gold:#C9A227; --silver:#9AA3AD; --bronze:#A8672E; --green:#3E7C5A;
+  --shadow:0 2px 10px rgba(41,39,41,.07); --shadow-lg:0 14px 44px rgba(41,39,41,.16);
+  --sans:'Inter',-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Mono',Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:var(--sans);background:var(--canvas);color:var(--body);overflow:hidden}
+button{font-family:inherit;cursor:pointer}
+input,select{font-family:inherit}
+
+/* ============ SCREENS ============ */
+.screen{position:fixed;inset:0;display:none;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.screen.show{display:flex;animation:scrIn .5s cubic-bezier(.2,.7,.2,1) both}
+@keyframes scrIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ============ WELCOME ============ */
+#s-welcome{background:var(--night);align-items:center;justify-content:center;text-align:center}
+#s-welcome::before{content:"";position:absolute;width:880px;height:880px;border-radius:50%;
+  background:radial-gradient(circle, rgba(227,10,11,.15), transparent 62%);
+  top:50%;left:50%;transform:translate(-50%,-55%);filter:blur(8px);pointer-events:none}
+.wl-stars{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.wl-star{position:absolute;width:3.5px;height:3.5px;border-radius:50%;background:#fff;opacity:.3;
+  box-shadow:0 0 5px 1px rgba(255,255,255,.35);animation:wlTw 4.4s ease-in-out infinite}
+.wl-star.b{width:5.5px;height:5.5px;box-shadow:0 0 10px 2.5px rgba(255,255,255,.5)}
+@keyframes wlTw{0%,100%{opacity:.18;transform:scale(.75)}50%{opacity:.9;transform:scale(1.3)}}
+.wl-cloud{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.wl-word{position:absolute;font-weight:700;color:rgba(255,255,255,.16);white-space:nowrap;
+  animation:wlFloat var(--d,14s) ease-in-out infinite alternate}
+.wl-word.hi{color:rgba(255,255,255,.30)}
+.wl-word.red{color:rgba(255,120,120,.34)}
+@keyframes wlFloat{from{transform:translate(0,0)}to{transform:translate(var(--dx,18px),var(--dy,-14px))}}
+.wl-inner{position:relative;z-index:2;max-width:660px;padding:40px 26px;animation:rise 1s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.wl-mark{display:inline-flex;align-items:center;background:#fff;border-radius:16px;
+  padding:18px 28px;box-shadow:0 14px 50px rgba(227,10,11,.22);margin-bottom:30px}
+.rk-img{width:240px;height:auto;display:block}
+.wl-eyebrow{font-family:var(--mono);font-size:14px;letter-spacing:.3em;text-transform:uppercase;color:#ff6b6b;margin-bottom:16px}
+.wl-title{font-size:clamp(38px,6.2vw,62px);font-weight:800;color:#fff;line-height:1.06;letter-spacing:-.015em;margin-bottom:14px}
+.wl-sub{font-size:18px;color:rgba(255,255,255,.62);max-width:520px;margin:0 auto 34px;line-height:1.55}
+.wl-pick{display:flex;gap:14px;justify-content:center;align-items:stretch;flex-wrap:wrap}
+.wl-sel{position:relative}
+#langBtn{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.3);
+  color:#fff;font-size:17px;font-weight:600;border-radius:14px;padding:15px 22px;min-width:250px;transition:.2s}
+#langBtn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.55)}
+#langBtn .gl{font-size:20px}
+#langBtn .ar{margin-left:auto;opacity:.7;font-size:13px}
+.wl-menu{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;border-radius:14px;box-shadow:var(--shadow-lg);
+  padding:8px;display:none;z-index:5;max-height:320px;overflow-y:auto;text-align:left}
+.wl-menu.open{display:block;animation:menuIn .22s ease both}
+@keyframes menuIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.wl-opt{display:flex;align-items:center;gap:11px;width:100%;background:none;border:0;border-radius:9px;
+  padding:11px 13px;font-size:15.5px;font-weight:600;color:var(--ink);transition:.15s;text-align:left}
+.wl-opt:hover{background:var(--g6)}
+.wl-opt .gl{font-size:19px}
+.wl-opt.soon{opacity:.42;cursor:default}
+.wl-opt.soon:hover{background:none}
+.wl-opt .soon-tag{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--g3)}
+.wl-opt.sel .gl-check{margin-left:auto;color:var(--red);font-weight:800}
+#startBtn{background:var(--red);color:#fff;border:1.5px solid var(--red);font-size:17px;font-weight:700;
+  border-radius:14px;padding:15px 34px;transition:.2s;letter-spacing:.01em}
+#startBtn:hover{background:var(--red-deep);transform:translateY(-2px);box-shadow:0 10px 30px rgba(227,10,11,.35)}
+.wl-proto{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-family:var(--mono);
+  font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.32);z-index:2}
+
+/* ============ TOPBAR ============ */
+#topbar{position:fixed;top:0;left:0;right:0;height:62px;background:rgba(250,247,244,.94);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule);display:none;align-items:center;gap:16px;padding:0 22px;z-index:40}
+#topbar.show{display:flex}
+.tb-brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--ink);font-size:14.5px;letter-spacing:.01em}
+.tb-logo{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:3px 8px;display:flex;align-items:center}
+.tb-logo img{height:26px;width:auto;display:block}
+.tb-sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--g3);display:block;font-weight:500}
+.tb-mid{flex:1;display:flex;justify-content:center}
+.tb-dots{display:flex;gap:7px;align-items:center}
+.tb-dot{width:9px;height:9px;border-radius:50%;background:var(--g5);transition:.3s}
+.tb-dot.done{background:var(--red)}
+.tb-dot.cur{background:var(--red);transform:scale(1.45);box-shadow:0 0 0 4px var(--red-soft)}
+.tb-pts{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--rule);border-radius:24px;padding:6px 15px 6px 8px;box-shadow:var(--shadow)}
+.tb-ring{width:30px;height:30px;transform:rotate(-90deg)}
+.tb-ring .bg{fill:none;stroke:var(--g6);stroke-width:3.5}
+.tb-ring .fg{fill:none;stroke:var(--red);stroke-width:3.5;stroke-linecap:round;transition:stroke-dashoffset .7s cubic-bezier(.2,.7,.2,1)}
+.tb-num{font-family:var(--mono);font-weight:700;font-size:14.5px;color:var(--ink)}
+.tb-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--g3)}
+
+/* ============ REGISTER + STYLE ============ */
+.mid-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:90px 22px 40px}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:20px;box-shadow:var(--shadow-lg);
+  padding:42px 44px;max-width:560px;width:100%}
+.kicker{font-family:var(--mono);font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.h1{font-size:clamp(26px,3.6vw,34px);font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.12;margin-bottom:10px}
+.lead{font-size:16px;color:var(--g2);line-height:1.6;margin-bottom:26px}
+.fld{margin-bottom:18px}
+.fld label{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:7px}
+.fld input{width:100%;font-size:16px;color:var(--ink);background:var(--canvas);border:1.5px solid var(--g5);
+  border-radius:12px;padding:13px 16px;outline:none;transition:.2s}
+.fld input:focus{border-color:var(--red);background:#fff;box-shadow:0 0 0 4px var(--red-soft)}
+.fld .hint{font-size:12.5px;color:var(--g3);margin-top:6px;line-height:1.45}
+.fld.err input{border-color:var(--red)}
+.fld .errmsg{display:none;font-size:12.5px;color:var(--red);margin-top:6px;font-weight:600}
+.fld.err .errmsg{display:block}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--red);color:#fff;
+  border:1.5px solid var(--red);font-size:16px;font-weight:700;border-radius:13px;padding:14px 30px;transition:.2s}
+.btn:hover{background:var(--red-deep);transform:translateY(-1px);box-shadow:0 8px 24px rgba(227,10,11,.3)}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--g5)}
+.btn.ghost:hover{border-color:var(--ink);background:#fff;box-shadow:none}
+.btn:disabled{opacity:.45;cursor:default;transform:none;box-shadow:none}
+.card .row{display:flex;gap:12px;justify-content:flex-end;margin-top:26px;align-items:center}
+.proto-note{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--g3);margin-top:20px;
+  padding-top:16px;border-top:1px dashed var(--g5);line-height:1.6}
+
+/* style picker */
+.styles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:6px 0 4px}
+.style-c{background:var(--canvas);border:1.5px solid var(--g5);border-radius:16px;padding:22px 16px;text-align:center;transition:.2s;position:relative}
+.style-c:hover{border-color:var(--g3);transform:translateY(-3px);box-shadow:var(--shadow)}
+.style-c.sel{border-color:var(--red);background:#fff;box-shadow:0 0 0 4px var(--red-soft)}
+.style-c .ic{width:52px;height:52px;margin:0 auto 12px;border-radius:14px;background:var(--red-soft);display:flex;align-items:center;justify-content:center;color:var(--red)}
+.style-c .ic svg{width:26px;height:26px}
+.style-c .nm{font-weight:800;color:var(--ink);font-size:15.5px;margin-bottom:5px}
+.style-c .ds{font-size:12.5px;color:var(--g3);line-height:1.45}
+.style-c .badge{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
+  text-transform:uppercase;background:var(--g6);color:var(--g2);border-radius:12px;padding:3px 9px}
+
+@media (max-width:640px){
+  .card{padding:30px 24px}
+  .styles{grid-template-columns:1fr}
+  #topbar .tb-mid{display:none}
+}
+/* RTL */
+html[dir="rtl"] .wl-menu,html[dir="rtl"] .wl-opt{text-align:right}
+html[dir="rtl"] .wl-opt .soon-tag,html[dir="rtl"] .wl-opt.sel .gl-check,html[dir="rtl"] #langBtn .ar{margin-left:0;margin-right:auto}
+html[dir="rtl"] .rk-word{text-align:right}
+
+/* ============ LEARN ============ */
+#s-learn{padding-top:62px}
+.ln-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:34px 22px 60px;max-width:860px;margin:0 auto;width:100%}
+.station-tag{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--g2);background:#fff;border:1px solid var(--rule);
+  border-radius:22px;padding:7px 17px;margin-bottom:20px;box-shadow:var(--shadow)}
+.station-tag .dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
+.ln-card{background:var(--paper);border:1px solid var(--rule);border-radius:22px;box-shadow:var(--shadow-lg);
+  padding:40px 44px;width:100%;animation:cardIn .5s cubic-bezier(.2,.7,.2,1) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
+.ln-kicker{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.ln-h{font-size:clamp(23px,3.2vw,30px);font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.15;margin-bottom:14px}
+.ln-body{font-size:16.5px;color:var(--body);line-height:1.66}
+.ln-body b{color:var(--ink)}
+.ln-quote{margin:16px 0 0;border-left:3px solid var(--red);padding:4px 0 4px 16px;font-size:15px;color:var(--g2);line-height:1.6;font-style:italic}
+html[dir="rtl"] .ln-quote{border-left:0;border-right:3px solid var(--red);padding:4px 16px 4px 0}
+.ln-src{font-family:var(--mono);font-size:11px;color:var(--g4);margin-top:10px;letter-spacing:.03em}
+.ln-foot{display:flex;align-items:center;gap:12px;margin-top:30px}
+.ln-foot .spacer{flex:1}
+.tts-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--g5);color:var(--ink);
+  font-size:13.5px;font-weight:700;border-radius:11px;padding:10px 16px;transition:.2s}
+.tts-btn:hover{border-color:var(--ink)}
+.tts-btn.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
+.tts-btn svg{width:17px;height:17px}
+/* watch mode: guided walkthrough player */
+.vid-stage{position:relative;background:var(--ink);border-radius:14px;aspect-ratio:16/9;margin:0 0 22px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center}
+.vid-stage::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle, rgba(227,10,11,.22), transparent 64%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.vs-inner{display:flex;flex-direction:column;align-items:center;gap:12px;z-index:3;transition:opacity .3s}
+.vid-stage.playing .vs-inner{opacity:0;pointer-events:none}
+.vs-play{width:66px;height:66px;border-radius:50%;background:rgba(255,255,255,.13);border:2px solid rgba(255,255,255,.55);
+  display:flex;align-items:center;justify-content:center;color:#fff;transition:.2s}
+.vs-play:hover{background:var(--red);border-color:var(--red);transform:scale(1.07)}
+.vs-play svg{width:26px;height:26px;margin-left:3px}
+html[dir="rtl"] .vs-play svg{margin-left:0;margin-right:3px}
+.vs-cap{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.vs-caption{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:30px 52px;color:#fff;font-size:clamp(17px,2.4vw,24px);font-weight:700;line-height:1.5;opacity:0;z-index:2}
+.vs-caption.in{animation:vsIn .5s ease both}
+@keyframes vsIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.vid-stage.playing{cursor:pointer}
+.vs-bar{position:absolute;bottom:0;left:0;right:0;height:4px;background:rgba(255,255,255,.15);z-index:3}
+.vs-bar i{display:block;height:100%;width:0;background:var(--red);transition:width .5s ease}
+/* references */
+.ref-link{margin-top:14px;background:none;border:0;font-family:var(--mono);font-size:12.5px;color:var(--red);
+  text-decoration:underline;text-underline-offset:3px;padding:0;letter-spacing:.02em}
+.ref-link:hover{color:var(--red-deep)}
+.res-list{display:flex;flex-direction:column;gap:8px;width:100%;max-width:430px;margin:0 auto 36px}
+.res-row{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--rule);border-radius:12px;
+  padding:12px 17px;font-size:14px;font-weight:600;color:var(--ink);transition:.18s;text-align:start}
+.res-row:hover{border-color:var(--red);transform:translateY(-1px);box-shadow:var(--shadow)}
+/* cycle visual */
+.cyc{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin:22px 0 4px}
+.cyc-n{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:96px}
+.cyc-b{width:54px;height:54px;border-radius:15px;background:var(--canvas);border:1.5px solid var(--g5);display:flex;
+  align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:15px;color:var(--g2);transition:.3s}
+.cyc-n.on .cyc-b{background:var(--red);border-color:var(--red);color:#fff;transform:scale(1.08);box-shadow:0 8px 22px rgba(227,10,11,.3)}
+.cyc-nm{font-size:12px;font-weight:700;color:var(--g2);text-align:center}
+.cyc-n.on .cyc-nm{color:var(--ink)}
+.cyc-a{color:var(--g4);font-size:17px;font-weight:700;padding-bottom:26px}
+html[dir="rtl"] .cyc-a{transform:scaleX(-1)}
+/* principles grid */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin:20px 0 4px}
+.ptile{background:var(--canvas);border:1.5px solid var(--g5);border-radius:13px;padding:15px 14px;font-size:13.5px;
+  font-weight:700;color:var(--ink);line-height:1.35;transition:.25s;animation:cardIn .45s ease both}
+.ptile:hover{border-color:var(--red);background:#fff;transform:translateY(-2px)}
+.ptile .pn{font-family:var(--mono);font-size:10.5px;color:var(--red);display:block;margin-bottom:5px;letter-spacing:.1em}
+/* ============ CHECKS (games) ============ */
+.ck-head{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.ck-badge{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:#fff;background:var(--ink);border-radius:20px;padding:6px 14px}
+.ck-pts{font-family:var(--mono);font-size:11.5px;color:var(--g3);letter-spacing:.06em}
+/* sort (true/false) */
+.sort-stage{position:relative;min-height:240px;margin:18px 0 8px}
+.sort-card{position:absolute;inset:0;background:var(--canvas);border:1.5px solid var(--g5);border-radius:16px;
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:28px 34px;font-size:17.5px;font-weight:600;
+  color:var(--ink);line-height:1.5;transition:transform .4s cubic-bezier(.2,.7,.2,1),opacity .35s}
+.sort-card.gone-r{transform:translateX(120%) rotate(8deg);opacity:0}
+.sort-card.gone-l{transform:translateX(-120%) rotate(-8deg);opacity:0}
+.sort-btns{display:flex;gap:14px;justify-content:center;margin-top:14px}
+.sort-b{flex:1;max-width:200px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:15.5px;font-weight:700;
+  border-radius:13px;padding:14px 18px;transition:.18s;border:1.5px solid}
+.sort-b.yes{background:#fff;border-color:var(--green);color:var(--green)}
+.sort-b.yes:hover{background:var(--green);color:#fff}
+.sort-b.no{background:#fff;border-color:var(--red);color:var(--red)}
+.sort-b.no:hover{background:var(--red);color:#fff}
+.sort-fb{text-align:center;font-size:14px;font-weight:600;min-height:44px;margin-top:12px;color:var(--g2);line-height:1.5}
+.sort-fb.good{color:var(--green)}
+.sort-fb.bad{color:var(--red-deep)}
+.sort-prog{display:flex;gap:6px;justify-content:center;margin-top:8px}
+.sort-pip{width:22px;height:5px;border-radius:3px;background:var(--g5);transition:.3s}
+.sort-pip.hit{background:var(--green)}
+.sort-pip.miss{background:var(--red)}
+/* order */
+.ord-list{display:flex;flex-direction:column;gap:9px;margin:18px 0 6px}
+.ord-it{display:flex;align-items:center;gap:13px;background:var(--canvas);border:1.5px solid var(--g5);border-radius:13px;
+  padding:13px 16px;font-size:15.5px;font-weight:600;color:var(--ink);user-select:none;transition:border-color .2s, box-shadow .2s, opacity .2s}
+.ord-it .grip{color:var(--g4);font-size:15px;cursor:grab;letter-spacing:1.5px}
+.ord-it.drag{opacity:.55;border-style:dashed}
+.ord-it.lock{border-color:var(--green);background:#F0F7F3}
+.ord-it.lock .grip{visibility:hidden}
+.ord-it.wrongpos{animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.ord-it .updown{margin-left:auto;display:flex;gap:5px}
+html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
+.ord-mv{width:31px;height:31px;border-radius:8px;border:1px solid var(--g5);background:#fff;color:var(--g2);font-size:13px;transition:.15s}
+.ord-mv:hover{border-color:var(--ink);color:var(--ink)}
+/* doors */
+.doors{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0 8px}
+.door{position:relative;background:var(--canvas);border:1.5px solid var(--g5);border-radius:16px;padding:24px 18px;
+  text-align:center;transition:.25s;min-height:150px;display:flex;flex-direction:column;align-items:center;gap:11px;justify-content:flex-start}
+.door:hover{border-color:var(--ink);transform:translateY(-3px);box-shadow:var(--shadow)}
+.door .dr{width:44px;height:58px;border:2.5px solid var(--g3);border-radius:7px 7px 0 0;position:relative;transition:.3s;background:#fff}
+.door .dr::after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:var(--g3);right:6px;top:26px}
+.door:hover .dr{border-color:var(--ink)}
+.door .dt{font-size:14px;font-weight:700;color:var(--ink);line-height:1.4}
+.door.open-good{border-color:var(--green);background:#F0F7F3}
+.door.open-good .dr{border-color:var(--green);transform:perspective(300px) rotateY(-28deg)}
+.door.open-bad{border-color:var(--red);background:var(--red-soft);animation:shake .4s ease}
+.door.dim{opacity:.45;pointer-events:none}
+.door-fb{font-size:14.5px;line-height:1.55;color:var(--body);background:var(--canvas);border:1px solid var(--rule);
+  border-radius:12px;padding:14px 18px;margin-top:12px;display:none}
+.door-fb.show{display:block;animation:cardIn .35s ease both}
+/* match */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:18px 0 8px}
+.m-it{background:var(--canvas);border:1.5px solid var(--g5);border-radius:12px;padding:14px 15px;font-size:14px;
+  font-weight:600;color:var(--ink);line-height:1.4;transition:.2s;text-align:start}
+.m-it:hover{border-color:var(--ink)}
+.m-it.pick{border-color:var(--red);background:#fff;box-shadow:0 0 0 3.5px var(--red-soft)}
+.m-it.paired{border-color:var(--green);background:#F0F7F3;color:var(--g2);pointer-events:none}
+.m-it.nope{animation:shake .4s ease}
+/* points fly + confetti */
+.pts-fly{position:fixed;z-index:70;font-family:var(--mono);font-weight:700;color:var(--red);font-size:19px;pointer-events:none;
+  animation:flyUp 1.1s cubic-bezier(.2,.7,.2,1) both}
+@keyframes flyUp{from{opacity:0;transform:translateY(8px) scale(.8)}25%{opacity:1}to{opacity:0;transform:translateY(-52px) scale(1.12)}}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:65}
+/* ============ FINISH ============ */
+#s-finish{padding-top:62px}
+.fin-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:44px 22px 70px;max-width:760px;margin:0 auto;width:100%;text-align:center}
+.fin-score{font-family:var(--mono);font-weight:700;font-size:clamp(58px,9vw,86px);color:var(--ink);line-height:1;letter-spacing:-.02em}
+.fin-score small{font-size:.38em;color:var(--g3);font-weight:500}
+.fin-tier{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:15px;border-radius:24px;padding:9px 22px;margin:16px 0 6px}
+.fin-tier.gold{background:#FBF4DC;color:#8a6d12;border:1.5px solid var(--gold)}
+.fin-tier.silver{background:#F0F2F5;color:#4d565f;border:1.5px solid var(--silver)}
+.fin-tier.done{background:var(--g6);color:var(--g2);border:1.5px solid var(--g4)}
+.fin-h{font-size:clamp(26px,4vw,36px);font-weight:800;color:var(--ink);margin:10px 0 8px;letter-spacing:-.01em}
+.fin-sub{font-size:16px;color:var(--g2);line-height:1.6;max-width:520px;margin:0 auto 28px}
+.fin-cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-bottom:38px}
+.cert-frame{background:#fff;border:1px solid var(--rule);border-radius:16px;box-shadow:var(--shadow-lg);padding:14px;max-width:640px;width:100%;margin-bottom:36px}
+.cert-frame canvas{width:100%;height:auto;border-radius:8px;display:block}
+.next-h{font-family:var(--mono);font-size:12.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--g2);margin-bottom:16px}
+.next-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;width:100%}
+.next-c{background:#fff;border:1px solid var(--rule);border-radius:15px;padding:20px 17px;text-align:start;position:relative;transition:.2s}
+.next-c:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.next-c .lk{position:absolute;top:13px;inset-inline-end:13px;color:var(--g4)}
+.next-c .ni{width:38px;height:38px;border-radius:11px;background:var(--red-soft);color:var(--red);display:flex;align-items:center;justify-content:center;margin-bottom:11px;font-size:17px}
+.next-c .nn{font-weight:800;font-size:14.5px;color:var(--ink);margin-bottom:5px;line-height:1.3}
+.next-c .nd{font-size:12.5px;color:var(--g3);line-height:1.45}
+.fin-restart{margin-top:34px;font-size:13.5px;color:var(--g3);background:none;border:0;text-decoration:underline;text-underline-offset:3px}
+.fin-restart:hover{color:var(--ink)}
+@media (max-width:640px){
+  .ln-card{padding:28px 22px}
+  .doors,.next-grid{grid-template-columns:1fr}
+  .match{grid-template-columns:1fr}
+  .pgrid{grid-template-columns:1fr 1fr}
+}
+@keyframes pulse{0%,100%{transform:none}50%{transform:scale(1.04)}}
+
+@media (prefers-reduced-motion:reduce){
+  .wl-star,.wl-word{animation:none}
+  .wl-star{opacity:.5}
+  .screen.show,.wl-inner,.wl-menu.open,.ln-card,.ptile,.pts-fly,.door-fb.show{animation:none}
+  .vs-caption.in{animation:none;opacity:1}
+  .sort-card,.cyc-n .cyc-b,.tb-dot{transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ TOPBAR ============ -->
+<header id="topbar" aria-label="Course progress">
+  <div class="tb-brand"><span class="tb-logo"><img id="tbLogo" alt="Røde Kors"></span>
+    <span><span data-s="brand">International Finance Learning Platform</span><span class="tb-sub" data-s="brandSub">Danish Red Cross · Prototype</span></span>
+  </div>
+  <div class="tb-mid"><div class="tb-dots" id="tbDots" aria-hidden="true"></div></div>
+  <div class="tb-pts" title="">
+    <svg class="tb-ring" viewBox="0 0 32 32" aria-hidden="true">
+      <circle class="bg" cx="16" cy="16" r="13"></circle>
+      <circle class="fg" id="ptsRing" cx="16" cy="16" r="13" stroke-dasharray="81.7" stroke-dashoffset="81.7"></circle>
+    </svg>
+    <span><span class="tb-num" id="ptsNum">0</span> <span class="tb-lbl" data-s="points">points</span></span>
+  </div>
+</header>
+
+<!-- ============ SCREEN 1 · WELCOME ============ -->
+<section class="screen show" id="s-welcome">
+  <div class="wl-stars" id="wlStars" aria-hidden="true"></div>
+  <div class="wl-cloud" id="wlCloud" aria-hidden="true"></div>
+  <div class="wl-inner">
+    <div class="wl-mark"><img id="wlLogo" class="rk-img" alt="Røde Kors"></div>
+    <div class="wl-eyebrow" data-s="eyebrow">International Finance</div>
+    <h1 class="wl-title" data-s="title">Welcome to the Finance Learning Platform</h1>
+    <p class="wl-sub" data-s="sub">Your first steps in Danish Red Cross International Finance. Learn at your pace, in your language.</p>
+    <div class="wl-pick">
+      <div class="wl-sel">
+        <button id="langBtn" aria-haspopup="listbox" aria-expanded="false">
+          <span class="gl" id="langGlyph">🌍</span><span id="langName" data-s="pickLang">Pick your language</span><span class="ar">▾</span>
+        </button>
+        <div class="wl-menu" id="langMenu" role="listbox"></div>
+      </div>
+      <button id="startBtn" data-s="start">Start</button>
+    </div>
+  </div>
+  <div class="wl-proto" data-s="protoTag">Prototype · for internal discussion</div>
+</section>
+
+<!-- ============ SCREEN 2 · REGISTER ============ -->
+<section class="screen" id="s-register">
+  <div class="mid-wrap"><div class="card">
+    <div class="kicker" data-s="stepOf1">Step 1 of 2</div>
+    <h2 class="h1" data-s="regTitle">Tell us who you are</h2>
+    <p class="lead" data-s="regLead">So we can track your progress and send your certificate when you finish.</p>
+    <div class="fld" id="f-name"><label for="inName" data-s="name">Your name</label>
+      <input id="inName" type="text" autocomplete="name" value="Ali Al Mokdad">
+      <div class="errmsg" data-s="nameErr">Please write your name.</div></div>
+    <div class="fld" id="f-email"><label for="inEmail" data-s="email">Your work email</label>
+      <input id="inEmail" type="email" autocomplete="email" placeholder="name@rodekors.dk">
+      <div class="errmsg" data-s="emailErr">That email does not look right yet.</div></div>
+    <div class="fld" id="f-mgr"><label for="inMgr" data-s="mgrEmail">Your line manager's email</label>
+      <input id="inMgr" type="email" placeholder="manager@rodekors.dk">
+      <div class="hint" data-s="mgrHint">Your manager gets a short note when you start, and your certificate when you finish.</div>
+      <div class="errmsg" data-s="emailErr2">That email does not look right yet.</div></div>
+    <div class="row"><button class="btn ghost" id="regBack" data-s="back">Back</button>
+      <button class="btn" id="regNext" data-s="continue">Continue</button></div>
+    <p class="proto-note" data-s="protoNote">Prototype note: your details stay in this browser only. In production this connects to the HR and learning systems.</p>
+  </div></div>
+</section>
+
+<!-- ============ SCREEN 3 · LEARNING STYLE ============ -->
+<section class="screen" id="s-style">
+  <div class="mid-wrap"><div class="card" style="max-width:640px">
+    <div class="kicker" data-s="stepOf2">Step 2 of 2</div>
+    <h2 class="h1" data-s="styleTitle">How do you like to learn?</h2>
+    <p class="lead" data-s="styleLead">The same content, shaped around you. You can change this anytime.</p>
+    <div class="styles" id="styleGrid"></div>
+    <div class="row"><button class="btn ghost" id="styleBack" data-s="back">Back</button>
+      <button class="btn" id="styleGo" disabled data-s="begin">Begin the course</button></div>
+  </div></div>
+</section>
+
+<!-- learn + finish screens injected by JS -->
+<section class="screen" id="s-learn"></section>
+<section class="screen" id="s-finish"></section>
+
+<div id="toasts" style="position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;gap:9px;align-items:center"></div>
+
+<script>
+"use strict";
+var RK_LOGO="data:image/jpeg;base64,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";
+/* =================================================================
+   International Finance Learning Platform · single-file prototype
+   Danish Red Cross · built 2026-06-11 · no backend, no build step
+   ================================================================= */
+
+/* ---------- i18n ---------- */
+var LANGS = [
+  {code:"en", name:"English",  glyph:"🇬🇧", dir:"ltr", live:true},
+  {code:"ar", name:"العربية",  glyph:"🇸🇾", dir:"rtl", live:true},
+  {code:"da", name:"Dansk",    glyph:"🇩🇰", dir:"ltr", live:false},
+  {code:"fr", name:"Français", glyph:"🇫🇷", dir:"ltr", live:false},
+  {code:"es", name:"Español",  glyph:"🇪🇸", dir:"ltr", live:false},
+  {code:"uk", name:"Українська",glyph:"🇺🇦", dir:"ltr", live:false},
+  {code:"sw", name:"Kiswahili",glyph:"🇰🇪", dir:"ltr", live:false},
+  {code:"my", name:"မြန်မာ",    glyph:"🇲🇲", dir:"ltr", live:false}
+];
+
+var STR = {
+en:{
+  brand:"International Finance Learning Platform", brandSub:"Danish Red Cross · Prototype",
+  eyebrow:"International Finance", title:"Welcome to the Finance Learning Platform",
+  sub:"Your first steps in Danish Red Cross International Finance. Learn at your pace, in your language.",
+  pickLang:"Pick your language", start:"Start", protoTag:"Prototype · for internal discussion",
+  comingSoon:"soon", points:"points",
+  stepOf1:"Step 1 of 2", regTitle:"Tell us who you are",
+  regLead:"So we can track your progress and send your certificate when you finish.",
+  name:"Your name", email:"Your work email", mgrEmail:"Your line manager's email",
+  mgrHint:"Your manager gets a short note when you start, and your certificate when you finish.",
+  nameErr:"Please write your name.", emailErr:"That email does not look right yet.", emailErr2:"That email does not look right yet.",
+  back:"Back", continue:"Continue",
+  protoNote:"Prototype note: your details stay in this browser only. In production this connects to the HR and learning systems.",
+  stepOf2:"Step 2 of 2", styleTitle:"How do you like to learn?",
+  styleLead:"The same content, shaped around you. You can change this anytime.",
+  styleRead:"Read and interact", styleReadD:"Cards, visuals and small interactions",
+  styleListen:"Listen and interact", styleListenD:"Every step read aloud while you follow",
+  styleWatch:"Watch", styleWatchD:"Short videos per step, when filmed",
+  videoBadge:"placeholder", begin:"Begin the course",
+  mgrPing:"A short starting note has been prepared for", protoSend:"(prototype: sending is simulated)",
+  welcomeName:"Welcome,"
+},
+da:{
+  brand:"International Finance Learning Platform", brandSub:"Røde Kors · Prototype",
+  eyebrow:"International økonomi", title:"Velkommen til Finance Learning Platform",
+  sub:"Dine første skridt i Røde Kors' internationale økonomi. Lær i dit tempo, på dit sprog.",
+  pickLang:"Vælg dit sprog", start:"Begynd", protoTag:"Prototype · til intern drøftelse",
+  comingSoon:"snart", points:"point",
+  stepOf1:"Trin 1 af 2", regTitle:"Fortæl os, hvem du er",
+  regLead:"Så vi kan følge din fremgang og sende dit kursusbevis, når du er færdig.",
+  name:"Dit navn", email:"Din arbejdsmail", mgrEmail:"Din leders mail",
+  mgrHint:"Din leder får en kort besked, når du starter, og dit kursusbevis, når du er færdig.",
+  nameErr:"Skriv venligst dit navn.", emailErr:"Den mail ser ikke helt rigtig ud endnu.", emailErr2:"Den mail ser ikke helt rigtig ud endnu.",
+  back:"Tilbage", continue:"Fortsæt",
+  protoNote:"Prototype: dine oplysninger bliver kun i denne browser. I produktion kobles der til HR- og læringssystemerne.",
+  stepOf2:"Trin 2 af 2", styleTitle:"Hvordan lærer du bedst?",
+  styleLead:"Samme indhold, formet efter dig. Du kan altid ændre det.",
+  styleRead:"Læs og prøv", styleReadD:"Kort, visuals og små interaktioner",
+  styleListen:"Lyt og prøv", styleListenD:"Hvert trin læses højt, mens du følger med",
+  styleWatch:"Se video", styleWatchD:"Korte videoer pr. trin, når de er optaget",
+  videoBadge:"pladsholder", begin:"Start kurset",
+  mgrPing:"En kort startbesked er klargjort til", protoSend:"(prototype: afsendelse simuleres)",
+  welcomeName:"Velkommen,"
+},
+fr:{
+  brand:"International Finance Learning Platform", brandSub:"Croix-Rouge danoise · Prototype",
+  eyebrow:"Finance internationale", title:"Bienvenue sur la Finance Learning Platform",
+  sub:"Vos premiers pas dans la finance internationale de la Croix-Rouge danoise. À votre rythme, dans votre langue.",
+  pickLang:"Choisissez votre langue", start:"Commencer", protoTag:"Prototype · pour discussion interne",
+  comingSoon:"bientôt", points:"points",
+  stepOf1:"Étape 1 sur 2", regTitle:"Dites-nous qui vous êtes",
+  regLead:"Pour suivre votre progression et vous envoyer votre certificat à la fin.",
+  name:"Votre nom", email:"Votre email professionnel", mgrEmail:"Email de votre responsable",
+  mgrHint:"Votre responsable reçoit un mot quand vous commencez, et votre certificat quand vous terminez.",
+  nameErr:"Merci d'écrire votre nom.", emailErr:"Cet email ne semble pas encore correct.", emailErr2:"Cet email ne semble pas encore correct.",
+  back:"Retour", continue:"Continuer",
+  protoNote:"Note prototype : vos informations restent dans ce navigateur. En production, connexion aux systèmes RH et de formation.",
+  stepOf2:"Étape 2 sur 2", styleTitle:"Comment aimez-vous apprendre ?",
+  styleLead:"Le même contenu, adapté à vous. Modifiable à tout moment.",
+  styleRead:"Lire et interagir", styleReadD:"Cartes, visuels et petites interactions",
+  styleListen:"Écouter et interagir", styleListenD:"Chaque étape lue à voix haute",
+  styleWatch:"Regarder", styleWatchD:"Courtes vidéos par étape, une fois filmées",
+  videoBadge:"à venir", begin:"Commencer le cours",
+  mgrPing:"Un mot de démarrage a été préparé pour", protoSend:"(prototype : envoi simulé)",
+  welcomeName:"Bienvenue,"
+},
+ar:{
+  brand:"منصة تعلّم المالية الدولية", brandSub:"الصليب الأحمر الدنماركي · نموذج تجريبي",
+  eyebrow:"المالية الدولية", title:"أهلاً بك في منصة التعلم",
+  sub:"خطواتك الأولى في المالية الدولية للصليب الأحمر الدنماركي. تعلّم بإيقاعك وبلغتك.",
+  pickLang:"اختر لغتك", start:"ابدأ", protoTag:"نموذج تجريبي · للنقاش الداخلي",
+  comingSoon:"قريباً", points:"نقطة",
+  stepOf1:"الخطوة 1 من 2", regTitle:"عرّفنا بنفسك",
+  regLead:"لنتابع تقدمك ونرسل لك الشهادة عند الإتمام.",
+  name:"اسمك", email:"بريدك المهني", mgrEmail:"بريد مديرك المباشر",
+  mgrHint:"يصل مديرك إشعار قصير عند بدئك، وشهادتك عند إتمامك.",
+  nameErr:"رجاءً اكتب اسمك.", emailErr:"هذا البريد لا يبدو صحيحاً بعد.", emailErr2:"هذا البريد لا يبدو صحيحاً بعد.",
+  back:"رجوع", continue:"متابعة",
+  protoNote:"ملاحظة: تبقى بياناتك في هذا المتصفح فقط. في النسخة النهائية يتم الربط بأنظمة الموارد البشرية والتعلّم.",
+  stepOf2:"الخطوة 2 من 2", styleTitle:"كيف تفضّل أن تتعلم؟",
+  styleLead:"المحتوى نفسه، بالشكل الذي يناسبك. يمكنك التغيير في أي وقت.",
+  styleRead:"اقرأ وتفاعل", styleReadD:"بطاقات ومرئيات وتفاعلات صغيرة",
+  styleListen:"استمع وتفاعل", styleListenD:"يُقرأ كل قسم بصوت مسموع أثناء المتابعة",
+  styleWatch:"شاهد", styleWatchD:"مقاطع قصيرة لكل قسم، عند تصويرها",
+  videoBadge:"لاحقاً", begin:"ابدأ الدورة",
+  mgrPing:"تم تجهيز إشعار بدء قصير إلى", protoSend:"(نموذج تجريبي: الإرسال محاكاة)",
+  welcomeName:"أهلاً،"
+}
+};
+
+/* welcome-cloud words: hello in many languages */
+var CLOUD = ["Welcome","Velkommen","Bienvenue","أهلاً بك","Bienvenido","Willkommen","Karibu","Bem-vindo",
+  "Ласкаво просимо","خوش آمدید","Witamy","Hoş geldiniz","Selamat datang","Tervetuloa","ยินดีต้อนรับ",
+  "Mirë se vini","Velkomin","歡迎","स्वागत है","Soo dhawow","Akwaaba","Maligayang pagdating"];
+
+/* ---------- state ---------- */
+var S = load() || {lang:null, name:"", email:"", mgr:"", style:null, step:0, pts:0, done:{}, finished:false};
+function load(){ try{ return JSON.parse(localStorage.getItem("dfa_state")); }catch(e){ return null; } }
+function save(){ try{ localStorage.setItem("dfa_state", JSON.stringify(S)); }catch(e){} }
+
+function T(key){ var l=(S.lang&&STR[S.lang])?S.lang:"en"; return (STR[l][key]!==undefined?STR[l][key]:STR.en[key]||key); }
+function $(q,sc){ return (sc||document).querySelector(q); }
+function $all(q,sc){ return Array.prototype.slice.call((sc||document).querySelectorAll(q)); }
+function esc(s){ var d=document.createElement("span"); d.textContent=(s==null?"":String(s)); return d.innerHTML; }
+
+function applyStrings(){
+  $all("[data-s]").forEach(function(el){ var k=el.getAttribute("data-s"); var v=T(k); if(v!==undefined) el.textContent=v; });
+  var L=LANGS.filter(function(x){return x.code===(S.lang||"en");})[0]||LANGS[0];
+  document.documentElement.lang=L.code;
+  document.documentElement.dir=L.dir;
+}
+
+/* ---------- toasts ---------- */
+function toast(msg, ms){
+  var t=document.createElement("div");
+  t.style.cssText="background:#292729;color:#fff;font-size:14px;font-weight:600;border-radius:12px;padding:12px 20px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:480px;text-align:center;animation:scrIn .35s ease both";
+  t.textContent=msg;
+  $("#toasts").appendChild(t);
+  setTimeout(function(){ t.style.transition="opacity .4s"; t.style.opacity="0"; setTimeout(function(){ t.remove(); },420); }, ms||3400);
+}
+
+/* ---------- router ---------- */
+function show(id){
+  $all(".screen").forEach(function(s){ s.classList.toggle("show", s.id===id); });
+  $("#topbar").classList.toggle("show", id==="s-learn"||id==="s-finish");
+  window.scrollTo(0,0);
+}
+
+/* ---------- welcome screen ---------- */
+(function buildWelcome(){
+  var stars=$("#wlStars"), html="";
+  for(var i=0;i<34;i++){
+    var b=(i%4===0)?" b":"";
+    html+='<span class="wl-star'+b+'" style="top:'+(3+Math.random()*92)+'%;left:'+(2+Math.random()*96)+'%;animation-delay:'+(Math.random()*4).toFixed(2)+'s;animation-duration:'+(3.6+Math.random()*2.4).toFixed(2)+'s"></span>';
+  }
+  stars.innerHTML=html;
+  var cloud=$("#wlCloud"), ch="";
+  var slots=[[4,6],[10,70],[16,30],[7,46],[22,80],[26,8],[33,55],[38,22],[46,84],[54,5],[62,68],[70,30],[78,76],[84,12],[88,46],[58,40],[30,90],[14,88],[74,55],[90,72],[42,60],[50,16]];
+  CLOUD.forEach(function(w,i){
+    var pos=slots[i%slots.length];
+    var size=(13+Math.random()*22).toFixed(0);
+    var cls=(i%5===0)?" hi":(i%7===0?" red":"");
+    ch+='<span class="wl-word'+cls+'" style="top:'+pos[0]+'%;left:'+pos[1]+'%;font-size:'+size+'px;--d:'+(11+Math.random()*9).toFixed(1)+'s;--dx:'+((Math.random()*36-18)).toFixed(0)+'px;--dy:'+((Math.random()*26-13)).toFixed(0)+'px">'+w+'</span>';
+  });
+  cloud.innerHTML=ch;
+
+  var menu=$("#langMenu"), mh="";
+  LANGS.forEach(function(L){
+    if(L.live){
+      mh+='<button class="wl-opt" role="option" data-lang="'+L.code+'"><span class="gl">'+L.glyph+'</span>'+L.name+'<span class="gl-check" style="display:none">✓</span></button>';
+    } else {
+      mh+='<div class="wl-opt soon"><span class="gl">'+L.glyph+'</span>'+L.name+'<span class="soon-tag" data-soon>soon</span></div>';
+    }
+  });
+  menu.innerHTML=mh;
+
+  $("#langBtn").addEventListener("click", function(e){
+    e.stopPropagation();
+    var open=menu.classList.toggle("open");
+    this.setAttribute("aria-expanded", open?"true":"false");
+  });
+  document.addEventListener("click", function(){ menu.classList.remove("open"); $("#langBtn").setAttribute("aria-expanded","false"); });
+  menu.addEventListener("click", function(e){ e.stopPropagation(); });
+  $all(".wl-opt[data-lang]").forEach(function(b){
+    b.addEventListener("click", function(){
+      S.lang=b.getAttribute("data-lang"); save();
+      var L=LANGS.filter(function(x){return x.code===S.lang;})[0];
+      $("#langGlyph").textContent=L.glyph;
+      $("#langName").removeAttribute("data-s");
+      $("#langName").textContent=L.name;
+      $all(".wl-opt[data-lang]").forEach(function(o){ o.classList.toggle("sel", o===b); $(".gl-check",o).style.display=(o===b)?"":"none"; });
+      $all("[data-soon]").forEach(function(s){ s.textContent=T("comingSoon"); });
+      applyStrings();
+      menu.classList.remove("open");
+    });
+  });
+
+  $("#startBtn").addEventListener("click", function(){
+    if(!S.lang){ menu.classList.add("open"); $("#langBtn").style.animation="none"; void $("#langBtn").offsetWidth; $("#langBtn").style.animation="pulse .5s ease 2"; return; }
+    show("s-register");
+    setTimeout(function(){ $("#inName").focus(); }, 350);
+  });
+})();
+
+/* ---------- register ---------- */
+function emailOk(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((v||"").trim()); }
+$("#regBack").addEventListener("click", function(){ show("s-welcome"); });
+$("#regNext").addEventListener("click", function(){
+  var ok=true;
+  var n=$("#inName").value.trim(), e=$("#inEmail").value.trim(), m=$("#inMgr").value.trim();
+  $("#f-name").classList.toggle("err", !n); if(!n) ok=false;
+  $("#f-email").classList.toggle("err", !emailOk(e)); if(!emailOk(e)) ok=false;
+  $("#f-mgr").classList.toggle("err", !emailOk(m)); if(!emailOk(m)) ok=false;
+  if(!ok) return;
+  S.name=n; S.email=e; S.mgr=m; save();
+  show("s-style");
+  toast(T("mgrPing")+" "+m+" "+T("protoSend"), 4200);
+});
+
+/* ---------- learning style ---------- */
+var ICONS={
+  read:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z"/><path d="M22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg>',
+  listen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="3" y="14" width="4" height="7" rx="2"/><rect x="17" y="14" width="4" height="7" rx="2"/></svg>',
+  watch:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg>'
+};
+(function buildStyles(){
+  var defs=[
+    {id:"read", ic:ICONS.read, nm:"styleRead", ds:"styleReadD"},
+    {id:"listen", ic:ICONS.listen, nm:"styleListen", ds:"styleListenD"},
+    {id:"watch", ic:ICONS.watch, nm:"styleWatch", ds:"styleWatchD", badge:true}
+  ];
+  var g=$("#styleGrid");
+  g.innerHTML=defs.map(function(d){
+    return '<button class="style-c" data-style="'+d.id+'">'+(d.badge?'<span class="badge" data-s="videoBadge">placeholder</span>':'')+
+      '<span class="ic">'+d.ic+'</span><div class="nm" data-s="'+d.nm+'"></div><div class="ds" data-s="'+d.ds+'"></div></button>';
+  }).join("");
+  $all(".style-c").forEach(function(c){
+    c.addEventListener("click", function(){
+      $all(".style-c").forEach(function(x){ x.classList.toggle("sel", x===c); });
+      S.style=c.getAttribute("data-style"); save();
+      $("#styleGo").disabled=false;
+    });
+  });
+  $("#styleBack").addEventListener("click", function(){ show("s-register"); });
+  $("#styleGo").addEventListener("click", function(){ startCourse(); });
+})();
+
+/* =================================================================
+   ENGINE STRINGS (merged into STR)
+   ================================================================= */
+var STR2={
+en:{ checkBadge:"Quick game, not a test", continueBtn:"Continue", checkOrder:"Check my order",
+  sortYes:"True", sortNo:"Not quite", nice:"Nice one.", almost:"Close. Look once more.",
+  goodSave:"Good catch. Worth remembering.", station:"Station", listen:"Listen", stop:"Stop",
+  ttsNoVoice:"No voice for this language is installed on this device yet.",
+  refLabel:"Reference", resource:"Resource", resourcesH:"Read the full resources",
+  refToast:"Prototype: in production this opens the full source document.",
+  watchCap:"Watch this step as a guided walkthrough", watchPlay:"Play", watchReplay:"Replay",
+  resumeMsg:"Welcome back. We saved your place.",
+  finishH:"You made it,", finishSub:"You followed the money through a whole project. That is the foundation everything else builds on.",
+  scoreOf:"of 100", tierGold:"Completed with Distinction", tierSilver:"Completed with Merit", tierDone:"Completed",
+  downloadCert:"Download certificate", notifyMgr:"Send certificate to my manager", notified:"Certificate notice prepared for",
+  nextUp:"Recommended next", lockedSoon:"Coming next", restart:"Start over from the beginning",
+  certTitle:"CERTIFICATE OF COMPLETION", certHas:"has completed", certAt:"International Finance Learning Platform · Danish Red Cross",
+  certScore:"Score", certDate:"Date", halfway:"Halfway there. Keep going.", protoOnly:"Prototype",
+  m1:"Module 1", min:"min" },
+da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"Tjek min rækkefølge",
+  sortYes:"Rigtigt", sortNo:"Ikke helt", nice:"Flot.", almost:"Tæt på. Kig en gang til.",
+  goodSave:"Godt fanget. Værd at huske.", station:"Station", listen:"Lyt", stop:"Stop",
+  ttsNoVoice:"Der er endnu ikke installeret en stemme til dette sprog på denne enhed.",
+  refLabel:"Reference", resource:"Ressource", resourcesH:"Læs de fulde ressourcer",
+  refToast:"Prototype: i produktion åbner dette kildedokumentet.",
+  watchCap:"Se dette trin som en guidet gennemgang", watchPlay:"Afspil", watchReplay:"Afspil igen",
+  resumeMsg:"Velkommen tilbage. Vi gemte din plads.",
+  finishH:"Du klarede det,", finishSub:"Du fulgte pengene gennem et helt projekt. Det er fundamentet, alt andet bygger på.",
+  scoreOf:"af 100", tierGold:"Gennemført med udmærkelse", tierSilver:"Gennemført med ros", tierDone:"Gennemført",
+  downloadCert:"Hent kursusbevis", notifyMgr:"Send kursusbevis til min leder", notified:"Besked om kursusbevis klargjort til",
+  nextUp:"Anbefalet næste skridt", lockedSoon:"Kommer snart", restart:"Begynd forfra",
+  certTitle:"KURSUSBEVIS", certHas:"har gennemført", certAt:"International Finance Learning Platform · Røde Kors",
+  certScore:"Resultat", certDate:"Dato", halfway:"Halvvejs. Bliv ved.", protoOnly:"Prototype",
+  m1:"Modul 1", min:"min" },
+fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:"Vérifier mon ordre",
+  sortYes:"Vrai", sortNo:"Pas tout à fait", nice:"Bien vu.", almost:"Presque. Regardez encore.",
+  goodSave:"Bien repéré. À retenir.", station:"Étape", listen:"Écouter", stop:"Arrêter",
+  ttsNoVoice:"Aucune voix pour cette langue n'est encore installée sur cet appareil.",
+  refLabel:"Référence", resource:"Ressource", resourcesH:"Lire les ressources complètes",
+  refToast:"Prototype : en production, ceci ouvre le document source complet.",
+  watchCap:"Regardez cette étape en présentation guidée", watchPlay:"Lire", watchReplay:"Revoir",
+  resumeMsg:"Bon retour. Votre place est gardée.",
+  finishH:"Vous y êtes,", finishSub:"Vous avez suivi l'argent à travers tout un projet. C'est la base de tout le reste.",
+  scoreOf:"sur 100", tierGold:"Terminé avec distinction", tierSilver:"Terminé avec mérite", tierDone:"Terminé",
+  downloadCert:"Télécharger le certificat", notifyMgr:"Envoyer le certificat à mon responsable", notified:"Avis de certificat préparé pour",
+  nextUp:"Recommandé ensuite", lockedSoon:"Bientôt", restart:"Recommencer depuis le début",
+  certTitle:"CERTIFICAT D'ACHÈVEMENT", certHas:"a terminé", certAt:"International Finance Learning Platform · Croix-Rouge danoise",
+  certScore:"Score", certDate:"Date", halfway:"À mi-chemin. Continuez.", protoOnly:"Prototype",
+  m1:"Module 1", min:"min" },
+ar:{ checkBadge:"لعبة سريعة، ليست اختباراً", continueBtn:"متابعة", checkOrder:"تحقق من ترتيبي",
+  sortYes:"صحيح", sortNo:"ليس تماماً", nice:"أحسنت.", almost:"اقتربت. انظر مرة أخرى.",
+  goodSave:"التقاطة جيدة. تستحق التذكر.", station:"محطة", listen:"استمع", stop:"إيقاف",
+  ttsNoVoice:"لا يوجد صوت مثبّت لهذه اللغة على هذا الجهاز بعد.",
+  refLabel:"المرجع", resource:"مرجع", resourcesH:"اقرأ المراجع كاملة",
+  refToast:"نموذج تجريبي: في النسخة النهائية يُفتح هنا المستند المصدر كاملاً.",
+  watchCap:"شاهد هذه الخطوة كعرض موجّه", watchPlay:"تشغيل", watchReplay:"إعادة العرض",
+  resumeMsg:"أهلاً بعودتك. حفظنا مكانك.",
+  finishH:"لقد أنجزتها،", finishSub:"تابعت المال عبر مشروع كامل. هذا هو الأساس الذي يُبنى عليه كل شيء.",
+  scoreOf:"من 100", tierGold:"أُنجز بامتياز", tierSilver:"أُنجز بجدارة", tierDone:"أُنجز",
+  downloadCert:"تنزيل الشهادة", notifyMgr:"إرسال الشهادة إلى مديري", notified:"تم تجهيز إشعار الشهادة إلى",
+  nextUp:"المقترح تالياً", lockedSoon:"قريباً", restart:"البدء من جديد",
+  certTitle:"شهادة إتمام", certHas:"قد أتمّ", certAt:"منصة تعلّم المالية الدولية · الصليب الأحمر الدنماركي",
+  certScore:"النتيجة", certDate:"التاريخ", halfway:"في منتصف الطريق. واصل.", protoOnly:"نموذج تجريبي",
+  m1:"الوحدة 1", min:"د" }
+};
+Object.keys(STR2).forEach(function(l){ Object.keys(STR2[l]).forEach(function(k){ STR[l][k]=STR2[l][k]; }); });
+
+/* =================================================================
+   MODULE CONTENT: seeded at build, verified against the DRC corpus
+   ================================================================= */
+var MODULE = {
+title:{en:"Follow the Money: Your First Project", da:"Følg pengene: dit første projekt", fr:"Suivez l'argent : votre premier projet", ar:"تتبّع المال: مشروعك الأول"},
+subtitle:{en:"How money moves through a Danish Red Cross international project", da:"Sådan bevæger pengene sig gennem et internationalt Røde Kors-projekt", fr:"Comment l'argent circule dans un projet international de la Croix-Rouge danoise", ar:"كيف يتحرك المال عبر مشروع دولي للصليب الأحمر الدنماركي"},
+cycle:[
+  {n:"I", nm:{en:"Inception", da:"Idé", fr:"Conception", ar:"التأسيس"}},
+  {n:"II", nm:{en:"Initiation", da:"Opstart", fr:"Initiation", ar:"الانطلاق"}},
+  {n:"III", nm:{en:"Implementation", da:"Gennemførelse", fr:"Mise en œuvre", ar:"التنفيذ"}},
+  {n:"IV", nm:{en:"Completion", da:"Afslutning", fr:"Achèvement", ar:"الإتمام"}},
+  {n:"V", nm:{en:"Audit", da:"Revision", fr:"Audit", ar:"التدقيق"}}
+],
+principles:[ /* verbatim EN from DRC intranet · Financial SOPs (re-verified 26 May 2026); translations are course renderings */
+  {en:"Focus on thorough planning and budgeting of activities.", da:"Fokus på grundig planlægning og budgettering af aktiviteter.", fr:"Une planification et une budgétisation rigoureuses des activités.", ar:"التركيز على التخطيط الدقيق ووضع الميزانيات للأنشطة."},
+  {en:"Implement activities with a focus on risk management.", da:"Gennemfør aktiviteter med fokus på risikostyring.", fr:"Mettre en œuvre les activités avec un accent sur la gestion des risques.", ar:"تنفيذ الأنشطة مع التركيز على إدارة المخاطر."},
+  {en:"Ensure that applicable regulations and donor requirements are complied with.", da:"Sikr, at gældende regler og donorkrav overholdes.", fr:"Veiller au respect des réglementations applicables et des exigences des donateurs.", ar:"ضمان الامتثال للأنظمة السارية ومتطلبات المانحين."},
+  {en:"Maintain updated accounting records.", da:"Hold regnskabsmaterialet opdateret.", fr:"Tenir des registres comptables à jour.", ar:"الحفاظ على سجلات محاسبية محدّثة."},
+  {en:"Ensure close monitoring of expenditure and revenue, and provide transparent, accurate and relevant financial reports on utilisation of funds.", da:"Sikr tæt opfølgning på udgifter og indtægter, og lever gennemsigtige, præcise og relevante økonomirapporter om anvendelsen af midler.", fr:"Assurer un suivi étroit des dépenses et des recettes, et fournir des rapports financiers transparents, précis et pertinents sur l'utilisation des fonds.", ar:"ضمان متابعة دقيقة للنفقات والإيرادات، وتقديم تقارير مالية شفافة ودقيقة وذات صلة عن استخدام الأموال."},
+  {en:"Ensure that Red Cross activities are carried out cost-efficiently and effectively.", da:"Sikr, at Røde Kors' aktiviteter gennemføres omkostningseffektivt og virkningsfuldt.", fr:"Veiller à ce que les activités de la Croix-Rouge soient menées de manière économique et efficace.", ar:"ضمان تنفيذ أنشطة الصليب الأحمر بكفاءة في التكلفة وبفعالية."}
+],
+stations:[
+/* ============ STATION 1 · THE MAP ============ */
+{nm:{en:"The map", da:"Kortet", fr:"La carte", ar:"الخريطة"}, steps:[
+  {t:"card",
+   k:{en:"Every project tells the same story", da:"Hvert projekt fortæller den samme historie", fr:"Chaque projet raconte la même histoire", ar:"كل مشروع يروي القصة نفسها"},
+   h:{en:"One journey, five phases", da:"Én rejse, fem faser", fr:"Un voyage, cinq phases", ar:"رحلة واحدة، خمس مراحل"},
+   b:{en:"Whether it is cash assistance after a flood or a five-year health programme, the money in a Danish Red Cross international project moves through the same journey: <b>Inception</b>, where an idea becomes a proposal. <b>Initiation</b>, where an agreement becomes a project you can book against. <b>Implementation</b>, where the money does its work. <b>Completion</b>, where everything reconciles and closes. And alongside it all, <b>Audit</b>, where an independent eye confirms the story the numbers tell. In this module you will walk one project all the way through.",
+      da:"Uanset om det er kontanthjælp efter en oversvømmelse eller et femårigt sundhedsprogram, bevæger pengene i et internationalt Røde Kors-projekt sig gennem den samme rejse: <b>Idé</b>, hvor en idé bliver et forslag. <b>Opstart</b>, hvor en aftale bliver et projekt, man kan bogføre på. <b>Gennemførelse</b>, hvor pengene gør deres arbejde. <b>Afslutning</b>, hvor alt afstemmes og lukkes. Og ved siden af det hele: <b>Revision</b>, hvor et uafhængigt blik bekræfter den historie, tallene fortæller. I dette modul følger du ét projekt hele vejen.",
+      fr:"Qu'il s'agisse d'aide en espèces après une inondation ou d'un programme de santé de cinq ans, l'argent d'un projet international de la Croix-Rouge danoise suit le même voyage : la <b>Conception</b>, où une idée devient une proposition. L'<b>Initiation</b>, où un accord devient un projet sur lequel on peut comptabiliser. La <b>Mise en œuvre</b>, où l'argent fait son travail. L'<b>Achèvement</b>, où tout est rapproché et clôturé. Et en parallèle, l'<b>Audit</b>, où un regard indépendant confirme l'histoire que racontent les chiffres. Dans ce module, vous suivez un projet de bout en bout.",
+      ar:"سواء كانت مساعدات نقدية بعد فيضان أو برنامجاً صحياً مدته خمس سنوات، يتحرك المال في مشروع دولي للصليب الأحمر الدنماركي عبر الرحلة نفسها: <b>التأسيس</b> حيث تتحول الفكرة إلى مقترح. <b>الانطلاق</b> حيث تتحول الاتفاقية إلى مشروع يمكن التسجيل عليه. <b>التنفيذ</b> حيث يقوم المال بعمله. <b>الإتمام</b> حيث تتم التسويات والإغلاق. وإلى جانب ذلك كله، <b>التدقيق</b> حيث تؤكد عين مستقلة القصة التي ترويها الأرقام. في هذه الوحدة سترافق مشروعاً واحداً على طول الطريق."},
+   visual:"cycle", vOn:0, r:1},
+  {t:"card",
+   k:{en:"The ground rules", da:"Spillereglerne", fr:"Les règles du jeu", ar:"القواعد الأساسية"},
+   h:{en:"Six promises every number keeps", da:"Seks løfter, hvert tal holder", fr:"Six promesses que chaque chiffre tient", ar:"ستة وعود يفي بها كل رقم"},
+   b:{en:"Before we follow the money, meet the rules it travels by. Danish Red Cross manages funds by the <b>Six Principles of Sound Financial Management</b>. They are not paperwork. They are the promise behind every booking: that money given for people in crisis arrives as impact, and that anyone, donor, auditor or colleague, can see how.",
+      da:"Før vi følger pengene, skal du møde de regler, de rejser efter. Røde Kors forvalter midler efter de <b>seks principper for sund økonomistyring</b>. De er ikke papirarbejde. De er løftet bag hver bogføring: at penge givet til mennesker i krise når frem som virkning, og at enhver, donor, revisor eller kollega, kan se hvordan.",
+      fr:"Avant de suivre l'argent, découvrez les règles qui guident son voyage. La Croix-Rouge danoise gère les fonds selon les <b>six principes de bonne gestion financière</b>. Ce n'est pas de la paperasse. C'est la promesse derrière chaque écriture : que l'argent donné pour des personnes en crise devient un impact réel, et que chacun, donateur, auditeur ou collègue, peut voir comment.",
+      ar:"قبل أن نتتبع المال، تعرّف على القواعد التي يسافر وفقها. يدير الصليب الأحمر الدنماركي الأموال وفق <b>المبادئ الستة للإدارة المالية السليمة</b>. ليست أوراقاً إدارية، بل الوعد الكامن خلف كل تسجيل: أن المال الممنوح لأشخاص في أزمة يصل أثراً حقيقياً، وأن أي شخص، مانحاً كان أو مدققاً أو زميلاً، يستطيع أن يرى كيف."},
+   visual:"grid", r:2},
+  {t:"check", game:"order", pts:25,
+   h:{en:"Put the journey in order", da:"Sæt rejsen i rækkefølge", fr:"Remettez le voyage dans l'ordre", ar:"رتّب الرحلة"},
+   b:{en:"Drag the phases, or use the arrows, so the project journey reads from first to last.", da:"Træk faserne, eller brug pilene, så projektrejsen står fra først til sidst.", fr:"Glissez les phases, ou utilisez les flèches, pour remettre le voyage dans l'ordre.", ar:"اسحب المراحل أو استخدم الأسهم ليقرأ مسار المشروع من الأول إلى الأخير."},
+   items:[
+     {en:"Inception: an idea becomes a proposal", da:"Idé: en idé bliver et forslag", fr:"Conception : une idée devient une proposition", ar:"التأسيس: تتحول الفكرة إلى مقترح"},
+     {en:"Initiation: the agreement becomes a project", da:"Opstart: aftalen bliver et projekt", fr:"Initiation : l'accord devient un projet", ar:"الانطلاق: تتحول الاتفاقية إلى مشروع"},
+     {en:"Implementation: the money does its work", da:"Gennemførelse: pengene gør deres arbejde", fr:"Mise en œuvre : l'argent fait son travail", ar:"التنفيذ: يقوم المال بعمله"},
+     {en:"Completion: everything reconciles and closes", da:"Afslutning: alt afstemmes og lukkes", fr:"Achèvement : tout est rapproché et clôturé", ar:"الإتمام: تتم التسويات والإغلاق"},
+     {en:"Audit: an independent eye confirms the story", da:"Revision: et uafhængigt blik bekræfter historien", fr:"Audit : un regard indépendant confirme l'histoire", ar:"التدقيق: عين مستقلة تؤكد القصة"}
+   ]}
+]},
+/* ============ STATION 2 · SETTING UP ============ */
+{nm:{en:"Setting up", da:"Opsætning", fr:"Mise en place", ar:"الإعداد"}, steps:[
+  {t:"card",
+   k:{en:"Initiation", da:"Opstart", fr:"Initiation", ar:"الانطلاق"},
+   h:{en:"Where the money lives: Kompas", da:"Her bor pengene: Kompas", fr:"Là où vit l'argent : Kompas", ar:"حيث يعيش المال: كومباس"},
+   b:{en:"The donor said yes. Now the project needs a home. That home is <b>Kompas</b>, the financial system where every project, budget and booking lives. The <b>Country Finance Officer creates the project setup</b>, the <b>International Controller and Adviser validates and activates it</b>, and from that moment every krone can be traced to it. Two pairs of eyes before a single booking, on purpose. Two habits start here and never stop: the <b>commitment to a partner is made in the donor's currency</b>, and staff time reaches the project through <b>registered hours</b>. If it is not in Kompas, it did not happen.",
+      da:"Donoren sagde ja. Nu skal projektet have et hjem. Det hjem er <b>Kompas</b>, økonomisystemet hvor hvert projekt, budget og hver bogføring bor. <b>Country Finance Officer opretter projektopsætningen</b>, og <b>International Controller and Adviser validerer og aktiverer den</b>, og fra det øjeblik kan hver krone spores til den. To par øjne før en eneste bogføring, helt med vilje. To vaner begynder her og stopper aldrig: <b>forpligtelsen til en partner indgås i donorens valuta</b>, og medarbejdertid når projektet gennem <b>registrerede timer</b>. Står det ikke i Kompas, er det ikke sket.",
+      fr:"Le donateur a dit oui. Le projet a maintenant besoin d'un foyer. Ce foyer, c'est <b>Kompas</b>, le système financier où vivent chaque projet, budget et écriture. Le <b>Country Finance Officer crée la configuration du projet</b>, l'<b>International Controller and Adviser la valide et l'active</b>, et dès cet instant chaque couronne peut y être tracée. Deux paires d'yeux avant la moindre écriture, et c'est voulu. Deux habitudes commencent ici et ne s'arrêtent jamais : <b>l'engagement envers un partenaire se fait dans la devise du donateur</b>, et le temps du personnel atteint le projet par les <b>heures enregistrées</b>. Si ce n'est pas dans Kompas, cela n'a pas eu lieu.",
+      ar:"قال المانح نعم. الآن يحتاج المشروع إلى بيت. هذا البيت هو <b>كومباس</b>، النظام المالي الذي يعيش فيه كل مشروع وميزانية وتسجيل. <b>ينشئ مسؤول المالية القُطري إعداد المشروع</b>، ثم <b>يتحقق منه المراقب والمستشار الدولي ويفعّله</b>، ومن تلك اللحظة يمكن تتبع كل كرونة إليه. عينان اثنتان قبل أول تسجيل، وهذا مقصود. عادتان تبدآن هنا ولا تتوقفان أبداً: <b>الالتزام تجاه الشريك يكون بعملة المانح</b>، ووقت الموظفين يصل إلى المشروع عبر <b>الساعات المسجلة</b>. ما ليس في كومباس، لم يحدث."},
+   r:3},
+  {t:"check", game:"match", pts:25,
+   h:{en:"Connect the pieces", da:"Forbind brikkerne", fr:"Reliez les pièces", ar:"صِل الأجزاء"},
+   b:{en:"Tap a term, then tap what it means. Four pairs.", da:"Tryk på et begreb, og tryk så på dets betydning. Fire par.", fr:"Touchez un terme, puis sa signification. Quatre paires.", ar:"اختر المصطلح ثم اختر معناه. أربعة أزواج."},
+   pairs:[
+     {a:{en:"Kompas", da:"Kompas", fr:"Kompas", ar:"كومباس"}, b:{en:"Where every project, budget and booking lives", da:"Her bor hvert projekt, budget og hver bogføring", fr:"Là où vivent chaque projet, budget et écriture", ar:"حيث يعيش كل مشروع وميزانية وتسجيل"}},
+     {a:{en:"The project setup", da:"Projektopsætningen", fr:"La configuration du projet", ar:"إعداد المشروع"}, b:{en:"The Country Finance Officer creates it, the International Controller and Adviser activates it", da:"Country Finance Officer opretter den, International Controller and Adviser aktiverer den", fr:"Le Country Finance Officer la crée, l'International Controller and Adviser l'active", ar:"ينشئه مسؤول المالية القُطري ويفعّله المراقب والمستشار الدولي"}},
+     {a:{en:"Donor currency", da:"Donorens valuta", fr:"Devise du donateur", ar:"عملة المانح"}, b:{en:"What a commitment to a partner is made in", da:"Det, en forpligtelse til en partner indgås i", fr:"Ce dans quoi un engagement envers un partenaire est pris", ar:"ما يُعقد به الالتزام تجاه الشريك"}},
+     {a:{en:"Registered hours", da:"Registrerede timer", fr:"Heures enregistrées", ar:"الساعات المسجلة"}, b:{en:"How staff time reaches a project", da:"Sådan når medarbejdertid et projekt", fr:"Comment le temps du personnel atteint un projet", ar:"كيف يصل وقت الموظفين إلى المشروع"}}
+   ]}
+]},
+/* ============ STATION 3 · IN MOTION ============ */
+{nm:{en:"In motion", da:"I bevægelse", fr:"En mouvement", ar:"في الحركة"}, steps:[
+  {t:"card",
+   k:{en:"Implementation", da:"Gennemførelse", fr:"Mise en œuvre", ar:"التنفيذ"},
+   h:{en:"Money in motion", da:"Penge i bevægelse", fr:"L'argent en mouvement", ar:"المال في حركته"},
+   b:{en:"The project is alive. Transfers go out, partners spend, your colleagues register hours, and every booking lands in Kompas at the <b>InforEuro rate of the last working day of the previous month</b>. Currencies move every day, and here is the rule worth tattooing: <b>the project absorbs exchange rate gains and losses</b>. They are not covered centrally. Watching the burn rate, the budget against the actuals, is how finance sees a project breathe. When something looks wrong, finance speaks early, because surprises grow more expensive with silence.",
+      da:"Projektet lever. Overførsler sendes, partnere bruger penge, dine kolleger registrerer timer, og hver bogføring lander i Kompas til <b>InforEuro-kursen fra sidste arbejdsdag i den foregående måned</b>. Valutaer bevæger sig hver dag, og her er reglen, der er værd at huske for altid: <b>projektet bærer selv kursgevinster og kurstab</b>. De dækkes ikke centralt. At følge forbruget, budget mod faktiske tal, er sådan, økonomi ser et projekt trække vejret. Når noget ser forkert ud, siger økonomi til tidligt, for overraskelser bliver dyrere af tavshed.",
+      fr:"Le projet est vivant. Les transferts partent, les partenaires dépensent, vos collègues enregistrent leurs heures, et chaque écriture atterrit dans Kompas au <b>taux InforEuro du dernier jour ouvrable du mois précédent</b>. Les devises bougent chaque jour, et voici la règle à retenir pour toujours : <b>le projet absorbe les gains et pertes de change</b>. Ils ne sont pas couverts au niveau central. Suivre le rythme de consommation, le budget contre le réalisé, c'est ainsi que la finance voit un projet respirer. Quand quelque chose cloche, la finance parle tôt, car les surprises coûtent plus cher dans le silence.",
+      ar:"المشروع حي. التحويلات تخرج، والشركاء ينفقون، وزملاؤك يسجلون الساعات، وكل تسجيل يهبط في كومباس بسعر <b>إنفويورو لآخر يوم عمل من الشهر السابق</b>. تتحرك العملات كل يوم، وهذه قاعدة تستحق أن تُحفر في الذاكرة: <b>المشروع يتحمل أرباح وخسائر سعر الصرف</b>. لا تُغطى مركزياً. متابعة معدل الإنفاق، الميزانية مقابل الفعلي، هي الطريقة التي ترى بها المالية المشروع وهو يتنفس. وعندما يبدو شيء غير صحيح، تتكلم المالية مبكراً، لأن المفاجآت تزداد كلفة مع الصمت."},
+   r:4},
+  {t:"check", game:"sort", pts:25,
+   h:{en:"True, or not quite?", da:"Rigtigt, eller ikke helt?", fr:"Vrai, ou pas tout à fait ?", ar:"صحيح، أم ليس تماماً؟"},
+   b:{en:"Five quick calls. Trust what you just learned.", da:"Fem hurtige vurderinger. Stol på det, du lige har lært.", fr:"Cinq décisions rapides. Faites confiance à ce que vous venez d'apprendre.", ar:"خمسة قرارات سريعة. ثق بما تعلمته للتو."},
+   items:[
+     {v:true, s:{en:"A commitment to a partner is made in the donor's currency.", da:"En forpligtelse til en partner indgås i donorens valuta.", fr:"Un engagement envers un partenaire se fait dans la devise du donateur.", ar:"الالتزام تجاه الشريك يكون بعملة المانح."},
+      fb:{en:"That is the standing rule from day one.", da:"Det er den faste regel fra dag ét.", fr:"C'est la règle depuis le premier jour.", ar:"هذه هي القاعدة الثابتة منذ اليوم الأول."}},
+     {v:false, s:{en:"Exchange rate losses are covered centrally, so the project never feels them.", da:"Kurstab dækkes centralt, så projektet aldrig mærker dem.", fr:"Les pertes de change sont couvertes au niveau central, le projet ne les ressent jamais.", ar:"خسائر سعر الصرف تُغطى مركزياً، فلا يشعر بها المشروع أبداً."},
+      fb:{en:"The project absorbs gains and losses itself.", da:"Projektet bærer selv gevinster og tab.", fr:"Le projet absorbe lui-même gains et pertes.", ar:"المشروع يتحمل الأرباح والخسائر بنفسه."}},
+     {v:true, s:{en:"Staff time reaches a project through registered hours.", da:"Medarbejdertid når et projekt gennem registrerede timer.", fr:"Le temps du personnel atteint un projet par les heures enregistrées.", ar:"وقت الموظفين يصل إلى المشروع عبر الساعات المسجلة."},
+      fb:{en:"The registered hour is how your work becomes a project cost.", da:"Den registrerede time er sådan, dit arbejde bliver en projektomkostning.", fr:"L'heure enregistrée est ainsi que votre travail devient un coût projet.", ar:"الساعة المسجلة هي كيف يصبح عملك كلفة على المشروع."}},
+     {v:true, s:{en:"Internal bookings follow the InforEuro rate of the last working day of the previous month.", da:"Interne bogføringer følger InforEuro-kursen fra sidste arbejdsdag i den foregående måned.", fr:"Les écritures internes suivent le taux InforEuro du dernier jour ouvrable du mois précédent.", ar:"التسجيلات الداخلية تتبع سعر إنفويورو لآخر يوم عمل من الشهر السابق."},
+      fb:{en:"One source, one date, no arguments.", da:"Én kilde, én dato, ingen diskussioner.", fr:"Une source, une date, pas de débat.", ar:"مصدر واحد، تاريخ واحد، لا جدال."}},
+     {v:false, s:{en:"If a booking is missing from Kompas, an email trail is just as good.", da:"Hvis en bogføring mangler i Kompas, er en mailtråd lige så god.", fr:"Si une écriture manque dans Kompas, un fil d'emails fait aussi bien l'affaire.", ar:"إذا غاب تسجيل عن كومباس، فسلسلة بريد إلكتروني تفي بالغرض."},
+      fb:{en:"If it is not in Kompas, it did not happen.", da:"Står det ikke i Kompas, er det ikke sket.", fr:"Si ce n'est pas dans Kompas, cela n'a pas eu lieu.", ar:"ما ليس في كومباس، لم يحدث."}}
+   ]}
+]},
+/* ============ STATION 4 · LANDING IT ============ */
+{nm:{en:"Landing it", da:"Landingen", fr:"L'atterrissage", ar:"الهبوط"}, steps:[
+  {t:"card",
+   k:{en:"Completion and audit", da:"Afslutning og revision", fr:"Achèvement et audit", ar:"الإتمام والتدقيق"},
+   h:{en:"Closing the loop", da:"Cirklen sluttes", fr:"Boucler la boucle", ar:"إغلاق الدائرة"},
+   b:{en:"The activities end, but the project is not done until the numbers agree. Reports reconcile, balances clear, the file closes in Kompas. Then the independent eye arrives: the audit. DRC audits are carried out by <b>chartered or certified public accountants</b>, and the <b>Head of International Finance, with the International Controller and Adviser, agrees the timing and the audit fees</b>. An audit is not a threat. If you kept the promises from Station 1, the audit is simply your story, confirmed.",
+      da:"Aktiviteterne slutter, men projektet er ikke færdigt, før tallene stemmer. Rapporter afstemmes, saldi udlignes, sagen lukkes i Kompas. Så kommer det uafhængige blik: revisionen. DRC-revisioner udføres af <b>statsautoriserede eller godkendte revisorer</b>, og <b>Head of International Finance aftaler sammen med International Controller and Adviser tidspunktet og revisionshonoraret</b>. En revision er ikke en trussel. Holdt du løfterne fra Station 1, er revisionen blot din historie, bekræftet.",
+      fr:"Les activités se terminent, mais le projet n'est pas fini tant que les chiffres ne concordent pas. Les rapports sont rapprochés, les soldes apurés, le dossier se ferme dans Kompas. Puis arrive le regard indépendant : l'audit. Les audits DRC sont réalisés par des <b>experts-comptables agréés ou certifiés</b>, et le <b>Head of International Finance convient, avec l'International Controller and Adviser, du calendrier et des honoraires d'audit</b>. Un audit n'est pas une menace. Si vous avez tenu les promesses de l'étape 1, l'audit n'est que votre histoire, confirmée.",
+      ar:"تنتهي الأنشطة، لكن المشروع لا يكتمل حتى تتفق الأرقام. تُسوّى التقارير، وتُصفّى الأرصدة، ويُغلق الملف في كومباس. ثم تأتي العين المستقلة: التدقيق. تُنفذ تدقيقات الصليب الأحمر الدنماركي بواسطة <b>محاسبين قانونيين مُجازين أو معتمدين</b>، ويتفق <b>رئيس المالية الدولية مع المراقب والمستشار الدولي على التوقيت وأتعاب التدقيق</b>. التدقيق ليس تهديداً. إن حافظت على وعود المحطة الأولى، فالتدقيق ببساطة قصتك، مؤكَّدة."},
+   r:5},
+  {t:"check", game:"doors", pts:25,
+   h:{en:"Friday, 16:42. Your call.", da:"Fredag kl. 16.42. Dit valg.", fr:"Vendredi, 16 h 42. À vous de jouer.", ar:"الجمعة، 16:42. القرار قرارك."},
+   b:{en:"Reviewing a partner report, you spot an invoice that looks inflated. Maybe an honest error. Maybe not. What do you do first?", da:"I en partnerrapport ser du en faktura, der ser oppustet ud. Måske en ærlig fejl. Måske ikke. Hvad gør du først?", fr:"En relisant un rapport partenaire, vous repérez une facture qui semble gonflée. Peut-être une erreur honnête. Peut-être pas. Que faites-vous en premier ?", ar:"أثناء مراجعة تقرير شريك، تلاحظ فاتورة تبدو مبالغاً فيها. ربما خطأ بريء. وربما لا. ماذا تفعل أولاً؟"},
+   doors:[
+     {ok:false, txt:{en:"Hold it for the next quarterly review", da:"Gem den til næste kvartalsgennemgang", fr:"La garder pour la prochaine revue trimestrielle", ar:"أؤجلها إلى المراجعة الفصلية القادمة"},
+      why:{en:"Too slow. A suspicion of corruption must be reported within five days, not next quarter.", da:"For langsomt. En mistanke om korruption skal rapporteres inden for fem dage, ikke næste kvartal.", fr:"Trop lent. Un soupçon de corruption doit être signalé sous cinq jours, pas au prochain trimestre.", ar:"بطيء جداً. الاشتباه بالفساد يجب الإبلاغ عنه خلال خمسة أيام، لا في الفصل القادم."}},
+     {ok:true, txt:{en:"Report it through the anti-corruption channel now", da:"Rapportér den gennem antikorruptionskanalen nu", fr:"Le signaler maintenant par le canal anti-corruption", ar:"أبلغ عنها عبر قناة مكافحة الفساد الآن"},
+      why:{en:"Exactly. The duty to report a suspicion is yours and it is immediate: within five days. Reporting in good faith is always the right move, even if it turns out to be an honest error.", da:"Præcis. Pligten til at rapportere en mistanke er din, og den er omgående: inden for fem dage. At rapportere i god tro er altid det rigtige, også hvis det viser sig at være en ærlig fejl.", fr:"Exactement. Le devoir de signaler un soupçon vous appartient et il est immédiat : sous cinq jours. Signaler de bonne foi est toujours le bon choix, même si c'est finalement une erreur honnête.", ar:"بالضبط. واجب الإبلاغ عن الاشتباه واجبك وهو فوري: خلال خمسة أيام. الإبلاغ بحسن نية هو الصواب دائماً، حتى لو تبيّن أنه خطأ بريء."}},
+     {ok:false, txt:{en:"Adjust the figures so the report reads clean", da:"Justér tallene, så rapporten ser ren ud", fr:"Ajuster les chiffres pour que le rapport paraisse propre", ar:"أعدّل الأرقام ليبدو التقرير نظيفاً"},
+      why:{en:"Never. Records are never adjusted to hide a problem. That would turn someone else's error into your violation.", da:"Aldrig. Tal justeres aldrig for at skjule et problem. Det ville gøre en andens fejl til din overtrædelse.", fr:"Jamais. On n'ajuste jamais les écritures pour cacher un problème. Cela transformerait l'erreur d'un autre en votre faute.", ar:"أبداً. لا تُعدَّل السجلات لإخفاء مشكلة. ذلك يحوّل خطأ شخص آخر إلى مخالفة ترتكبها أنت."}}
+   ]},
+  {t:"card",
+   k:{en:"Journey complete", da:"Rejsen er fuldført", fr:"Voyage terminé", ar:"اكتملت الرحلة"},
+   h:{en:"You followed the money", da:"Du fulgte pengene", fr:"Vous avez suivi l'argent", ar:"لقد تتبّعت المال"},
+   b:{en:"From an idea to a closed, audited file: you now know the journey every Danish Red Cross international project takes, the system it lives in, the rules its money travels by, and what to do the day something does not look right. That is the foundation. Everything else on this platform builds on the map you just walked.",
+      da:"Fra en idé til en lukket, revideret sag: du kender nu den rejse, hvert internationalt Røde Kors-projekt tager, systemet det bor i, reglerne pengene rejser efter, og hvad du gør den dag, noget ikke ser rigtigt ud. Det er fundamentet. Alt andet på denne platform bygger på det kort, du lige har gået.",
+      fr:"D'une idée à un dossier clôturé et audité : vous connaissez maintenant le voyage de chaque projet international de la Croix-Rouge danoise, le système où il vit, les règles que suit son argent, et quoi faire le jour où quelque chose cloche. C'est la fondation. Tout le reste de cette plateforme se construit sur la carte que vous venez de parcourir.",
+      ar:"من فكرة إلى ملف مغلق ومدقق: تعرف الآن الرحلة التي يقطعها كل مشروع دولي للصليب الأحمر الدنماركي، والنظام الذي يعيش فيه، والقواعد التي يسافر بها ماله، وما تفعله يوم يبدو شيء غير صحيح. هذا هو الأساس. كل ما تبقى في هذه المنصة يُبنى على الخريطة التي مشيتها للتو."},
+   visual:"cycle", vOn:4}
+]}
+],
+next:[
+  {icon:"⌘", nm:{en:"Kompas essentials", da:"Kompas-grundkursus", fr:"L'essentiel de Kompas", ar:"أساسيات كومباس"}, d:{en:"Create, book, approve: your first week in the system", da:"Opret, bogfør, godkend: din første uge i systemet", fr:"Créer, comptabiliser, approuver : votre première semaine", ar:"أنشئ وسجّل واعتمد: أسبوعك الأول في النظام"}},
+  {icon:"⇄", nm:{en:"Exchange rates in practice", da:"Valutakurser i praksis", fr:"Les taux de change en pratique", ar:"أسعار الصرف عملياً"}, d:{en:"InforEuro, transfers and who carries the risk", da:"InforEuro, overførsler og hvem der bærer risikoen", fr:"InforEuro, transferts et qui porte le risque", ar:"إنفويورو والتحويلات ومن يتحمل المخاطر"}},
+  {icon:"⚖", nm:{en:"Anti-corruption basics", da:"Antikorruption: det grundlæggende", fr:"Bases de l'anti-corruption", ar:"أساسيات مكافحة الفساد"}, d:{en:"The duty to report, and how the channel protects you", da:"Rapporteringspligten, og hvordan kanalen beskytter dig", fr:"Le devoir de signaler, et comment le canal vous protège", ar:"واجب الإبلاغ وكيف تحميك القناة"}}
+]
+};
+
+/* =================================================================
+   PLAYER
+   ================================================================= */
+var SPEAKING=false, TTS_T=null, VID_T=null, TTS_WARNED=false;
+function speak(text){
+  try{
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(text);
+    var lang=S.lang||"en";
+    var vs=window.speechSynthesis.getVoices();
+    var v=vs.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf(lang)===0;})[0];
+    if(!v && vs.length && lang!=="en"){ if(!TTS_WARNED){ TTS_WARNED=true; toast(T("ttsNoVoice"),2800); } return; }
+    if(v) u.voice=v;
+    u.lang=v?v.lang:(lang==="en"?"en-GB":lang);
+    u.rate=.98;
+    u.onstart=function(){ SPEAKING=true; var b=$("#ttsBtn"); if(b){ b.classList.add("on"); $("[data-tlabel]",b).textContent=T("stop"); } };
+    u.onend=function(){ SPEAKING=false; var b=$("#ttsBtn"); if(b){ b.classList.remove("on"); $("[data-tlabel]",b).textContent=T("listen"); } };
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+function shutUp(){ try{ clearTimeout(TTS_T); window.speechSynthesis.cancel(); }catch(e){} SPEAKING=false; }
+
+function stepsFlat(){
+  var out=[];
+  MODULE.stations.forEach(function(st,si){ st.steps.forEach(function(sp){ sp._st=si; out.push(sp); }); });
+  return out;
+}
+function L(obj){ /* pick language variant from {en,da,fr,ar} with EN fallback */
+  if(obj==null) return "";
+  if(typeof obj==="string") return obj;
+  return obj[S.lang]!==undefined?obj[S.lang]:obj.en;
+}
+
+function buildDots(){
+  var steps=stepsFlat();
+  $("#tbDots").innerHTML=steps.map(function(s,i){
+    return '<span class="tb-dot'+(i<S.step?' done':(i===S.step?' cur':''))+'"></span>';
+  }).join("");
+}
+function ringTo(p){
+  var c=$("#ptsRing"); var full=81.7;
+  c.style.strokeDashoffset=(full-(full*Math.min(p,100)/100)).toFixed(1);
+  $("#ptsNum").textContent=p;
+}
+var CONF_50=false;
+function addPts(n, el){
+  if(n<=0) return;
+  S.pts=Math.min(100,S.pts+n); save();
+  ringTo(S.pts);
+  var noMotion=false; try{ noMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
+  if(el && !noMotion){
+    var r=el.getBoundingClientRect();
+    var f=document.createElement("div");
+    f.className="pts-fly"; f.textContent="+"+n;
+    f.style.left=(r.left+r.width/2-14)+"px"; f.style.top=(r.top-6)+"px";
+    document.body.appendChild(f);
+    setTimeout(function(){ f.remove(); },1150);
+  }
+  if(S.pts>=50&&!CONF_50&&S.pts<100){ CONF_50=true; confetti(60); toast(T("halfway"),2600); }
+}
+
+/* confetti */
+var CONF_GEN=0;
+function confetti(count){
+  var cv=$("#confetti");
+  if(!cv){ cv=document.createElement("canvas"); cv.id="confetti"; document.body.appendChild(cv); }
+  cv.width=innerWidth; cv.height=innerHeight;
+  var gen=++CONF_GEN;
+  var ctx=cv.getContext("2d");
+  var cols=["#E30A0B","#C9A227","#3E7C5A","#292729","#B5B0AC"];
+  var ps=[];
+  for(var i=0;i<count;i++) ps.push({x:innerWidth/2+(Math.random()*240-120), y:innerHeight*0.32, vx:(Math.random()*8-4), vy:(-(4+Math.random()*7)), g:.22+Math.random()*.12, s:4+Math.random()*5, c:cols[i%cols.length], r:Math.random()*Math.PI, vr:(Math.random()*.25-.125), life:90+Math.random()*40});
+  var t=0;
+  (function tick(){
+    if(gen!==CONF_GEN) return;
+    t++; ctx.clearRect(0,0,cv.width,cv.height);
+    var alive=false;
+    ps.forEach(function(p){
+      if(p.life<=0) return;
+      alive=true;
+      p.x+=p.vx; p.vy+=p.g; p.y+=p.vy; p.r+=p.vr; p.life--;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r);
+      ctx.globalAlpha=Math.max(0,Math.min(1,p.life/40));
+      ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.62);
+      ctx.restore();
+    });
+    if(alive&&t<240) requestAnimationFrame(tick); else ctx.clearRect(0,0,cv.width,cv.height);
+  })();
+}
+
+function startCourse(){
+  if(!MODULE){ toast("Module content loading error",3000); return; }
+  show("s-learn"); buildDots(); ringTo(S.pts);
+  renderStep(S.step||0);
+}
+
+function renderStep(i){
+  shutUp(); clearTimeout(VID_T);
+  var steps=stepsFlat();
+  if(i>=steps.length){ finishCourse(); return; }
+  S.step=i; save(); buildDots();
+  var sp=steps[i];
+  var st=MODULE.stations[sp._st];
+  var stationTag='<div class="station-tag"><span class="dot"></span>'+T("station")+' '+(sp._st+1)+' · '+L(st.nm)+'</div>';
+  var inner="";
+  if(sp.t==="card") inner=cardHTML(sp);
+  else inner=checkHTML(sp,i);
+  $("#s-learn").innerHTML='<div class="ln-wrap">'+stationTag+'<div class="ln-card" id="lnCard">'+inner+'</div></div>';
+  wireStep(sp,i);
+}
+
+function cardHTML(sp){
+  var h="";
+  if(S.style==="watch"){
+    h+='<div class="vid-stage" id="vidStage"><div class="vs-inner"><button class="vs-play" id="vsPlay" aria-label="'+T("watchPlay")+'"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><div class="vs-cap">'+T("watchCap")+'</div></div><div class="vs-caption" id="vsCaption"></div><div class="vs-bar"><i id="vsBar"></i></div></div>';
+  }
+  h+='<div class="ln-kicker">'+L(sp.k)+'</div><h2 class="ln-h">'+L(sp.h)+'</h2><div class="ln-body">'+L(sp.b)+'</div>';
+  if(sp.visual==="cycle"){
+    h+='<div class="cyc">'+MODULE.cycle.map(function(c,ci){
+      return '<div class="cyc-n'+(ci===sp.vOn?" on":"")+'"><div class="cyc-b">'+c.n+'</div><div class="cyc-nm">'+L(c.nm)+'</div></div>'+(ci<MODULE.cycle.length-1?'<div class="cyc-a">→</div>':'');
+    }).join("")+'</div>';
+  }
+  if(sp.visual==="grid"){
+    h+='<div class="pgrid">'+MODULE.principles.map(function(p,pi){
+      return '<div class="ptile" style="animation-delay:'+(pi*70)+'ms"><span class="pn">0'+(pi+1)+'</span>'+L(p)+'</div>';
+    }).join("")+'</div>';
+  }
+  if(sp.q) h+='<div class="ln-quote">'+L(sp.q)+'</div>';
+  if(sp.src) h+='<div class="ln-src">'+sp.src+'</div>';
+  if(sp.r) h+='<div><button class="ref-link" data-reflink>&#128279; '+T("refLabel")+': '+T("resource")+' '+sp.r+'</button></div>';
+  h+='<div class="ln-foot">'+
+     '<button class="tts-btn" id="ttsBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg><span data-tlabel>'+T("listen")+'</span></button>'+
+     '<span class="spacer"></span>'+
+     '<button class="btn" id="nextBtn">'+T("continueBtn")+'</button></div>';
+  return h;
+}
+
+function plainText(sp){
+  var d=document.createElement("div"); d.innerHTML=L(sp.b);
+  return L(sp.h)+". "+d.textContent;
+}
+function stripHtml(s){ var d=document.createElement("div"); d.innerHTML=s; return d.textContent; }
+function splitSentences(s){
+  return s.split(/(?:\.)\s+/).map(function(x){return x.trim();}).filter(Boolean)
+    .map(function(x){ return /[.!?؟]$/.test(x)?x:x+"."; });
+}
+
+function wireStep(sp,i){
+  var tb=$("#ttsBtn");
+  if(tb){
+    tb.addEventListener("click", function(){ if(SPEAKING){ shutUp(); tb.classList.remove("on"); $("[data-tlabel]",tb).textContent=T("listen"); } else speak(plainText(sp)); });
+  }
+  var nb=$("#nextBtn");
+  if(nb) nb.addEventListener("click", function(){ renderStep(i+1); });
+  var rl=$("[data-reflink]");
+  if(rl) rl.addEventListener("click", function(){ toast(T("refToast"),3200); });
+  if(sp.t==="card"&&S.style==="listen"){ clearTimeout(TTS_T); TTS_T=setTimeout(function(){ speak(plainText(sp)); }, 600); }
+  if(sp.t==="card"&&S.style==="watch") wireWatch(sp);
+  if(sp.t==="check") wireCheck(sp,i);
+}
+
+/* watch mode: guided walkthrough player (the same content, played as a video) */
+function wireWatch(sp){
+  var vp=$("#vsPlay"), cap=$("#vsCaption"), bar=$("#vsBar"), stage=$("#vidStage");
+  if(!vp||!stage) return;
+  var beats=[L(sp.h)].concat(splitSentences(stripHtml(L(sp.b))));
+  var bi=-1, playing=false;
+  function stopV(){ playing=false; clearTimeout(VID_T); shutUp(); stage.classList.remove("playing"); }
+  function beat(){
+    bi++;
+    if(bi>=beats.length){
+      stopV();
+      bar.style.width="100%";
+      $("svg",vp).outerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>';
+      $(".vs-cap",stage).textContent=T("watchReplay");
+      return;
+    }
+    cap.textContent=beats[bi];
+    cap.classList.remove("in"); void cap.offsetWidth; cap.classList.add("in");
+    bar.style.width=(((bi+1)/beats.length)*100).toFixed(1)+"%";
+    speak(beats[bi]);
+    VID_T=setTimeout(beat, Math.max(2800, beats[bi].length*58));
+  }
+  vp.addEventListener("click", function(e){
+    e.stopPropagation();
+    if(playing) return;
+    playing=true; bi=-1;
+    stage.classList.add("playing");
+    bar.style.width="0";
+    beat();
+  });
+  stage.addEventListener("click", function(){
+    if(playing){ stopV(); cap.classList.remove("in"); bar.style.width="0"; }
+  });
+}
+
+/* =================================================================
+   CHECKS
+   ================================================================= */
+function ckHead(sp){
+  return '<div class="ck-head"><span class="ck-badge">'+T("checkBadge")+'</span><span class="ck-pts">+'+sp.pts+' '+T("points")+'</span></div>'+
+         '<h2 class="ln-h">'+L(sp.h)+'</h2><div class="ln-body" style="margin-bottom:4px">'+L(sp.b||"")+'</div>';
+}
+function checkHTML(sp,i){
+  if(S.done["c"+i]!==undefined){ /* already earned: show as done card */
+    return ckHead(sp)+'<div class="door-fb show" style="margin-top:18px">✓ +'+S.done["c"+i]+' '+T("points")+'</div>'+
+      '<div class="ln-foot"><span class="spacer"></span><button class="btn" id="nextBtn">'+T("continueBtn")+'</button></div>';
+  }
+  var h=ckHead(sp);
+  if(sp.game==="sort"){
+    h+='<div class="sort-stage" id="sortStage"></div>'+
+       '<div class="sort-btns"><button class="sort-b no" id="sNo">✗ '+T("sortNo")+'</button><button class="sort-b yes" id="sYes">✓ '+T("sortYes")+'</button></div>'+
+       '<div class="sort-fb" id="sortFb"></div><div class="sort-prog" id="sortProg"></div>';
+  }
+  if(sp.game==="order"){
+    h+='<div class="ord-list" id="ordList"></div><div class="ln-foot"><span class="spacer"></span><button class="btn" id="ordCheck">'+T("checkOrder")+'</button></div>';
+  }
+  if(sp.game==="doors"){
+    h+='<div class="doors" id="doors"></div><div class="door-fb" id="doorFb"></div><div class="ln-foot" id="doorFoot" style="display:none"><span class="spacer"></span><button class="btn" id="nextBtn2">'+T("continueBtn")+'</button></div>';
+  }
+  if(sp.game==="match"){
+    h+='<div class="match" id="match"></div>';
+  }
+  return h;
+}
+
+function ckDone(sp,i,earned,anchor){
+  S.done["c"+i]=earned; save();
+  addPts(earned, anchor||$("#lnCard"));
+  setTimeout(function(){ renderStep(i+1); }, 1250);
+}
+
+function wireCheck(sp,i){
+  if(S.done["c"+i]!==undefined){ var nb=$("#nextBtn"); if(nb) nb.addEventListener("click",function(){ renderStep(i+1); }); return; }
+
+  /* ---- SORT: true / not-quite card stack ---- */
+  if(sp.game==="sort"){
+    var idx=0, score=0, per=Math.floor(sp.pts/sp.items.length);
+    var stage=$("#sortStage"), fb=$("#sortFb"), prog=$("#sortProg");
+    prog.innerHTML=sp.items.map(function(){return '<span class="sort-pip"></span>';}).join("");
+    function deal(){
+      if(idx>=sp.items.length){
+        $("#sYes").disabled=true; $("#sNo").disabled=true;
+        ckDone(sp,i,Math.min(score,sp.pts),stage);
+        return;
+      }
+      $("#sYes").disabled=false; $("#sNo").disabled=false;
+      stage.innerHTML='<div class="sort-card" id="sCard">'+L(sp.items[idx].s)+'</div>';
+      fb.textContent=""; fb.className="sort-fb";
+    }
+    function answer(saysTrue){
+      if($("#sYes").disabled) return;
+      $("#sYes").disabled=true; $("#sNo").disabled=true;
+      var it=sp.items[idx], card=$("#sCard"), pip=prog.children[idx];
+      var right=(saysTrue===it.v);
+      if(right){ score+=per; pip.classList.add("hit"); fb.textContent=T("nice")+" "+L(it.fb||""); fb.className="sort-fb good"; card.classList.add(saysTrue?"gone-r":"gone-l"); }
+      else { pip.classList.add("miss"); score+=Math.max(2,Math.floor(per*0.55)); fb.textContent=T("goodSave")+" "+L(it.fb||""); fb.className="sort-fb bad"; card.classList.add(saysTrue?"gone-r":"gone-l"); }
+      idx++;
+      setTimeout(deal, right?900:1750);
+    }
+    $("#sYes").addEventListener("click",function(){ answer(true); });
+    $("#sNo").addEventListener("click",function(){ answer(false); });
+    deal();
+  }
+
+  /* ---- ORDER: arrange with drag or arrows ---- */
+  if(sp.game==="order"){
+    var list=$("#ordList");
+    var items=sp.items.map(function(x,xi){ return {txt:x, key:xi}; });
+    /* deterministic shuffle that is never the solved order */
+    items=items.slice().sort(function(a,b){ return ((a.key*7+3)%11)-((b.key*7+3)%11); });
+    if(items.every(function(x,xi){return x.key===xi;})) items.reverse();
+    var tries=0;
+    function paint(){
+      list.innerHTML=items.map(function(x,xi){
+        return '<div class="ord-it" draggable="false" data-key="'+x.key+'"><span class="grip">⋮⋮</span><span style="flex:1">'+L(x.txt)+'</span>'+
+          '<span class="updown"><button class="ord-mv" data-up="'+xi+'" aria-label="up">▲</button><button class="ord-mv" data-dn="'+xi+'" aria-label="down">▼</button></span></div>';
+      }).join("");
+      $all(".ord-mv",list).forEach(function(b){
+        b.addEventListener("click",function(){
+          var up=b.getAttribute("data-up"), dn=b.getAttribute("data-dn");
+          if(up!==null&&+up>0){ var t=items[+up]; items[+up]=items[+up-1]; items[+up-1]=t; }
+          if(dn!==null&&+dn<items.length-1){ var t2=items[+dn]; items[+dn]=items[+dn+1]; items[+dn+1]=t2; }
+          paint();
+        });
+      });
+      /* pointer drag */
+      var dragEl=null, dragIdx=-1;
+      $all(".ord-it",list).forEach(function(el,ei){
+        el.addEventListener("pointerdown",function(ev){
+          if(ev.target.closest(".ord-mv")) return;
+          dragEl=el; dragIdx=ei; el.classList.add("drag"); el.setPointerCapture(ev.pointerId);
+        });
+        el.addEventListener("pointermove",function(ev){
+          if(dragEl!==el) return;
+          var els=$all(".ord-it",list);
+          for(var k=0;k<els.length;k++){
+            if(k===dragIdx) continue;
+            var r=els[k].getBoundingClientRect();
+            if(ev.clientY>r.top&&ev.clientY<r.bottom){
+              var t=items[dragIdx]; items.splice(dragIdx,1); items.splice(k,0,t);
+              dragIdx=k; paint();
+              var ne=$all(".ord-it",list)[k]; if(ne){ dragEl=ne; ne.classList.add("drag"); try{ ne.setPointerCapture(ev.pointerId); }catch(e){ ne.classList.remove("drag"); dragEl=null; dragIdx=-1; } }
+              break;
+            }
+          }
+        });
+        el.addEventListener("pointerup",function(){ if(dragEl){ dragEl.classList.remove("drag"); dragEl=null; dragIdx=-1; } });
+      });
+    }
+    paint();
+    $("#ordCheck").addEventListener("click",function(){
+      var cb=$("#ordCheck");
+      if(cb.disabled) return;
+      cb.disabled=true;
+      tries++;
+      var els=$all(".ord-it",list), allOk=true;
+      els.forEach(function(el,ei){
+        var ok=(+el.getAttribute("data-key"))===ei;
+        el.classList.toggle("lock",ok);
+        if(!ok){ allOk=false; el.classList.remove("wrongpos"); void el.offsetWidth; el.classList.add("wrongpos"); }
+      });
+      if(allOk){
+        var earned=tries===1?sp.pts:(tries===2?Math.round(sp.pts*0.72):Math.round(sp.pts*0.5));
+        ckDone(sp,i,earned,list);
+      } else { toast(T("almost"),1800); setTimeout(function(){ cb.disabled=false; },480); }
+    });
+  }
+
+  /* ---- DOORS: scenario choice ---- */
+  if(sp.game==="doors"){
+    var tries2=0, box=$("#doors");
+    box.innerHTML=sp.doors.map(function(d,di){
+      return '<button class="door" data-d="'+di+'"><span class="dr"></span><span class="dt">'+L(d.txt)+'</span></button>';
+    }).join("");
+    $all(".door",box).forEach(function(d){
+      d.addEventListener("click",function(){
+        if(S.done["c"+i]!==undefined) return;
+        var di=+d.getAttribute("data-d");
+        tries2++;
+        if(sp.doors[di].ok){
+          d.classList.add("open-good");
+          d.style.pointerEvents="none";
+          $all(".door",box).forEach(function(o){ if(o!==d) o.classList.add("dim"); });
+          var fb=$("#doorFb"); fb.innerHTML="✓ "+L(sp.doors[di].why); fb.classList.add("show");
+          var earned=tries2===1?sp.pts:(tries2===2?Math.round(sp.pts*0.72):Math.round(sp.pts*0.5));
+          S.done["c"+i]=earned; save(); addPts(earned,d);
+          $("#doorFoot").style.display="flex";
+          $("#nextBtn2").addEventListener("click",function(){ renderStep(i+1); });
+        } else {
+          d.classList.add("open-bad");
+          var fb2=$("#doorFb"); fb2.innerHTML=L(sp.doors[di].why); fb2.classList.add("show");
+          setTimeout(function(){ d.classList.remove("open-bad"); d.classList.add("dim"); },700);
+        }
+      });
+    });
+  }
+
+  /* ---- MATCH: connect pairs ---- */
+  if(sp.game==="match"){
+    var box2=$("#match");
+    var lefts=sp.pairs.map(function(p,pi){ return {side:"l", k:pi, txt:p.a}; });
+    var rights=sp.pairs.map(function(p,pi){ return {side:"r", k:pi, txt:p.b}; });
+    rights=rights.slice().sort(function(a,b){ return ((a.k*5+2)%7)-((b.k*5+2)%7); });
+    if(rights.every(function(x,xi){return x.k===xi;})) rights.reverse();
+    var rows=[];
+    for(var ri=0;ri<lefts.length;ri++){ rows.push(lefts[ri], rights[ri]); }
+    box2.innerHTML=rows.map(function(x){
+      return '<button class="m-it" data-side="'+x.side+'" data-k="'+x.k+'">'+L(x.txt)+'</button>';
+    }).join("");
+    var pick=null, misses=0, found=0;
+    $all(".m-it",box2).forEach(function(el){
+      el.addEventListener("click",function(){
+        if(el.classList.contains("paired")) return;
+        if(!pick){ pick=el; el.classList.add("pick"); return; }
+        if(pick===el){ el.classList.remove("pick"); pick=null; return; }
+        if(pick.getAttribute("data-side")===el.getAttribute("data-side")){
+          pick.classList.remove("pick"); pick=el; el.classList.add("pick"); return;
+        }
+        if(pick.getAttribute("data-k")===el.getAttribute("data-k")){
+          pick.classList.remove("pick"); pick.classList.add("paired"); el.classList.add("paired");
+          found++; pick=null;
+          if(found===sp.pairs.length){
+            var earned=misses<=1?sp.pts:(misses<=3?Math.round(sp.pts*0.72):Math.round(sp.pts*0.5));
+            ckDone(sp,i,earned,box2);
+          }
+        } else {
+          misses++;
+          el.classList.add("nope"); pick.classList.add("nope");
+          var p0=pick;
+          setTimeout(function(){ el.classList.remove("nope"); p0.classList.remove("nope","pick"); },450);
+          pick=null;
+        }
+      });
+    });
+  }
+}
+
+/* =================================================================
+   FINISH + CERTIFICATE
+   ================================================================= */
+function tier(){
+  if(S.pts>=92) return {cls:"gold", lbl:T("tierGold")};
+  if(S.pts>=75) return {cls:"silver", lbl:T("tierSilver")};
+  return {cls:"done", lbl:T("tierDone")};
+}
+function finishCourse(){
+  shutUp();
+  S.finished=true; save();
+  buildDots();
+  var tr=tier();
+  var nx=MODULE.next.map(function(n){
+    return '<div class="next-c"><span class="lk">🔒</span><span class="ni">'+n.icon+'</span><div class="nn">'+L(n.nm)+'</div><div class="nd">'+L(n.d)+'</div>'+
+      '<div class="nd" style="margin-top:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">'+T("lockedSoon")+'</div></div>';
+  }).join("");
+  $("#s-finish").innerHTML='<div class="fin-wrap">'+
+    '<div class="fin-score"><span id="scoreNum">0</span> <small>'+T("scoreOf")+'</small></div>'+
+    '<div class="fin-tier '+tr.cls+'">'+(tr.cls==="gold"?"★ ":"")+tr.lbl+'</div>'+
+    '<h2 class="fin-h">'+T("finishH")+' '+esc(S.name.split(" ")[0])+'</h2>'+
+    '<p class="fin-sub">'+T("finishSub")+'</p>'+
+    '<div class="fin-cta"><button class="btn" id="dlCert">'+T("downloadCert")+'</button>'+
+    '<button class="btn ghost" id="mgrCert">'+T("notifyMgr")+'</button></div>'+
+    '<div class="cert-frame"><canvas id="certCv" width="1500" height="1060"></canvas></div>'+
+    '<div class="next-h">'+T("resourcesH")+'</div><div class="res-list">'+[1,2,3,4,5].map(function(n){ return '<button class="res-row" data-res>&#128196; '+T("resource")+' '+n+'</button>'; }).join("")+'</div>'+
+    '<div class="next-h">'+T("nextUp")+'</div><div class="next-grid">'+nx+'</div>'+
+    '<button class="fin-restart" id="reset0">'+T("restart")+'</button></div>';
+  show("s-finish");
+  /* count-up */
+  var n=0, target=S.pts, el=$("#scoreNum");
+  var iv=setInterval(function(){ n+=2; if(n>=target){ n=target; clearInterval(iv); confetti(110); } el.textContent=n; },24);
+  drawCert();
+  if(window.RK_IMG && !RK_IMG.complete){ RK_IMG.onload=function(){ drawCert(); }; }
+  $("#dlCert").addEventListener("click",function(){
+    var a=document.createElement("a");
+    a.download="Certificate - "+S.name+" - Finance Learning Platform.png";
+    a.href=$("#certCv").toDataURL("image/png");
+    a.click();
+  });
+  $("#mgrCert").addEventListener("click",function(){ toast(T("notified")+" "+S.mgr+" "+T("protoSend"),4200); });
+  $all("[data-res]").forEach(function(b){ b.addEventListener("click",function(){ toast(T("refToast"),3200); }); });
+  $("#reset0").addEventListener("click",function(){
+    if(!confirm("Reset?")) return;
+    localStorage.removeItem("dfa_state"); location.reload();
+  });
+}
+
+function drawCert(){
+  var cv=$("#certCv"), x=cv.getContext("2d");
+  var W=1500,H=1060;
+  x.fillStyle="#FBF8F4"; x.fillRect(0,0,W,H);
+  /* border */
+  x.strokeStyle="#E30A0B"; x.lineWidth=5; x.strokeRect(46,46,W-92,H-92);
+  x.strokeStyle="#DDD7D2"; x.lineWidth=1.5; x.strokeRect(62,62,W-124,H-124);
+  /* Røde Kors logo (genuine mark) */
+  var lh=92, lw=240;
+  var ok=(window.RK_IMG && RK_IMG.complete && RK_IMG.naturalWidth>0);
+  if(ok){ lw=Math.round(lh*RK_IMG.naturalWidth/RK_IMG.naturalHeight); }
+  x.fillStyle="#fff"; rRect(x,W/2-(lw+60)/2,96,lw+60,lh+34,14); x.fill();
+  x.strokeStyle="#E8E2DC"; x.lineWidth=1.5; rRect(x,W/2-(lw+60)/2,96,lw+60,lh+34,14); x.stroke();
+  if(ok){ x.drawImage(RK_IMG, W/2-lw/2, 113, lw, lh); }
+  /* header */
+  x.textAlign="center";
+  x.fillStyle="#8B8784"; x.font="600 22px 'JetBrains Mono', monospace";
+  x.fillText(T("certAt"), W/2, 276);
+  x.fillStyle="#292729"; x.font="800 46px Inter, sans-serif";
+  x.fillText(T("certTitle"), W/2, 350);
+  /* rule */
+  x.strokeStyle="#E30A0B"; x.lineWidth=3;
+  x.beginPath(); x.moveTo(W/2-120,380); x.lineTo(W/2+120,380); x.stroke();
+  /* name */
+  x.fillStyle="#6B6866"; x.font="500 24px Inter, sans-serif";
+  x.fillText(T("certHas"), W/2, 470);
+  x.fillStyle="#292729";
+  var nfs=76; x.font="800 "+nfs+"px Inter, sans-serif";
+  while(nfs>30 && x.measureText(S.name).width>1240){ nfs-=4; x.font="800 "+nfs+"px Inter, sans-serif"; }
+  x.fillText(S.name, W/2, 560);
+  /* course */
+  x.fillStyle="#34312f"; x.font="600 32px Inter, sans-serif";
+  x.fillText(L(MODULE.title), W/2, 640);
+  x.fillStyle="#8B8784"; x.font="500 22px Inter, sans-serif";
+  x.fillText(T("m1")+" · "+L(MODULE.subtitle), W/2, 682);
+  /* score + date */
+  var d=new Date(); var ds=d.getDate()+"."+(d.getMonth()+1)+"."+d.getFullYear();
+  x.font="600 24px 'JetBrains Mono', monospace"; x.fillStyle="#292729";
+  x.fillText(T("certScore")+": "+S.pts+" / 100", W/2-220, 800);
+  x.fillText(T("certDate")+": "+ds, W/2+220, 800);
+  /* deterministic seal from name+date */
+  var seed=0, sstr=S.name+ds;
+  for(var si=0;si<sstr.length;si++){ seed=(seed*31+sstr.charCodeAt(si))>>>0; }
+  var cx=W/2, cy=905, R0=52;
+  x.save(); x.translate(cx,cy);
+  x.strokeStyle="#C9A227"; x.lineWidth=2.5;
+  x.beginPath(); x.arc(0,0,R0,0,Math.PI*2); x.stroke();
+  x.beginPath(); x.arc(0,0,R0-9,0,Math.PI*2); x.stroke();
+  for(var sp2=0;sp2<14;sp2++){
+    seed=(seed*1103515245+12345)>>>0;
+    var ang=(sp2/14)*Math.PI*2, ln=14+(seed%18);
+    x.beginPath();
+    x.moveTo(Math.cos(ang)*(R0-8), Math.sin(ang)*(R0-8));
+    x.lineTo(Math.cos(ang)*(R0-8-ln), Math.sin(ang)*(R0-8-ln));
+    x.stroke();
+  }
+  x.restore();
+  /* proto tag */
+  x.fillStyle="#B5B0AC"; x.font="500 17px 'JetBrains Mono', monospace";
+  x.fillText(T("protoOnly"), W/2, 990);
+}
+function rRect(x,a,b,w,h,r){ x.beginPath(); x.moveTo(a+r,b); x.arcTo(a+w,b,a+w,b+h,r); x.arcTo(a+w,b+h,a,b+h,r); x.arcTo(a,b+h,a,b,r); x.arcTo(a,b,a+w,b,r); x.closePath(); }
+
+/* =================================================================
+   RESUME
+   ================================================================= */
+(function logos(){
+  var a=$("#wlLogo"), b=$("#tbLogo");
+  if(a) a.src=RK_LOGO;
+  if(b) b.src=RK_LOGO;
+  var pre=new Image(); pre.src=RK_LOGO; window.RK_IMG=pre;
+})();
+
+(function resume(){
+  if(S.finished&&S.name){ applyStrings(); finishCourse(); return; }
+  if(S.lang&&S.name&&S.style&&S.step>0){
+    applyStrings();
+    startCourse();
+    toast(T("resumeMsg"),3200);
+    return;
+  }
+})();
+
+applyStrings();
+
+</script>
+</body>
+</html>
