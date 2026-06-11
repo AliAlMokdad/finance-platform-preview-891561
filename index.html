@@ -592,13 +592,14 @@ if(!S.m){ S.m={}; }
 function load(){ try{ return JSON.parse(localStorage.getItem("dfa_state")); }catch(e){ return null; } }
 function save(){ try{ localStorage.setItem("dfa_state", JSON.stringify(S)); }catch(e){} }
 function parkModState(){
-  S.m[S.cur]={step:S.step, pts:S.pts, done:S.done, finished:S.finished, startedAt:S.startedAt};
+  S.m[S.cur]={step:S.step, pts:S.pts, done:JSON.parse(JSON.stringify(S.done||{})), finished:S.finished, startedAt:S.startedAt};
 }
 function setModule(i){
   parkModState();
   S.cur=i;
   var st=S.m[i]||{step:0, pts:0, done:{}, finished:false, startedAt:null};
-  S.step=st.step; S.pts=st.pts; S.done=st.done; S.finished=st.finished; S.startedAt=st.startedAt;
+  S.step=st.step; S.pts=st.pts; S.done=JSON.parse(JSON.stringify(st.done||{})); S.finished=st.finished; S.startedAt=st.startedAt;
+  CONF_50=(st.pts>=50);
   MODULE=MODULES[i];
   save();
 }
@@ -1114,10 +1115,10 @@ function pickVoice(lang){
 try{ window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged=function(){}; }catch(e){}
 if(typeof AUDIO==="undefined"){ var AUDIO={}; }
 /* embedded neural narration player: real human-sounding clips, generated once, played locally */
-var AUD=null, AUD_GEN=0;
+var AUD=null, AUD_GEN=0, CARD_GEN=0;
 function audioLangOk(){ var l=S.lang||"en"; return l==="en"||l==="ar"; }
 function clipKey(stepIdx,beat){ return "m"+S.cur+"_s"+stepIdx+"_b"+beat+"_"+(S.lang||"en"); }
-function stopClips(){ AUD_GEN++; try{ if(AUD){ AUD.pause(); AUD.removeAttribute("src"); AUD.load&&AUD.load(); } }catch(e){} }
+function stopClips(){ AUD_GEN++; CARD_GEN++; try{ if(AUD){ AUD.pause(); AUD.removeAttribute("src"); AUD.load&&AUD.load(); } }catch(e){} }
 function playClip(key,onend,onfail){
   var src=AUDIO[key];
   if(!src){ if(onfail) onfail(); return false; }
@@ -1133,11 +1134,13 @@ function playClip(key,onend,onfail){
 function cardBeats(sp){ return [L(sp.h)].concat(splitSentences(stripHtml(L(sp.b)))); }
 function playCardAudio(sp,stepIdx,onAllDone){
   if(!audioLangOk()||!AUDIO[clipKey(stepIdx,0)]) return false;
+  var myGen=++CARD_GEN;
   var beats=cardBeats(sp), bi=0;
   SPEAKING=true;
   var tb=$("#ttsBtn"); if(tb){ tb.classList.add("on"); var lb=$("[data-tlabel]",tb); if(lb) lb.textContent=T("stop"); }
-  function fin(){ SPEAKING=false; var b2=$("#ttsBtn"); if(b2){ b2.classList.remove("on"); var l2=$("[data-tlabel]",b2); if(l2) l2.textContent=T("listen"); } if(onAllDone) onAllDone(); }
+  function fin(){ if(myGen!==CARD_GEN) return; SPEAKING=false; var b2=$("#ttsBtn"); if(b2){ b2.classList.remove("on"); var l2=$("[data-tlabel]",b2); if(l2) l2.textContent=T("listen"); } if(onAllDone) onAllDone(); }
   (function nextBeat(){
+    if(myGen!==CARD_GEN){ return; }
     if(bi>=beats.length){ fin(); return; }
     var k=clipKey(stepIdx,bi); bi++;
     if(!playClip(k,nextBeat,function(){ fin(); })) fin();
@@ -1146,6 +1149,7 @@ function playCardAudio(sp,stepIdx,onAllDone){
 }
 function speak(text){
   try{
+    var sGen=++CARD_GEN;
     window.speechSynthesis.cancel();
     var u=new SpeechSynthesisUtterance(text);
     var lang=S.lang||"en";
@@ -1155,8 +1159,8 @@ function speak(text){
     if(v) u.voice=v;
     u.lang=v?v.lang:(lang==="en"?"en-GB":lang);
     u.rate=.97;
-    u.onstart=function(){ SPEAKING=true; var b=$("#ttsBtn"); if(b){ b.classList.add("on"); $("[data-tlabel]",b).textContent=T("stop"); } };
-    u.onend=function(){ SPEAKING=false; var b=$("#ttsBtn"); if(b){ b.classList.remove("on"); $("[data-tlabel]",b).textContent=T("listen"); } };
+    u.onstart=function(){ if(sGen!==CARD_GEN) return; SPEAKING=true; var b=$("#ttsBtn"); if(b){ b.classList.add("on"); $("[data-tlabel]",b).textContent=T("stop"); } };
+    u.onend=function(){ if(sGen!==CARD_GEN) return; SPEAKING=false; var b=$("#ttsBtn"); if(b){ b.classList.remove("on"); $("[data-tlabel]",b).textContent=T("listen"); } };
     window.speechSynthesis.speak(u);
   }catch(e){}
 }
@@ -1425,6 +1429,7 @@ function wireWatch(sp,stepIdx){
   var bi=-1, playing=false;
   function stopV(){ playing=false; clearTimeout(VID_T); shutUp(); stage.classList.remove("playing"); }
   function beat(){
+    if(!playing) return;
     bi++;
     if(bi>=beats.length){
       stopV();
@@ -1759,8 +1764,11 @@ function finishCourse(){
   try{ drawCert(); }catch(e){}
   if(window.RK_IMG && !RK_IMG.complete){ RK_IMG.onload=function(){ try{ drawCert(); }catch(e){} }; }
   $("#reset0").addEventListener("click",function(){
-    if(!confirm("Reset?")) return;
-    localStorage.removeItem("dfa_state"); location.reload();
+    if(!confirm(T("restart")+"?")) return;
+    S.step=0; S.pts=0; S.done={}; S.finished=false; S.startedAt=null;
+    S.m[S.cur]={step:0, pts:0, done:{}, finished:false, startedAt:null};
+    CONF_50=false; save();
+    startCourse();
   });
 }
 
