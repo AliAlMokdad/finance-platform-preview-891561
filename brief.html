@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Prototype to Production · International Finance Learning Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#E30A0B; --red-soft:#FCEAEA; --ink:#292729; --body:#34312f; --canvas:#FAF7F4;
+  --g2:#6B6866; --g3:#8B8784; --g4:#B5B0AC; --g5:#DDD7D2; --g6:#F1EDE9; --rule:#E8E2DC;
+  --green:#3E7C5A; --shadow:0 2px 10px rgba(41,39,41,.07); --shadow-lg:0 14px 44px rgba(41,39,41,.14);
+  --mono:'JetBrains Mono',Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:var(--canvas);color:var(--body);line-height:1.6;padding:46px 22px 80px}
+.wrap{max-width:880px;margin:0 auto}
+.kicker{font-family:var(--mono);font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+h1{font-size:clamp(30px,5vw,44px);font-weight:800;color:var(--ink);letter-spacing:-.015em;line-height:1.1;margin-bottom:14px}
+.lead{font-size:17.5px;color:var(--g2);max-width:700px;margin-bottom:40px}
+h2{font-size:21px;font-weight:800;color:var(--ink);margin:42px 0 14px;display:flex;align-items:center;gap:11px}
+h2 .n{font-family:var(--mono);font-size:13px;color:#fff;background:var(--red);border-radius:8px;padding:3px 10px}
+p{margin-bottom:12px;font-size:15.5px}
+.card{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:26px 30px;box-shadow:var(--shadow);margin-bottom:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tag{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:14px;padding:4px 12px;margin-bottom:10px}
+.tag.now{background:#F0F7F3;color:var(--green);border:1px solid var(--green)}
+.tag.later{background:var(--red-soft);color:var(--red);border:1px solid var(--red)}
+ul{margin:0 0 6px 20px}
+li{margin-bottom:7px;font-size:15px}
+.paths{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
+.path{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:22px;box-shadow:var(--shadow);position:relative}
+.path.rec{border:2px solid var(--red)}
+.path.rec::before{content:"NATURAL FIT";position:absolute;top:-11px;left:18px;background:var(--red);color:#fff;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.12em;border-radius:10px;padding:3px 10px}
+.path h3{font-size:16.5px;font-weight:800;color:var(--ink);margin-bottom:8px}
+.path .meta{font-family:var(--mono);font-size:11px;color:var(--g3);margin-bottom:10px;letter-spacing:.04em}
+.path p{font-size:13.5px;color:var(--body);margin-bottom:8px}
+.path .pro{color:var(--green);font-size:13px;font-weight:600}
+.path .con{color:var(--g3);font-size:13px}
+.note{border-left:3px solid var(--red);background:#fff;border-radius:0 12px 12px 0;padding:16px 20px;font-size:14.5px;color:var(--g2);margin:18px 0}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);font-size:14px}
+th{background:var(--ink);color:#fff;text-align:left;padding:11px 16px;font-size:12.5px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+td{padding:11px 16px;border-top:1px solid var(--g6);vertical-align:top}
+td:first-child{font-weight:700;color:var(--ink);white-space:nowrap}
+.foot{margin-top:50px;padding-top:18px;border-top:1px dashed var(--g5);font-family:var(--mono);font-size:11px;color:var(--g4);text-align:center;letter-spacing:.06em}
+@media (max-width:720px){ .grid,.paths{grid-template-columns:1fr} }
+@media print{ body{padding:20px} .card,.path{box-shadow:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">International Finance Learning Platform · Discussion note</div>
+  <h1>From prototype to production</h1>
+  <p class="lead">What you just saw runs entirely in the browser: one file, no installation, no data leaving the room. This note explains, in plain terms, what it would take to run it for real, and the three realistic ways to get there.</p>
+
+  <h2><span class="n">1</span> What the prototype already proves</h2>
+  <div class="grid">
+    <div class="card">
+      <span class="tag now">Working today, no infrastructure</span>
+      <ul>
+        <li>The full learning experience: languages including right to left, learning styles (read, listen, watch), interactive checks, points, certificate</li>
+        <li>Content verified verbatim against the finance SOPs and guidelines</li>
+        <li>Progress saved on the learner's device, resume on return</li>
+        <li>Works offline and on any modern browser, phone or laptop</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="tag later">Simulated today, real in production</span>
+      <ul>
+        <li>Login and identity (today: a name field)</li>
+        <li>Progress visible to anyone but the learner (today: device only)</li>
+        <li>Manager notifications and certificate emails (today: shown, not sent)</li>
+        <li>Completion reporting for team leads and compliance</li>
+        <li>Source-document links behind each Reference</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2><span class="n">2</span> Three realistic paths</h2>
+  <div class="paths">
+    <div class="path rec">
+      <h3>Inside Microsoft 365</h3>
+      <div class="meta">Uses what the organisation already runs</div>
+      <p>Host the module on SharePoint, sign in automatically with the existing staff account, store progress in a SharePoint list, send manager notifications with Power Automate, surface the course in Teams or Viva Learning.</p>
+      <p class="pro">No new systems, no new vendor, data stays in the existing tenant, IT and GDPR posture already approved.</p>
+      <p class="con">Reporting dashboards are functional rather than fancy.</p>
+    </div>
+    <div class="path">
+      <h3>Through an LMS</h3>
+      <div class="meta">Standard e-learning packaging (SCORM or xAPI)</div>
+      <p>Package each module in the standard e-learning format and load it into a learning management system, which then owns enrolment, tracking, reminders and certificates.</p>
+      <p class="pro">Mature tracking and compliance reporting out of the box.</p>
+      <p class="con">Depends on which LMS the organisation has or chooses; the custom look and feel is partly constrained by the player.</p>
+    </div>
+    <div class="path">
+      <h3>Standalone web app</h3>
+      <div class="meta">A small dedicated service</div>
+      <p>Keep the experience exactly as the prototype and add a small backend for accounts, progress and email, hosted on infrastructure the organisation controls.</p>
+      <p class="pro">Total design freedom, the prototype is already most of the front end.</p>
+      <p class="con">Something new to host, patch and own; needs an explicit data protection review.</p>
+    </div>
+  </div>
+  <div class="note">The honest comparison: the prototype's front end survives in all three paths. The choice is only about where identity, progress and notifications live. Nothing built so far is wasted.</div>
+
+  <h2><span class="n">3</span> Data protection, answered early</h2>
+  <div class="card">
+    <ul>
+      <li>The prototype sends nothing anywhere: names, emails and progress stay in the learner's browser and can be wiped in one click.</li>
+      <li>In production, learner records are personal data: they belong on organisation-controlled infrastructure, under the existing GDPR framework, never on private or third-party consumer services.</li>
+      <li>No AI service is involved in the learning content. Everything shown is authored and verified against the source documents in advance.</li>
+    </ul>
+  </div>
+
+  <h2><span class="n">4</span> A sensible sequence</h2>
+  <table>
+    <tr><th>Step</th><th>What happens</th><th>What it needs</th></tr>
+    <tr><td>Now</td><td>Use the prototype to agree the experience: languages, tone, games, certificate, references.</td><td>Nothing. It runs from a file or a link.</td></tr>
+    <tr><td>Pilot</td><td>One real module, hosted internally, with a small group of new finance staff. Collect completion and feedback.</td><td>A decision on the path (section 2) and one content owner.</td></tr>
+    <tr><td>Rollout</td><td>The module library grows with the SOP work: each finished SOP family becomes a module. Manager notifications and reporting switch on.</td><td>The pilot's lessons, plus the references wired to the real source documents.</td></tr>
+  </table>
+
+  <div class="note" style="margin-top:26px">One thing worth deciding early: who owns the content. The platform is data driven, so a finance team member can update a module by editing text, not code. That keeps the SOPs and the learning in step, which is the entire point.</div>
+
+  <div class="foot">Prototype discussion note · 11 June 2026 · no names, no costs, no commitments: a basis for the conversation</div>
+</div>
+</body>
+</html>

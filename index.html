@@ -562,7 +562,8 @@ function show(id){
   }
   stars.innerHTML=html;
   var cloud=$("#wlCloud"), ch="";
-  var slots=[[4,6],[10,70],[16,30],[7,46],[22,80],[26,8],[33,55],[38,22],[46,84],[54,5],[62,68],[70,30],[78,76],[84,12],[88,46],[58,40],[30,90],[14,88],[74,55],[90,72],[42,60],[50,16]];
+  /* perimeter-only slots: the centre stays clear so the title, subtitle and buttons read cleanly */
+  var slots=[[4,8],[6,30],[3,52],[7,72],[5,90],[16,4],[15,90],[28,3],[28,93],[40,4],[40,90],[52,2],[52,92],[64,5],[64,88],[76,3],[76,92],[86,10],[90,32],[84,55],[88,72],[85,90]];
   CLOUD.forEach(function(w,i){
     var pos=slots[i%slots.length];
     var size=(13+Math.random()*22).toFixed(0);
@@ -666,6 +667,9 @@ en:{ checkBadge:"Quick game, not a test", continueBtn:"Continue", checkOrder:"Ch
   refLabel:"Reference", resource:"Resource", resourcesH:"Read the full resources",
   refToast:"Prototype: in production this opens the full source document.",
   skipSetup:"Skip (presenter)",
+  certSaved:"Certificate downloaded.", certOpenTab:"Certificate opened in a new tab. Long-press or right-click to save it.",
+  mailSub:"Certificate of completion:", mailOpened:"Your email app is opening with the message ready to send.",
+  mailBody:"Hello,\n\n{name} has completed the module “{module}” on the International Finance Learning Platform with a score of {score}/100.\n\nThe certificate image can be downloaded from the platform and attached to this message.\n\nThis message was prepared by the Learning Platform prototype.",
   watchCap:"Watch this step as a guided walkthrough", watchPlay:"Play", watchReplay:"Replay",
   resumeMsg:"Welcome back. We saved your place.",
   finishH:"You made it,", finishSub:"You followed the money through a whole project. That is the foundation everything else builds on.",
@@ -682,6 +686,9 @@ da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"
   refLabel:"Reference", resource:"Ressource", resourcesH:"Læs de fulde ressourcer",
   refToast:"Prototype: i produktion åbner dette kildedokumentet.",
   skipSetup:"Spring over (vært)",
+  certSaved:"Kursusbeviset er hentet.", certOpenTab:"Kursusbeviset er åbnet i en ny fane. Hold fingeren nede eller højreklik for at gemme.",
+  mailSub:"Kursusbevis:", mailOpened:"Din mail åbner med beskeden klar til afsendelse.",
+  mailBody:"Hej,\n\n{name} har gennemført modulet “{module}” på International Finance Learning Platform med {score}/100 point.\n\nKursusbeviset kan hentes fra platformen og vedhæftes denne besked.\n\nBeskeden er klargjort af platformens prototype.",
   watchCap:"Se dette trin som en guidet gennemgang", watchPlay:"Afspil", watchReplay:"Afspil igen",
   resumeMsg:"Velkommen tilbage. Vi gemte din plads.",
   finishH:"Du klarede det,", finishSub:"Du fulgte pengene gennem et helt projekt. Det er fundamentet, alt andet bygger på.",
@@ -698,6 +705,9 @@ fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:
   refLabel:"Référence", resource:"Ressource", resourcesH:"Lire les ressources complètes",
   refToast:"Prototype : en production, ceci ouvre le document source complet.",
   skipSetup:"Passer (présentateur)",
+  certSaved:"Certificat téléchargé.", certOpenTab:"Certificat ouvert dans un nouvel onglet. Appui long ou clic droit pour l'enregistrer.",
+  mailSub:"Certificat d'achèvement :", mailOpened:"Votre messagerie s'ouvre avec le message prêt à envoyer.",
+  mailBody:"Bonjour,\n\n{name} a terminé le module « {module} » sur l'International Finance Learning Platform avec un score de {score}/100.\n\nLe certificat peut être téléchargé depuis la plateforme et joint à ce message.\n\nMessage préparé par le prototype de la plateforme.",
   watchCap:"Regardez cette étape en présentation guidée", watchPlay:"Lire", watchReplay:"Revoir",
   resumeMsg:"Bon retour. Votre place est gardée.",
   finishH:"Vous y êtes,", finishSub:"Vous avez suivi l'argent à travers tout un projet. C'est la base de tout le reste.",
@@ -714,6 +724,9 @@ ar:{ checkBadge:"لعبة سريعة، ليست اختباراً", continueBtn:"
   refLabel:"المرجع", resource:"مرجع", resourcesH:"اقرأ المراجع كاملة",
   refToast:"نموذج تجريبي: في النسخة النهائية يُفتح هنا المستند المصدر كاملاً.",
   skipSetup:"تخطّي (للعارض)",
+  certSaved:"تم تنزيل الشهادة.", certOpenTab:"فُتحت الشهادة في تبويب جديد. اضغط مطولاً أو بزر الفأرة الأيمن لحفظها.",
+  mailSub:"شهادة إتمام:", mailOpened:"يفتح تطبيق البريد لديك والرسالة جاهزة للإرسال.",
+  mailBody:"مرحباً،\n\nأتمّ {name} وحدة “{module}” على منصة تعلّم المالية الدولية بنتيجة {score}/100.\n\nيمكن تنزيل صورة الشهادة من المنصة وإرفاقها بهذه الرسالة.\n\nأُعدّت هذه الرسالة بواسطة النموذج التجريبي للمنصة.",
   watchCap:"شاهد هذه الخطوة كعرض موجّه", watchPlay:"تشغيل", watchReplay:"إعادة العرض",
   resumeMsg:"أهلاً بعودتك. حفظنا مكانك.",
   finishH:"لقد أنجزتها،", finishSub:"تابعت المال عبر مشروع كامل. هذا هو الأساس الذي يُبنى عليه كل شيء.",
@@ -730,134 +743,121 @@ Object.keys(STR2).forEach(function(l){ Object.keys(STR2[l]).forEach(function(k){
    MODULE CONTENT: seeded at build, verified against the DRC corpus
    ================================================================= */
 var MODULE = {
-title:{en:"Follow the Money: Your First Project", da:"Følg pengene: dit første projekt", fr:"Suivez l'argent : votre premier projet", ar:"تتبّع المال: مشروعك الأول"},
-subtitle:{en:"How money moves through a Danish Red Cross international project", da:"Sådan bevæger pengene sig gennem et internationalt Røde Kors-projekt", fr:"Comment l'argent circule dans un projet international de la Croix-Rouge danoise", ar:"كيف يتحرك المال عبر مشروع دولي للصليب الأحمر الدنماركي"},
+title:{en:"The Audit Journey: From Appointment to Action", ar:"رحلة التدقيق: من التعيين إلى خطة العمل"},
+subtitle:{en:"How a Danish Red Cross audit works, from the first decision to the lessons learned", ar:"كيف يسير التدقيق في الصليب الأحمر الدنماركي، من القرار الأول إلى الدروس المستفادة"},
 cycle:[
-  {n:"I", nm:{en:"Inception", da:"Idé", fr:"Conception", ar:"التأسيس"}},
-  {n:"II", nm:{en:"Initiation", da:"Opstart", fr:"Initiation", ar:"الانطلاق"}},
-  {n:"III", nm:{en:"Implementation", da:"Gennemførelse", fr:"Mise en œuvre", ar:"التنفيذ"}},
-  {n:"IV", nm:{en:"Completion", da:"Afslutning", fr:"Achèvement", ar:"الإتمام"}},
-  {n:"V", nm:{en:"Audit", da:"Revision", fr:"Audit", ar:"التدقيق"}}
+  {n:"1", nm:{en:"Prepare", ar:"التحضير"}},
+  {n:"2", nm:{en:"Kick-off", ar:"الاجتماع الافتتاحي"}},
+  {n:"3", nm:{en:"Fieldwork", ar:"العمل الميداني"}},
+  {n:"4", nm:{en:"Report", ar:"التقرير"}},
+  {n:"5", nm:{en:"Act", ar:"خطة العمل"}}
 ],
-principles:[ /* verbatim EN from DRC intranet · Financial SOPs (re-verified 26 May 2026); translations are course renderings */
-  {en:"Focus on thorough planning and budgeting of activities.", da:"Fokus på grundig planlægning og budgettering af aktiviteter.", fr:"Une planification et une budgétisation rigoureuses des activités.", ar:"التركيز على التخطيط الدقيق ووضع الميزانيات للأنشطة."},
-  {en:"Implement activities with a focus on risk management.", da:"Gennemfør aktiviteter med fokus på risikostyring.", fr:"Mettre en œuvre les activités avec un accent sur la gestion des risques.", ar:"تنفيذ الأنشطة مع التركيز على إدارة المخاطر."},
-  {en:"Ensure that applicable regulations and donor requirements are complied with.", da:"Sikr, at gældende regler og donorkrav overholdes.", fr:"Veiller au respect des réglementations applicables et des exigences des donateurs.", ar:"ضمان الامتثال للأنظمة السارية ومتطلبات المانحين."},
-  {en:"Maintain updated accounting records.", da:"Hold regnskabsmaterialet opdateret.", fr:"Tenir des registres comptables à jour.", ar:"الحفاظ على سجلات محاسبية محدّثة."},
-  {en:"Ensure close monitoring of expenditure and revenue, and provide transparent, accurate and relevant financial reports on utilisation of funds.", da:"Sikr tæt opfølgning på udgifter og indtægter, og lever gennemsigtige, præcise og relevante økonomirapporter om anvendelsen af midler.", fr:"Assurer un suivi étroit des dépenses et des recettes, et fournir des rapports financiers transparents, précis et pertinents sur l'utilisation des fonds.", ar:"ضمان متابعة دقيقة للنفقات والإيرادات، وتقديم تقارير مالية شفافة ودقيقة وذات صلة عن استخدام الأموال."},
-  {en:"Ensure that Red Cross activities are carried out cost-efficiently and effectively.", da:"Sikr, at Røde Kors' aktiviteter gennemføres omkostningseffektivt og virkningsfuldt.", fr:"Veiller à ce que les activités de la Croix-Rouge soient menées de manière économique et efficace.", ar:"ضمان تنفيذ أنشطة الصليب الأحمر بكفاءة في التكلفة وبفعالية."}
-],
+principles:[],
 stations:[
-/* ============ STATION 1 · THE MAP ============ */
-{nm:{en:"The map", da:"Kortet", fr:"La carte", ar:"الخريطة"}, steps:[
+/* ============ STATION 1 · WHY AUDITS ============ */
+{nm:{en:"Why audits", ar:"لماذا التدقيق"}, steps:[
   {t:"card",
-   k:{en:"Every project tells the same story", da:"Hvert projekt fortæller den samme historie", fr:"Chaque projet raconte la même histoire", ar:"كل مشروع يروي القصة نفسها"},
-   h:{en:"One journey, five phases", da:"Én rejse, fem faser", fr:"Un voyage, cinq phases", ar:"رحلة واحدة، خمس مراحل"},
-   b:{en:"Whether it is cash assistance after a flood or a five-year health programme, the money in a Danish Red Cross international project moves through the same journey: <b>Inception</b>, where an idea becomes a proposal. <b>Initiation</b>, where an agreement becomes a project you can book against. <b>Implementation</b>, where the money does its work. <b>Completion</b>, where everything reconciles and closes. And alongside it all, <b>Audit</b>, where an independent eye confirms the story the numbers tell. In this module you will walk one project all the way through.",
-      da:"Uanset om det er kontanthjælp efter en oversvømmelse eller et femårigt sundhedsprogram, bevæger pengene i et internationalt Røde Kors-projekt sig gennem den samme rejse: <b>Idé</b>, hvor en idé bliver et forslag. <b>Opstart</b>, hvor en aftale bliver et projekt, man kan bogføre på. <b>Gennemførelse</b>, hvor pengene gør deres arbejde. <b>Afslutning</b>, hvor alt afstemmes og lukkes. Og ved siden af det hele: <b>Revision</b>, hvor et uafhængigt blik bekræfter den historie, tallene fortæller. I dette modul følger du ét projekt hele vejen.",
-      fr:"Qu'il s'agisse d'aide en espèces après une inondation ou d'un programme de santé de cinq ans, l'argent d'un projet international de la Croix-Rouge danoise suit le même voyage : la <b>Conception</b>, où une idée devient une proposition. L'<b>Initiation</b>, où un accord devient un projet sur lequel on peut comptabiliser. La <b>Mise en œuvre</b>, où l'argent fait son travail. L'<b>Achèvement</b>, où tout est rapproché et clôturé. Et en parallèle, l'<b>Audit</b>, où un regard indépendant confirme l'histoire que racontent les chiffres. Dans ce module, vous suivez un projet de bout en bout.",
-      ar:"سواء كانت مساعدات نقدية بعد فيضان أو برنامجاً صحياً مدته خمس سنوات، يتحرك المال في مشروع دولي للصليب الأحمر الدنماركي عبر الرحلة نفسها: <b>التأسيس</b> حيث تتحول الفكرة إلى مقترح. <b>الانطلاق</b> حيث تتحول الاتفاقية إلى مشروع يمكن التسجيل عليه. <b>التنفيذ</b> حيث يقوم المال بعمله. <b>الإتمام</b> حيث تتم التسويات والإغلاق. وإلى جانب ذلك كله، <b>التدقيق</b> حيث تؤكد عين مستقلة القصة التي ترويها الأرقام. في هذه الوحدة سترافق مشروعاً واحداً على طول الطريق."},
-   visual:"cycle", vOn:0, r:1},
+   k:{en:"Nothing to fear, everything to confirm", ar:"لا شيء يُخشى، وكل شيء يُؤكَّد"},
+   h:{en:"An audit is your story, confirmed", ar:"التدقيق هو قصتك، مؤكَّدة"},
+   b:{en:"Sooner or later, every project you touch will meet an auditor. Good. An audit confirms that the money did what the donor agreed, that internal policies and legal obligations were followed, and that the records prove it. It applies across the whole operation: country offices, regional offices, partner organisations and any other implementing entity. The journey is always the same five stages: <b>prepare, kick-off, fieldwork, report, act</b>. In this module you walk all five.",
+      ar:"عاجلاً أم آجلاً، سيلتقي كل مشروع تعمل عليه بمدقق. وهذا أمر جيد. فالتدقيق يؤكد أن المال فعل ما اتُّفق عليه مع المانح، وأن السياسات الداخلية والالتزامات القانونية احتُرمت، وأن السجلات تثبت ذلك. وهو يشمل العملية كلها: المكاتب القُطرية والإقليمية والمنظمات الشريكة وأي جهة منفذة أخرى. الرحلة هي دائماً المراحل الخمس نفسها: <b>التحضير، الاجتماع الافتتاحي، العمل الميداني، التقرير، خطة العمل</b>. في هذه الوحدة تمشي المراحل الخمس كلها."},
+   visual:"cycle", vOn:0, r:1,
+   q:{en:"Audits are integral to DRC's governance and accountability, helping to strengthen internal controls, enhance transparency, and ensure the efficient use of resources.",
+      ar:"التدقيق جزء لا يتجزأ من حوكمة الصليب الأحمر الدنماركي ومساءلته، إذ يسهم في تقوية الضوابط الداخلية وتعزيز الشفافية وضمان الاستخدام الكفء للموارد."},
+   src:"Source: DRC Audit SOPs, DRAFT V02 (pre-final), Introduction. Not yet validated."},
   {t:"card",
-   k:{en:"The ground rules", da:"Spillereglerne", fr:"Les règles du jeu", ar:"القواعد الأساسية"},
-   h:{en:"Six promises every number keeps", da:"Seks løfter, hvert tal holder", fr:"Six promesses que chaque chiffre tient", ar:"ستة وعود يفي بها كل رقم"},
-   b:{en:"Before we follow the money, meet the rules it travels by. Danish Red Cross manages funds by the <b>Six Principles of Sound Financial Management</b>. They are not paperwork. They are the promise behind every booking: that money given for people in crisis arrives as impact, and that anyone, donor, auditor or colleague, can see how.",
-      da:"Før vi følger pengene, skal du møde de regler, de rejser efter. Røde Kors forvalter midler efter de <b>seks principper for sund økonomistyring</b>. De er ikke papirarbejde. De er løftet bag hver bogføring: at penge givet til mennesker i krise når frem som virkning, og at enhver, donor, revisor eller kollega, kan se hvordan.",
-      fr:"Avant de suivre l'argent, découvrez les règles qui guident son voyage. La Croix-Rouge danoise gère les fonds selon les <b>six principes de bonne gestion financière</b>. Ce n'est pas de la paperasse. C'est la promesse derrière chaque écriture : que l'argent donné pour des personnes en crise devient un impact réel, et que chacun, donateur, auditeur ou collègue, peut voir comment.",
-      ar:"قبل أن نتتبع المال، تعرّف على القواعد التي يسافر وفقها. يدير الصليب الأحمر الدنماركي الأموال وفق <b>المبادئ الستة للإدارة المالية السليمة</b>. ليست أوراقاً إدارية، بل الوعد الكامن خلف كل تسجيل: أن المال الممنوح لأشخاص في أزمة يصل أثراً حقيقياً، وأن أي شخص، مانحاً كان أو مدققاً أو زميلاً، يستطيع أن يرى كيف."},
-   visual:"grid", r:2},
-  {t:"check", game:"order", pts:25,
-   h:{en:"Put the journey in order", da:"Sæt rejsen i rækkefølge", fr:"Remettez le voyage dans l'ordre", ar:"رتّب الرحلة"},
-   b:{en:"Drag the phases, or use the arrows, so the project journey reads from first to last.", da:"Træk faserne, eller brug pilene, så projektrejsen står fra først til sidst.", fr:"Glissez les phases, ou utilisez les flèches, pour remettre le voyage dans l'ordre.", ar:"اسحب المراحل أو استخدم الأسهم ليقرأ مسار المشروع من الأول إلى الأخير."},
-   items:[
-     {en:"Inception: an idea becomes a proposal", da:"Idé: en idé bliver et forslag", fr:"Conception : une idée devient une proposition", ar:"التأسيس: تتحول الفكرة إلى مقترح"},
-     {en:"Initiation: the agreement becomes a project", da:"Opstart: aftalen bliver et projekt", fr:"Initiation : l'accord devient un projet", ar:"الانطلاق: تتحول الاتفاقية إلى مشروع"},
-     {en:"Implementation: the money does its work", da:"Gennemførelse: pengene gør deres arbejde", fr:"Mise en œuvre : l'argent fait son travail", ar:"التنفيذ: يقوم المال بعمله"},
-     {en:"Completion: everything reconciles and closes", da:"Afslutning: alt afstemmes og lukkes", fr:"Achèvement : tout est rapproché et clôturé", ar:"الإتمام: تتم التسويات والإغلاق"},
-     {en:"Audit: an independent eye confirms the story", da:"Revision: et uafhængigt blik bekræfter historien", fr:"Audit : un regard indépendant confirme l'histoire", ar:"التدقيق: عين مستقلة تؤكد القصة"}
-   ]}
-]},
-/* ============ STATION 2 · SETTING UP ============ */
-{nm:{en:"Setting up", da:"Opsætning", fr:"Mise en place", ar:"الإعداد"}, steps:[
-  {t:"card",
-   k:{en:"Initiation", da:"Opstart", fr:"Initiation", ar:"الانطلاق"},
-   h:{en:"Where the money lives: Kompas", da:"Her bor pengene: Kompas", fr:"Là où vit l'argent : Kompas", ar:"حيث يعيش المال: كومباس"},
-   b:{en:"The donor said yes. Now the project needs a home. That home is <b>Kompas</b>, the financial system where every project, budget and booking lives. The <b>Country Finance Officer creates the project setup</b>, the <b>International Controller and Adviser validates and activates it</b>, and from that moment every krone can be traced to it. Two pairs of eyes before a single booking, on purpose. Two habits start here and never stop: the <b>commitment to a partner is made in the donor's currency</b>, and staff time reaches the project through <b>registered hours</b>. If it is not in Kompas, it did not happen.",
-      da:"Donoren sagde ja. Nu skal projektet have et hjem. Det hjem er <b>Kompas</b>, økonomisystemet hvor hvert projekt, budget og hver bogføring bor. <b>Country Finance Officer opretter projektopsætningen</b>, og <b>International Controller and Adviser validerer og aktiverer den</b>, og fra det øjeblik kan hver krone spores til den. To par øjne før en eneste bogføring, helt med vilje. To vaner begynder her og stopper aldrig: <b>forpligtelsen til en partner indgås i donorens valuta</b>, og medarbejdertid når projektet gennem <b>registrerede timer</b>. Står det ikke i Kompas, er det ikke sket.",
-      fr:"Le donateur a dit oui. Le projet a maintenant besoin d'un foyer. Ce foyer, c'est <b>Kompas</b>, le système financier où vivent chaque projet, budget et écriture. Le <b>Country Finance Officer crée la configuration du projet</b>, l'<b>International Controller and Adviser la valide et l'active</b>, et dès cet instant chaque couronne peut y être tracée. Deux paires d'yeux avant la moindre écriture, et c'est voulu. Deux habitudes commencent ici et ne s'arrêtent jamais : <b>l'engagement envers un partenaire se fait dans la devise du donateur</b>, et le temps du personnel atteint le projet par les <b>heures enregistrées</b>. Si ce n'est pas dans Kompas, cela n'a pas eu lieu.",
-      ar:"قال المانح نعم. الآن يحتاج المشروع إلى بيت. هذا البيت هو <b>كومباس</b>، النظام المالي الذي يعيش فيه كل مشروع وميزانية وتسجيل. <b>ينشئ مسؤول المالية القُطري إعداد المشروع</b>، ثم <b>يتحقق منه المراقب والمستشار الدولي ويفعّله</b>، ومن تلك اللحظة يمكن تتبع كل كرونة إليه. عينان اثنتان قبل أول تسجيل، وهذا مقصود. عادتان تبدآن هنا ولا تتوقفان أبداً: <b>الالتزام تجاه الشريك يكون بعملة المانح</b>، ووقت الموظفين يصل إلى المشروع عبر <b>الساعات المسجلة</b>. ما ليس في كومباس، لم يحدث."},
-   r:3},
-  {t:"check", game:"match", pts:25,
-   h:{en:"Connect the pieces", da:"Forbind brikkerne", fr:"Reliez les pièces", ar:"صِل الأجزاء"},
-   b:{en:"Tap a term, then tap what it means. Four pairs.", da:"Tryk på et begreb, og tryk så på dets betydning. Fire par.", fr:"Touchez un terme, puis sa signification. Quatre paires.", ar:"اختر المصطلح ثم اختر معناه. أربعة أزواج."},
-   pairs:[
-     {a:{en:"Kompas", da:"Kompas", fr:"Kompas", ar:"كومباس"}, b:{en:"Where every project, budget and booking lives", da:"Her bor hvert projekt, budget og hver bogføring", fr:"Là où vivent chaque projet, budget et écriture", ar:"حيث يعيش كل مشروع وميزانية وتسجيل"}},
-     {a:{en:"The project setup", da:"Projektopsætningen", fr:"La configuration du projet", ar:"إعداد المشروع"}, b:{en:"The Country Finance Officer creates it, the International Controller and Adviser activates it", da:"Country Finance Officer opretter den, International Controller and Adviser aktiverer den", fr:"Le Country Finance Officer la crée, l'International Controller and Adviser l'active", ar:"ينشئه مسؤول المالية القُطري ويفعّله المراقب والمستشار الدولي"}},
-     {a:{en:"Donor currency", da:"Donorens valuta", fr:"Devise du donateur", ar:"عملة المانح"}, b:{en:"What a commitment to a partner is made in", da:"Det, en forpligtelse til en partner indgås i", fr:"Ce dans quoi un engagement envers un partenaire est pris", ar:"ما يُعقد به الالتزام تجاه الشريك"}},
-     {a:{en:"Registered hours", da:"Registrerede timer", fr:"Heures enregistrées", ar:"الساعات المسجلة"}, b:{en:"How staff time reaches a project", da:"Sådan når medarbejdertid et projekt", fr:"Comment le temps du personnel atteint un projet", ar:"كيف يصل وقت الموظفين إلى المشروع"}}
-   ]}
-]},
-/* ============ STATION 3 · IN MOTION ============ */
-{nm:{en:"In motion", da:"I bevægelse", fr:"En mouvement", ar:"في الحركة"}, steps:[
-  {t:"card",
-   k:{en:"Implementation", da:"Gennemførelse", fr:"Mise en œuvre", ar:"التنفيذ"},
-   h:{en:"Money in motion", da:"Penge i bevægelse", fr:"L'argent en mouvement", ar:"المال في حركته"},
-   b:{en:"The project is alive. Transfers go out, partners spend, your colleagues register hours, and every booking lands in Kompas at the <b>InforEuro rate of the last working day of the previous month</b>. Currencies move every day, and here is the rule worth tattooing: <b>the project absorbs exchange rate gains and losses</b>. They are not covered centrally. Watching the burn rate, the budget against the actuals, is how finance sees a project breathe. When something looks wrong, finance speaks early, because surprises grow more expensive with silence.",
-      da:"Projektet lever. Overførsler sendes, partnere bruger penge, dine kolleger registrerer timer, og hver bogføring lander i Kompas til <b>InforEuro-kursen fra sidste arbejdsdag i den foregående måned</b>. Valutaer bevæger sig hver dag, og her er reglen, der er værd at huske for altid: <b>projektet bærer selv kursgevinster og kurstab</b>. De dækkes ikke centralt. At følge forbruget, budget mod faktiske tal, er sådan, økonomi ser et projekt trække vejret. Når noget ser forkert ud, siger økonomi til tidligt, for overraskelser bliver dyrere af tavshed.",
-      fr:"Le projet est vivant. Les transferts partent, les partenaires dépensent, vos collègues enregistrent leurs heures, et chaque écriture atterrit dans Kompas au <b>taux InforEuro du dernier jour ouvrable du mois précédent</b>. Les devises bougent chaque jour, et voici la règle à retenir pour toujours : <b>le projet absorbe les gains et pertes de change</b>. Ils ne sont pas couverts au niveau central. Suivre le rythme de consommation, le budget contre le réalisé, c'est ainsi que la finance voit un projet respirer. Quand quelque chose cloche, la finance parle tôt, car les surprises coûtent plus cher dans le silence.",
-      ar:"المشروع حي. التحويلات تخرج، والشركاء ينفقون، وزملاؤك يسجلون الساعات، وكل تسجيل يهبط في كومباس بسعر <b>إنفويورو لآخر يوم عمل من الشهر السابق</b>. تتحرك العملات كل يوم، وهذه قاعدة تستحق أن تُحفر في الذاكرة: <b>المشروع يتحمل أرباح وخسائر سعر الصرف</b>. لا تُغطى مركزياً. متابعة معدل الإنفاق، الميزانية مقابل الفعلي، هي الطريقة التي ترى بها المالية المشروع وهو يتنفس. وعندما يبدو شيء غير صحيح، تتكلم المالية مبكراً، لأن المفاجآت تزداد كلفة مع الصمت."},
-   r:4},
+   k:{en:"The three audits", ar:"أنواع التدقيق الثلاثة"},
+   h:{en:"Three audits, one logic", ar:"ثلاثة تدقيقات، منطق واحد"},
+   b:{en:"DRC works with three kinds of audit. The <b>local audit</b> covers a partner's expenditures, the funds DRC transferred to the Host National Society. The <b>country office audit</b> happens every year, no exceptions: every DRC country office goes through an external financial and compliance audit of its accounts, covering bank, petty cash and inter-company transactions. And the <b>consolidated audit</b> covers everything at all levels: partner, country office, regional office and headquarters. Same logic each time: independent eyes confirm the records.",
+      ar:"يتعامل الصليب الأحمر الدنماركي مع ثلاثة أنواع من التدقيق. <b>التدقيق المحلي</b> يغطي نفقات الشريك، أي الأموال التي حوّلها الصليب الأحمر الدنماركي إلى الجمعية الوطنية المضيفة. و<b>تدقيق المكتب القُطري</b> يجري كل سنة دون استثناء: يخضع كل مكتب قُطري لتدقيق مالي وامتثالي خارجي لحساباته، يشمل حركة البنك والنثرية والحسابات البينية. أما <b>التدقيق الموحّد</b> فيغطي كل شيء وعلى كل المستويات: الشريك والمكتب القُطري والمكتب الإقليمي والمقر الرئيسي. والمنطق واحد في كل مرة: عيون مستقلة تؤكد صحة السجلات."},
+   r:2},
   {t:"check", game:"sort", pts:25,
-   h:{en:"True, or not quite?", da:"Rigtigt, eller ikke helt?", fr:"Vrai, ou pas tout à fait ?", ar:"صحيح، أم ليس تماماً؟"},
-   b:{en:"Five quick calls. Trust what you just learned.", da:"Fem hurtige vurderinger. Stol på det, du lige har lært.", fr:"Cinq décisions rapides. Faites confiance à ce que vous venez d'apprendre.", ar:"خمسة قرارات سريعة. ثق بما تعلمته للتو."},
+   h:{en:"True, or not quite?", ar:"صحيح، أم ليس تماماً؟"},
+   b:{en:"Five quick calls about how audits work here.", ar:"خمسة قرارات سريعة عن طريقة عمل التدقيق هنا."},
    items:[
-     {v:true, s:{en:"A commitment to a partner is made in the donor's currency.", da:"En forpligtelse til en partner indgås i donorens valuta.", fr:"Un engagement envers un partenaire se fait dans la devise du donateur.", ar:"الالتزام تجاه الشريك يكون بعملة المانح."},
-      fb:{en:"That is the standing rule from day one.", da:"Det er den faste regel fra dag ét.", fr:"C'est la règle depuis le premier jour.", ar:"هذه هي القاعدة الثابتة منذ اليوم الأول."}},
-     {v:false, s:{en:"Exchange rate losses are covered centrally, so the project never feels them.", da:"Kurstab dækkes centralt, så projektet aldrig mærker dem.", fr:"Les pertes de change sont couvertes au niveau central, le projet ne les ressent jamais.", ar:"خسائر سعر الصرف تُغطى مركزياً، فلا يشعر بها المشروع أبداً."},
-      fb:{en:"The project absorbs gains and losses itself.", da:"Projektet bærer selv gevinster og tab.", fr:"Le projet absorbe lui-même gains et pertes.", ar:"المشروع يتحمل الأرباح والخسائر بنفسه."}},
-     {v:true, s:{en:"Staff time reaches a project through registered hours.", da:"Medarbejdertid når et projekt gennem registrerede timer.", fr:"Le temps du personnel atteint un projet par les heures enregistrées.", ar:"وقت الموظفين يصل إلى المشروع عبر الساعات المسجلة."},
-      fb:{en:"The registered hour is how your work becomes a project cost.", da:"Den registrerede time er sådan, dit arbejde bliver en projektomkostning.", fr:"L'heure enregistrée est ainsi que votre travail devient un coût projet.", ar:"الساعة المسجلة هي كيف يصبح عملك كلفة على المشروع."}},
-     {v:true, s:{en:"Internal bookings follow the InforEuro rate of the last working day of the previous month.", da:"Interne bogføringer følger InforEuro-kursen fra sidste arbejdsdag i den foregående måned.", fr:"Les écritures internes suivent le taux InforEuro du dernier jour ouvrable du mois précédent.", ar:"التسجيلات الداخلية تتبع سعر إنفويورو لآخر يوم عمل من الشهر السابق."},
-      fb:{en:"One source, one date, no arguments.", da:"Én kilde, én dato, ingen diskussioner.", fr:"Une source, une date, pas de débat.", ar:"مصدر واحد، تاريخ واحد، لا جدال."}},
-     {v:false, s:{en:"If a booking is missing from Kompas, an email trail is just as good.", da:"Hvis en bogføring mangler i Kompas, er en mailtråd lige så god.", fr:"Si une écriture manque dans Kompas, un fil d'emails fait aussi bien l'affaire.", ar:"إذا غاب تسجيل عن كومباس، فسلسلة بريد إلكتروني تفي بالغرض."},
-      fb:{en:"If it is not in Kompas, it did not happen.", da:"Står det ikke i Kompas, er det ikke sket.", fr:"Si ce n'est pas dans Kompas, cela n'a pas eu lieu.", ar:"ما ليس في كومباس، لم يحدث."}}
+     {v:true, s:{en:"Every DRC country office goes through an external financial and compliance audit of its accounts, every year.", ar:"يخضع كل مكتب قُطري للصليب الأحمر الدنماركي لتدقيق مالي وامتثالي خارجي لحساباته كل سنة."},
+      fb:{en:"Yearly, covering bank, petty cash and inter-company transactions.", ar:"سنوياً، ويشمل البنك والنثرية والحسابات البينية."}},
+     {v:false, s:{en:"Audit costs only matter if the donor pays for them.", ar:"تكاليف التدقيق لا تهم إلا إذا دفعها المانح."},
+      fb:{en:"All DRC proposals must budget for audit expenses. If the costs are not eligible, DRC can still decide to audit and cover the cost itself.", ar:"يجب أن تتضمن كل مقترحات الصليب الأحمر الدنماركي ميزانية لنفقات التدقيق. وإن لم تكن التكاليف مؤهلة، يظل بإمكان المنظمة أن تقرر التدقيق وتغطية التكلفة بنفسها."}},
+     {v:true, s:{en:"The local audit covers the partner's expenditures, and the consolidated audit covers all levels including headquarters.", ar:"يغطي التدقيق المحلي نفقات الشريك، بينما يغطي التدقيق الموحّد كل المستويات بما فيها المقر الرئيسي."},
+      fb:{en:"That is the dividing line between the two.", ar:"هذا هو الخط الفاصل بين الاثنين."}},
+     {v:false, s:{en:"If an on-site audit is impossible, the audit is simply cancelled.", ar:"إذا تعذّر التدقيق الميداني، يُلغى التدقيق ببساطة."},
+      fb:{en:"There is a fallback: the files can move to a secure location, a neighbouring country office, or headquarters for a remote audit.", ar:"هناك بديل: يمكن نقل الملفات إلى مكان آمن أو مكتب قُطري مجاور أو إلى المقر الرئيسي لإجراء تدقيق عن بُعد."}},
+     {v:true, s:{en:"Audits are part of DRC's governance and accountability, not a sign that something went wrong.", ar:"التدقيق جزء من حوكمة المنظمة ومساءلتها، وليس إشارة إلى أن شيئاً ما حدث خطأً."},
+      fb:{en:"They run on a schedule and a logic, project or no findings.", ar:"فهو يجري وفق جدول ومنطق ثابتين، سواء وُجدت ملاحظات أم لا."}}
    ]}
 ]},
-/* ============ STATION 4 · LANDING IT ============ */
-{nm:{en:"Landing it", da:"Landingen", fr:"L'atterrissage", ar:"الهبوط"}, steps:[
+/* ============ STATION 2 · CHOOSING THE AUDITOR ============ */
+{nm:{en:"Choosing the auditor", ar:"اختيار المدقق"}, steps:[
   {t:"card",
-   k:{en:"Completion and audit", da:"Afslutning og revision", fr:"Achèvement et audit", ar:"الإتمام والتدقيق"},
-   h:{en:"Closing the loop", da:"Cirklen sluttes", fr:"Boucler la boucle", ar:"إغلاق الدائرة"},
-   b:{en:"The activities end, but the project is not done until the numbers agree. Reports reconcile, balances clear, the file closes in Kompas. Then the independent eye arrives: the audit. DRC audits are carried out by <b>chartered or certified public accountants</b>, and the <b>Head of International Finance, with the International Controller and Adviser, agrees the timing and the audit fees</b>. An audit is not a threat. If you kept the promises from Station 1, the audit is simply your story, confirmed.",
-      da:"Aktiviteterne slutter, men projektet er ikke færdigt, før tallene stemmer. Rapporter afstemmes, saldi udlignes, sagen lukkes i Kompas. Så kommer det uafhængige blik: revisionen. DRC-revisioner udføres af <b>statsautoriserede eller godkendte revisorer</b>, og <b>Head of International Finance aftaler sammen med International Controller and Adviser tidspunktet og revisionshonoraret</b>. En revision er ikke en trussel. Holdt du løfterne fra Station 1, er revisionen blot din historie, bekræftet.",
-      fr:"Les activités se terminent, mais le projet n'est pas fini tant que les chiffres ne concordent pas. Les rapports sont rapprochés, les soldes apurés, le dossier se ferme dans Kompas. Puis arrive le regard indépendant : l'audit. Les audits DRC sont réalisés par des <b>experts-comptables agréés ou certifiés</b>, et le <b>Head of International Finance convient, avec l'International Controller and Adviser, du calendrier et des honoraires d'audit</b>. Un audit n'est pas une menace. Si vous avez tenu les promesses de l'étape 1, l'audit n'est que votre histoire, confirmée.",
-      ar:"تنتهي الأنشطة، لكن المشروع لا يكتمل حتى تتفق الأرقام. تُسوّى التقارير، وتُصفّى الأرصدة، ويُغلق الملف في كومباس. ثم تأتي العين المستقلة: التدقيق. تُنفذ تدقيقات الصليب الأحمر الدنماركي بواسطة <b>محاسبين قانونيين مُجازين أو معتمدين</b>، ويتفق <b>رئيس المالية الدولية مع المراقب والمستشار الدولي على التوقيت وأتعاب التدقيق</b>. التدقيق ليس تهديداً. إن حافظت على وعود المحطة الأولى، فالتدقيق ببساطة قصتك، مؤكَّدة."},
+   k:{en:"Not just anyone", ar:"ليس أي شخص"},
+   h:{en:"Who is allowed to audit", ar:"من يحق له التدقيق"},
+   b:{en:"An auditor must be a chartered accountant, a certified public accountant or a qualified professional auditor, depending on the country's legal requirements: independent, affiliated to an international firm, bound by an engagement letter that fixes the scope and terms, and compliant with data protection law. One rule surprises people: auditors should preferably be <b>changed every five years</b>. For a partner project, the <b>Host National Society contracts the local auditor through a competitive tender</b>, unless a framework agreement exists, and the <b>International Controller and Adviser assesses the proposed auditor together with the headquarters-appointed auditors</b> before anything is signed.",
+      ar:"يجب أن يكون المدقق محاسباً قانونياً أو محاسباً عاماً معتمداً أو مدققاً مهنياً مؤهلاً، بحسب المتطلبات القانونية للبلد: مستقلاً، تابعاً لشركة تدقيق دولية، ومرتبطاً بخطاب تكليف يحدد النطاق والشروط، وملتزماً بقوانين حماية البيانات. وهناك قاعدة تفاجئ كثيرين: يُفضَّل <b>تغيير المدققين كل خمس سنوات</b>. وفي مشاريع الشركاء، تتعاقد <b>الجمعية الوطنية المضيفة مع المدقق المحلي عبر مناقصة تنافسية</b>، ما لم توجد اتفاقية إطارية، ويقوم <b>المراقب والمستشار الدولي بتقييم المدقق المقترح بالاشتراك مع مدققي المقر الرئيسي</b> قبل توقيع أي شيء."},
+   r:3,
+   q:{en:"The auditor must be a Chartered Accountant, a Certified Public Accountant or a qualified professional auditor, depending on the legal requirements of the country.",
+      ar:"يجب أن يكون المدقق محاسباً قانونياً أو محاسباً عاماً معتمداً أو مدققاً مهنياً مؤهلاً، بحسب المتطلبات القانونية للبلد."},
+   src:"Source: DRC Audit SOPs, DRAFT V02 (pre-final), section 2.1."},
+  {t:"check", game:"match", pts:25,
+   h:{en:"Connect the pieces", ar:"صِل الأجزاء"},
+   b:{en:"Tap a term, then tap what it means. Four pairs.", ar:"اختر المصطلح ثم اختر معناه. أربعة أزواج."},
+   pairs:[
+     {a:{en:"Every five years", ar:"كل خمس سنوات"}, b:{en:"How often auditors should preferably be changed", ar:"الوتيرة المفضّلة لتغيير المدققين"}},
+     {a:{en:"Competitive tender", ar:"مناقصة تنافسية"}, b:{en:"How the Host National Society contracts the local auditor", ar:"كيف تتعاقد الجمعية الوطنية المضيفة مع المدقق المحلي"}},
+     {a:{en:"Engagement letter", ar:"خطاب التكليف"}, b:{en:"Fixes the audit's scope, objectives and terms", ar:"يحدد نطاق التدقيق وأهدافه وشروطه"}},
+     {a:{en:"The International Controller and Adviser", ar:"المراقب والمستشار الدولي"}, b:{en:"Assesses the proposed local auditor with the headquarters-appointed auditors", ar:"يقيّم المدقق المحلي المقترح مع مدققي المقر الرئيسي"}}
+   ]}
+]},
+/* ============ STATION 3 · THE AUDIT ITSELF ============ */
+{nm:{en:"The audit itself", ar:"التدقيق نفسه"}, steps:[
+  {t:"card",
+   k:{en:"From kick-off to exit", ar:"من الافتتاح إلى الختام"},
+   h:{en:"Five days that reward twelve months", ar:"أيام قليلة تكافئ عملاً لشهور"},
+   b:{en:"Before the auditors arrive, the financial statements are prepared and quality assured: cash transfers and opening balances reconciled against Kompas and the previous audit. Then the <b>kick-off meeting, at least one week before the audit starts</b>, agrees logistics, counterparts and the documents to prepare. During the <b>on-site fieldwork the auditors lead</b>: supporting documents are available and the focal points stay reachable for interviews, sampling and testing. The <b>exit meeting</b> wraps up the fieldwork and summarises the findings. Then comes the draft report, and the team sends <b>one coordinated set of comments</b> back to the auditors. For audits performed at headquarters, the Head of International Finance, with the International Controller and Adviser, agrees the timing and the audit fees.",
+      ar:"قبل وصول المدققين، تُجهَّز البيانات المالية وتخضع لضمان الجودة: تُسوَّى التحويلات النقدية والأرصدة الافتتاحية مع كومباس ومع التدقيق السابق. ثم يأتي <b>الاجتماع الافتتاحي، قبل أسبوع على الأقل من بدء التدقيق</b>، للاتفاق على الترتيبات والأشخاص المعنيين والمستندات المطلوب تجهيزها. وأثناء <b>العمل الميداني يقود المدققون العملية</b>: تكون المستندات الداعمة متاحة ويبقى المعنيون جاهزين للمقابلات وأخذ العينات والاختبارات. ثم يلخّص <b>الاجتماع الختامي</b> العملَ الميداني والملاحظات. بعدها يصدر مشروع التقرير، فيرسل الفريق <b>مجموعة واحدة منسّقة من التعليقات</b> إلى المدققين. وفي التدقيقات التي تُجرى في المقر الرئيسي، يتفق رئيس المالية الدولية مع المراقب والمستشار الدولي على التوقيت وأتعاب التدقيق."},
+   r:4},
+  {t:"check", game:"order", pts:25,
+   h:{en:"Walk the journey in order", ar:"رتّب الرحلة"},
+   b:{en:"Drag the stages, or use the arrows, so the audit reads from first to last.", ar:"اسحب المراحل أو استخدم الأسهم ليُقرأ التدقيق من الأول إلى الأخير."},
+   items:[
+     {en:"Prepare: statements reconciled against Kompas and quality assured", ar:"التحضير: تسوية البيانات مع كومباس وضمان جودتها"},
+     {en:"Kick-off meeting, at least one week before the audit", ar:"الاجتماع الافتتاحي، قبل أسبوع على الأقل من التدقيق"},
+     {en:"On-site fieldwork: documents, interviews, sampling", ar:"العمل الميداني: المستندات والمقابلات والعينات"},
+     {en:"Exit meeting, then the draft report and one set of coordinated comments", ar:"الاجتماع الختامي، ثم مشروع التقرير ومجموعة تعليقات منسّقة واحدة"},
+     {en:"Signed report: the auditor's opinion, the management letter, the representation letter", ar:"التقرير الموقّع: رأي المدقق وخطاب الإدارة وخطاب الإقرار"}
+   ]}
+]},
+/* ============ STATION 4 · AFTER THE REPORT ============ */
+{nm:{en:"After the report", ar:"بعد التقرير"}, steps:[
+  {t:"card",
+   k:{en:"The report is the beginning", ar:"التقرير هو البداية"},
+   h:{en:"Findings become action", ar:"الملاحظات تتحول إلى أفعال"},
+   b:{en:"A signed audit report carries, as a minimum, the <b>auditor's opinion</b>, the <b>management letter</b> with recommendations, and the <b>representation letter</b> signed by the audited entity. Then the real work starts: the <b>Plan of Action</b>. Every finding gets the unit concerned, a corrective measure, a deadline, the position responsible for implementing it and the position responsible for following it up. The <b>Country Manager follows up on the findings</b>, and the International Controller and Adviser <b>files the full package in Atlas</b>. The learning does not stop there: the Internal Control and Compliance Section reviews recurrent findings across countries, so what one audit teaches becomes what the next SOP fixes.",
+      ar:"يحمل تقرير التدقيق الموقّع، كحد أدنى، <b>رأي المدقق</b> و<b>خطاب الإدارة</b> بالتوصيات و<b>خطاب الإقرار</b> الموقّع من الجهة الخاضعة للتدقيق. ثم يبدأ العمل الحقيقي: <b>خطة العمل</b>. تُسجَّل لكل ملاحظة الوحدةُ المعنية والإجراء التصحيحي والمهلة الزمنية والوظيفة المسؤولة عن التنفيذ والوظيفة المسؤولة عن المتابعة. ويتولى <b>المدير القُطري متابعة الملاحظات</b>، بينما يحفظ المراقب والمستشار الدولي <b>الملف كاملاً في أطلس</b>. ولا يتوقف التعلم هنا: يراجع قسم الرقابة الداخلية والامتثال الملاحظات المتكررة عبر البلدان، فيتحول ما يعلّمه تدقيق واحد إلى ما تُصلحه الإجراءات التالية."},
    r:5},
   {t:"check", game:"doors", pts:25,
-   h:{en:"Friday, 16:42. Your call.", da:"Fredag kl. 16.42. Dit valg.", fr:"Vendredi, 16 h 42. À vous de jouer.", ar:"الجمعة، 16:42. القرار قرارك."},
-   b:{en:"Reviewing a partner report, you spot an invoice that looks inflated. Maybe an honest error. Maybe not. What do you do first?", da:"I en partnerrapport ser du en faktura, der ser oppustet ud. Måske en ærlig fejl. Måske ikke. Hvad gør du først?", fr:"En relisant un rapport partenaire, vous repérez une facture qui semble gonflée. Peut-être une erreur honnête. Peut-être pas. Que faites-vous en premier ?", ar:"أثناء مراجعة تقرير شريك، تلاحظ فاتورة تبدو مبالغاً فيها. ربما خطأ بريء. وربما لا. ماذا تفعل أولاً؟"},
+   h:{en:"The draft report lands. Your call.", ar:"وصل مشروع التقرير. القرار قرارك."},
+   b:{en:"One finding says a payment lacked a supporting document. What happens with that finding?", ar:"إحدى الملاحظات تقول إن دفعة ما كانت بلا مستند داعم. ماذا يحدث لهذه الملاحظة؟"},
    doors:[
-     {ok:false, txt:{en:"Hold it for the next quarterly review", da:"Gem den til næste kvartalsgennemgang", fr:"La garder pour la prochaine revue trimestrielle", ar:"أؤجلها إلى المراجعة الفصلية القادمة"},
-      why:{en:"Too slow. A suspicion of corruption must be reported within five days, not next quarter.", da:"For langsomt. En mistanke om korruption skal rapporteres inden for fem dage, ikke næste kvartal.", fr:"Trop lent. Un soupçon de corruption doit être signalé sous cinq jours, pas au prochain trimestre.", ar:"بطيء جداً. الاشتباه بالفساد يجب الإبلاغ عنه خلال خمسة أيام، لا في الفصل القادم."}},
-     {ok:true, txt:{en:"Report it through the anti-corruption channel now", da:"Rapportér den gennem antikorruptionskanalen nu", fr:"Le signaler maintenant par le canal anti-corruption", ar:"أبلغ عنها عبر قناة مكافحة الفساد الآن"},
-      why:{en:"Exactly. The duty to report a suspicion is yours and it is immediate: within five days. Reporting in good faith is always the right move, even if it turns out to be an honest error.", da:"Præcis. Pligten til at rapportere en mistanke er din, og den er omgående: inden for fem dage. At rapportere i god tro er altid det rigtige, også hvis det viser sig at være en ærlig fejl.", fr:"Exactement. Le devoir de signaler un soupçon vous appartient et il est immédiat : sous cinq jours. Signaler de bonne foi est toujours le bon choix, même si c'est finalement une erreur honnête.", ar:"بالضبط. واجب الإبلاغ عن الاشتباه واجبك وهو فوري: خلال خمسة أيام. الإبلاغ بحسن نية هو الصواب دائماً، حتى لو تبيّن أنه خطأ بريء."}},
-     {ok:false, txt:{en:"Adjust the figures so the report reads clean", da:"Justér tallene, så rapporten ser ren ud", fr:"Ajuster les chiffres pour que le rapport paraisse propre", ar:"أعدّل الأرقام ليبدو التقرير نظيفاً"},
-      why:{en:"Never. Records are never adjusted to hide a problem. That would turn someone else's error into your violation.", da:"Aldrig. Tal justeres aldrig for at skjule et problem. Det ville gøre en andens fejl til din overtrædelse.", fr:"Jamais. On n'ajuste jamais les écritures pour cacher un problème. Cela transformerait l'erreur d'un autre en votre faute.", ar:"أبداً. لا تُعدَّل السجلات لإخفاء مشكلة. ذلك يحوّل خطأ شخص آخر إلى مخالفة ترتكبها أنت."}}
+     {ok:false, txt:{en:"It is removed if the team disagrees with it", ar:"تُحذف إذا لم يوافق عليها الفريق"},
+      why:{en:"Findings are answered, not deleted. The team reviews the draft and sends one coordinated set of comments back to the auditors.", ar:"الملاحظات يُرَدّ عليها ولا تُحذف. يراجع الفريق المشروع ويرسل مجموعة واحدة منسّقة من التعليقات إلى المدققين."}},
+     {ok:true, txt:{en:"It goes into the Plan of Action, with a deadline and named positions", ar:"تدخل في خطة العمل، مع مهلة زمنية ووظائف محددة"},
+      why:{en:"Exactly. Each finding gets the unit concerned, a corrective measure, a deadline, and the positions responsible for implementing and for following up. The Country Manager follows up, and the full package is filed in Atlas.", ar:"بالضبط. تُسجَّل لكل ملاحظة الوحدة المعنية والإجراء التصحيحي والمهلة والوظائف المسؤولة عن التنفيذ والمتابعة. يتابع المدير القُطري، ويُحفظ الملف كاملاً في أطلس."}},
+     {ok:false, txt:{en:"Nothing. Once the report is signed, the audit is over", ar:"لا شيء. بمجرد توقيع التقرير ينتهي التدقيق"},
+      why:{en:"The signed report starts the action phase. Recurrent findings are even reviewed across countries so the learning feeds the next SOP update.", ar:"التقرير الموقّع يبدأ مرحلة العمل. بل تُراجَع الملاحظات المتكررة عبر البلدان ليغذي التعلمُ تحديثَ الإجراءات التالية."}}
    ]},
   {t:"card",
-   k:{en:"Journey complete", da:"Rejsen er fuldført", fr:"Voyage terminé", ar:"اكتملت الرحلة"},
-   h:{en:"You followed the money", da:"Du fulgte pengene", fr:"Vous avez suivi l'argent", ar:"لقد تتبّعت المال"},
-   b:{en:"From an idea to a closed, audited file: you now know the journey every Danish Red Cross international project takes, the system it lives in, the rules its money travels by, and what to do the day something does not look right. That is the foundation. Everything else on this platform builds on the map you just walked.",
-      da:"Fra en idé til en lukket, revideret sag: du kender nu den rejse, hvert internationalt Røde Kors-projekt tager, systemet det bor i, reglerne pengene rejser efter, og hvad du gør den dag, noget ikke ser rigtigt ud. Det er fundamentet. Alt andet på denne platform bygger på det kort, du lige har gået.",
-      fr:"D'une idée à un dossier clôturé et audité : vous connaissez maintenant le voyage de chaque projet international de la Croix-Rouge danoise, le système où il vit, les règles que suit son argent, et quoi faire le jour où quelque chose cloche. C'est la fondation. Tout le reste de cette plateforme se construit sur la carte que vous venez de parcourir.",
-      ar:"من فكرة إلى ملف مغلق ومدقق: تعرف الآن الرحلة التي يقطعها كل مشروع دولي للصليب الأحمر الدنماركي، والنظام الذي يعيش فيه، والقواعد التي يسافر بها ماله، وما تفعله يوم يبدو شيء غير صحيح. هذا هو الأساس. كل ما تبقى في هذه المنصة يُبنى على الخريطة التي مشيتها للتو."},
+   k:{en:"Journey complete", ar:"اكتملت الرحلة"},
+   h:{en:"You walked the audit", ar:"لقد مشيت رحلة التدقيق"},
+   b:{en:"Prepare, kick-off, fieldwork, report, act: you now know who may audit, how the auditor is chosen, what happens in each stage, and how findings turn into a Plan of Action that someone owns. Remember the quiet truth underneath it all: an audit confirms the story your records already tell. Keep the records right, all year, and the audit is simply your work, recognised.",
+      ar:"التحضير، الاجتماع الافتتاحي، العمل الميداني، التقرير، خطة العمل: تعرف الآن من يحق له التدقيق، وكيف يُختار المدقق، وما يحدث في كل مرحلة، وكيف تتحول الملاحظات إلى خطة عمل لها مالك محدد. وتذكّر الحقيقة الهادئة خلف ذلك كله: التدقيق يؤكد القصة التي ترويها سجلاتك أصلاً. حافظ على سجلات صحيحة طوال السنة، يصبح التدقيق ببساطة عملك، وقد نال الاعتراف."},
    visual:"cycle", vOn:4}
 ]}
 ],
 next:[
-  {icon:"⌘", nm:{en:"Kompas essentials", da:"Kompas-grundkursus", fr:"L'essentiel de Kompas", ar:"أساسيات كومباس"}, d:{en:"Create, book, approve: your first week in the system", da:"Opret, bogfør, godkend: din første uge i systemet", fr:"Créer, comptabiliser, approuver : votre première semaine", ar:"أنشئ وسجّل واعتمد: أسبوعك الأول في النظام"}},
-  {icon:"⇄", nm:{en:"Exchange rates in practice", da:"Valutakurser i praksis", fr:"Les taux de change en pratique", ar:"أسعار الصرف عملياً"}, d:{en:"InforEuro, transfers and who carries the risk", da:"InforEuro, overførsler og hvem der bærer risikoen", fr:"InforEuro, transferts et qui porte le risque", ar:"إنفويورو والتحويلات ومن يتحمل المخاطر"}},
-  {icon:"⚖", nm:{en:"Anti-corruption basics", da:"Antikorruption: det grundlæggende", fr:"Bases de l'anti-corruption", ar:"أساسيات مكافحة الفساد"}, d:{en:"The duty to report, and how the channel protects you", da:"Rapporteringspligten, og hvordan kanalen beskytter dig", fr:"Le devoir de signaler, et comment le canal vous protège", ar:"واجب الإبلاغ وكيف تحميك القناة"}}
+  {icon:"&#10227;", nm:{en:"Follow the money: the project cycle", ar:"تتبّع المال: دورة المشروع"}, d:{en:"One project from idea to closure, and where finance lives in it", ar:"مشروع واحد من الفكرة إلى الإغلاق، وأين تقع المالية فيه"}},
+  {icon:"&#8644;", nm:{en:"Exchange rates in practice", ar:"أسعار الصرف عملياً"}, d:{en:"InforEuro, transfers and who carries the risk", ar:"إنفويورو والتحويلات ومن يتحمل المخاطر"}},
+  {icon:"&#9878;", nm:{en:"Anti-corruption basics", ar:"أساسيات مكافحة الفساد"}, d:{en:"The duty to report, and how the channel protects you", ar:"واجب الإبلاغ وكيف تحميك القناة"}}
 ]
 };
 
@@ -865,17 +865,38 @@ next:[
    PLAYER
    ================================================================= */
 var SPEAKING=false, TTS_T=null, VID_T=null, TTS_WARNED=false;
+/* prefer the modern human-sounding voices (Edge "Natural", Chrome "Google", neural variants)
+   over the legacy robotic desktop voices */
+function pickVoice(lang){
+  var vs=[];
+  try{ vs=window.speechSynthesis.getVoices()||[]; }catch(e){}
+  var cands=vs.filter(function(x){ return x.lang && x.lang.toLowerCase().indexOf(lang)===0; });
+  if(!cands.length && lang==="en") cands=vs.filter(function(x){ return x.lang && x.lang.toLowerCase().indexOf("en")===0; });
+  var rank=function(v){
+    var n=(v.name||"").toLowerCase();
+    if(n.indexOf("natural")>=0) return 0;
+    if(n.indexOf("neural")>=0) return 1;
+    if(n.indexOf("online")>=0) return 2;
+    if(n.indexOf("google")>=0) return 3;
+    if(n.indexOf("premium")>=0||n.indexOf("enhanced")>=0) return 4;
+    if(n.indexOf("desktop")>=0) return 8;
+    return 6;
+  };
+  cands.sort(function(a,b){ return rank(a)-rank(b); });
+  return { v:cands[0]||null, loaded:vs.length>0 };
+}
+try{ window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged=function(){}; }catch(e){}
 function speak(text){
   try{
     window.speechSynthesis.cancel();
     var u=new SpeechSynthesisUtterance(text);
     var lang=S.lang||"en";
-    var vs=window.speechSynthesis.getVoices();
-    var v=vs.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf(lang)===0;})[0];
-    if(!v && vs.length && lang!=="en"){ if(!TTS_WARNED){ TTS_WARNED=true; toast(T("ttsNoVoice"),2800); } return; }
+    var pick=pickVoice(lang);
+    var v=pick.v;
+    if(!v && pick.loaded && lang!=="en"){ if(!TTS_WARNED){ TTS_WARNED=true; toast(T("ttsNoVoice"),2800); } return; }
     if(v) u.voice=v;
     u.lang=v?v.lang:(lang==="en"?"en-GB":lang);
-    u.rate=.98;
+    u.rate=.97;
     u.onstart=function(){ SPEAKING=true; var b=$("#ttsBtn"); if(b){ b.classList.add("on"); $("[data-tlabel]",b).textContent=T("stop"); } };
     u.onend=function(){ SPEAKING=false; var b=$("#ttsBtn"); if(b){ b.classList.remove("on"); $("[data-tlabel]",b).textContent=T("listen"); } };
     window.speechSynthesis.speak(u);
@@ -1302,16 +1323,39 @@ function finishCourse(){
   /* count-up */
   var n=0, target=S.pts, el=$("#scoreNum");
   var iv=setInterval(function(){ n+=2; if(n>=target){ n=target; clearInterval(iv); confetti(110); } el.textContent=n; },24);
-  drawCert();
-  if(window.RK_IMG && !RK_IMG.complete){ RK_IMG.onload=function(){ drawCert(); }; }
+  /* wire buttons FIRST so a drawing error can never disable them */
   $("#dlCert").addEventListener("click",function(){
-    var a=document.createElement("a");
-    a.download="Certificate - "+S.name+" - Finance Learning Platform.png";
-    a.href=$("#certCv").toDataURL("image/png");
-    a.click();
+    var cv=$("#certCv");
+    function fallbackTab(){
+      try{
+        var w=window.open("","_blank");
+        if(w){ w.document.write('<title>Certificate</title><img src="'+cv.toDataURL("image/png")+'" style="max-width:100%">'); toast(T("certOpenTab"),3600); }
+      }catch(e2){}
+    }
+    try{
+      if(cv.toBlob){
+        cv.toBlob(function(blob){
+          if(!blob){ fallbackTab(); return; }
+          var url=URL.createObjectURL(blob);
+          var a=document.createElement("a");
+          a.download="Certificate - "+S.name+" - Finance Learning Platform.png";
+          a.href=url;
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function(){ URL.revokeObjectURL(url); },5000);
+          toast(T("certSaved"),2600);
+        },"image/png");
+      } else { fallbackTab(); }
+    }catch(e){ fallbackTab(); }
   });
-  $("#mgrCert").addEventListener("click",function(){ toast(T("notified")+" "+S.mgr+" "+T("protoSend"),4200); });
+  $("#mgrCert").addEventListener("click",function(){
+    var body=T("mailBody").replace("{name}",S.name).replace("{module}",L(MODULE.title)).replace("{score}",S.pts);
+    var href="mailto:"+encodeURIComponent(S.mgr)+"?subject="+encodeURIComponent(T("mailSub")+" "+S.name)+"&body="+encodeURIComponent(body);
+    try{ window.location.href=href; }catch(e){}
+    toast(T("mailOpened"),3800);
+  });
   $all("[data-res]").forEach(function(b){ b.addEventListener("click",function(){ toast(T("refToast"),3200); }); });
+  try{ drawCert(); }catch(e){}
+  if(window.RK_IMG && !RK_IMG.complete){ RK_IMG.onload=function(){ try{ drawCert(); }catch(e){} }; }
   $("#reset0").addEventListener("click",function(){
     if(!confirm("Reset?")) return;
     localStorage.removeItem("dfa_state"); location.reload();
