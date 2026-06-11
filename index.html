@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>International Finance Learning Platform · Danish Red Cross (Prototype)</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E30A0B'/%3E%3Crect x='26' y='12' width='12' height='40' rx='3' fill='white'/%3E%3Crect x='12' y='26' width='40' height='12' rx='3' fill='white'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -269,7 +270,7 @@ html[dir="rtl"] .cyc-a{transform:scaleX(-1)}
 .sort-b.yes:hover{background:var(--green);color:#fff}
 .sort-b.no{background:#fff;border-color:var(--red);color:var(--red)}
 .sort-b.no:hover{background:var(--red);color:#fff}
-.sort-fb{text-align:center;font-size:14px;font-weight:600;min-height:44px;margin-top:12px;color:var(--g2);line-height:1.5}
+.sort-fb{text-align:center;font-size:15px;font-weight:700;min-height:48px;margin-top:12px;color:var(--g2);line-height:1.5;transition:opacity .2s}
 .sort-fb.good{color:var(--green)}
 .sort-fb.bad{color:var(--red-deep)}
 .sort-prog{display:flex;gap:6px;justify-content:center;margin-top:8px}
@@ -1264,10 +1265,10 @@ function wireCheck(sp,i){
       $("#sYes").disabled=true; $("#sNo").disabled=true;
       var it=sp.items[idx], card=$("#sCard"), pip=prog.children[idx];
       var right=(saysTrue===it.v);
-      if(right){ score+=per; pip.classList.add("hit"); fb.textContent=T("nice")+" "+L(it.fb||""); fb.className="sort-fb good"; card.classList.add(saysTrue?"gone-r":"gone-l"); }
-      else { pip.classList.add("miss"); score+=Math.max(2,Math.floor(per*0.55)); fb.textContent=T("goodSave")+" "+L(it.fb||""); fb.className="sort-fb bad"; card.classList.add(saysTrue?"gone-r":"gone-l"); }
+      if(right){ score+=per; pip.classList.add("hit"); fb.textContent="✓ "+T("nice")+" "+L(it.fb||""); fb.className="sort-fb good"; card.classList.add(saysTrue?"gone-r":"gone-l"); }
+      else { pip.classList.add("miss"); score+=Math.max(2,Math.floor(per*0.55)); fb.textContent="✗ "+T("goodSave")+" "+L(it.fb||""); fb.className="sort-fb bad"; card.classList.add(saysTrue?"gone-r":"gone-l"); }
       idx++;
-      setTimeout(deal, right?900:1750);
+      setTimeout(deal, right?1400:2300);
     }
     $("#sYes").addEventListener("click",function(){ answer(true); });
     $("#sNo").addEventListener("click",function(){ answer(false); });
