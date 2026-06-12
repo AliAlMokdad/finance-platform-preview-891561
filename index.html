@@ -566,6 +566,41 @@ b.pl-gap.fill{color:var(--ink);background:transparent;border-bottom-color:transp
 @keyframes plFly{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-46px) scale(1.15)}}
 .vh{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
+/* ============ THE BATON VIEW (procedure as handoffs) ============ */
+.pm2{margin:24px 0 6px}
+.pm2-sub{font-family:var(--mono);font-size:11.5px;color:var(--g2);letter-spacing:.04em;margin-bottom:14px;line-height:1.5}
+.pm2-board{position:relative;display:grid;grid-template-columns:auto repeat(8,1fr);grid-auto-rows:76px;align-items:center;background:var(--canvas);border:1.5px solid var(--g5);border-radius:16px;padding:10px 12px 14px}
+.pm2-lane{grid-column:1;grid-row:var(--lr);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--g3);padding-inline-end:12px;text-align:end;max-width:92px;line-height:1.35;position:relative;z-index:2}
+.pm2-n{grid-column:var(--gc);grid-row:var(--gr);position:relative;z-index:2;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 1px;cursor:pointer;animation:rvlIn .5s cubic-bezier(.2,.7,.2,1) both}
+.pm2-dot{width:30px;height:30px;border-radius:50%;background:#fff;border:2.5px solid var(--g4);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--g3);transition:border-color .25s,background .25s,color .25s,transform .2s,box-shadow .25s}
+.pm2-n:hover .pm2-dot{border-color:var(--ink);transform:translateY(-2px)}
+.pm2-n.seen .pm2-dot{background:var(--red);border-color:var(--red);color:#fff}
+.pm2-n.on .pm2-dot{box-shadow:0 0 0 4px var(--red-soft)}
+.pm2-nm{font-size:9.5px;font-weight:700;color:var(--g2);line-height:1.25;text-align:center;max-width:82px}
+.pm2-n.seen .pm2-nm{color:var(--ink)}
+.pm2-lanechip{display:none}
+.pm2-svg{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+#pm2Base{stroke:var(--g5);stroke-width:2.5;stroke-linejoin:round}
+#pm2Fill{stroke:var(--red);stroke-width:2.5;stroke-linejoin:round;transition:stroke-dashoffset .7s cubic-bezier(.2,.7,.2,1)}
+.pm2-detail{background:#fff;border:1.5px solid var(--rule);border-radius:14px;padding:16px 18px;margin-top:14px;box-shadow:var(--shadow);animation:rvlIn .35s cubic-bezier(.2,.7,.2,1) both}
+.pm2-dh{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:11px;display:flex;align-items:center;gap:9px}
+.pm2-dh .badge2{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:#fff;background:var(--red);border-radius:9px;padding:3px 9px;flex:0 0 auto}
+.pm2-detail .pm-rows{padding:0}
+.pl-ask-q{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:10px}
+.snt.pldim{opacity:.35;transition:opacity .45s ease}
+.snt{transition:opacity .45s ease}
+@media (max-width:640px){
+  .pm2-board{display:flex;flex-direction:column;align-items:stretch;gap:9px;padding:12px}
+  .pm2-lane{display:none}
+  .pm2-svg{display:none}
+  .pm2-n{flex-direction:row;justify-content:flex-start;gap:11px;background:var(--canvas);border:1.5px solid var(--g5);border-radius:13px;padding:11px 13px;animation:none}
+  .pm2-n.seen{border-color:var(--rule);background:#fff}
+  .pm2-n:hover .pm2-dot{transform:none}
+  .pm2-dot{flex:0 0 auto;width:27px;height:27px;font-size:11.5px}
+  .pm2-nm{max-width:none;text-align:start;font-size:13.5px;flex:1}
+  .pm2-lanechip{display:inline-block;font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--g3);border:1px solid var(--g5);border-radius:9px;padding:2px 7px;flex:0 0 auto}
+}
+
 /* ============ GLYPH SIZING (inline SVG icon system) ============ */
 .lic svg{width:24px;height:24px}
 .ni svg{width:18px;height:18px}
@@ -593,6 +628,9 @@ b.pl-gap.fill{color:var(--ink);background:transparent;border-bottom-color:transp
   b.pl-gap.on,b.pl-gap.fill,.pl-chip.nope,.pl-streak.combo{animation:none}
   .spark-fly{display:none}
   .ln-card.tiltable{transition:none}
+  .pm2-n,.pm2-detail{animation:none}
+  #pm2Fill{transition:none}
+  .snt,.snt.pldim{transition:none}
 }
 </style>
 </head>
@@ -1026,7 +1064,11 @@ en:{ checkBadge:"Quick game, not a test", continueBtn:"Continue", checkOrder:"Ch
   plStreakAria:"Insight streak: {n}", plClean:"Clean card", plCleanA:"Every call on this card was right the first time.",
   plDoneLine:"Card complete. Everything above is the source text, in full.", plFromSource:"From the source",
   plSparksFin:"Insight sparks collected: {n}.",
-  certTo:"This is to certify that", styleChip:"Style" },
+  certTo:"This is to certify that", styleChip:"Style",
+  pmBaton:"The baton view: each step sits in the lane of who carries it. Open every step.",
+  laneCO:"Country office", laneHNS:"Host National Society", laneAUD:"Auditors",
+  plWho:"Who carries this step?", plDoc:"Which document belongs to this step?", plCtrl:"Which control guards this step?",
+  plDuty:"Whose duty is this?", plLock:"Lock it in: three quick calls on what you just explored." },
 da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"Tjek min rækkefølge",
   sortYes:"Rigtigt", sortNo:"Ikke helt", nice:"Flot.", almost:"Tæt på. Kig en gang til.",
   goodSave:"Værd at huske.", station:"Station", listen:"Lyt", stop:"Stop",
@@ -1059,7 +1101,11 @@ da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"
   plStreakAria:"Indsigtsstime: {n}", plClean:"Fejlfrit kort", plCleanA:"Alle valg på dette kort sad rigtigt i første forsøg.",
   plDoneLine:"Kortet er fuldført. Alt ovenfor er kildeteksten i sin helhed.", plFromSource:"Fra kilden",
   plSparksFin:"Indsigtsgnister samlet: {n}.",
-  certTo:"Det bekræftes hermed, at", styleChip:"Stil" },
+  certTo:"Det bekræftes hermed, at", styleChip:"Stil",
+  pmBaton:"Stafet-visningen: hvert trin ligger i banen hos den, der bærer det. Åbn alle trin.",
+  laneCO:"Landekontor", laneHNS:"Host National Society", laneAUD:"Revisorer",
+  plWho:"Hvem bærer dette trin?", plDoc:"Hvilket dokument hører til dette trin?", plCtrl:"Hvilken kontrol beskytter dette trin?",
+  plDuty:"Hvis opgave er dette?", plLock:"Lås det fast: tre hurtige valg om det, du lige har udforsket." },
 fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:"Vérifier mon ordre",
   sortYes:"Vrai", sortNo:"Pas tout à fait", nice:"Bien vu.", almost:"Presque. Regardez encore.",
   goodSave:"À retenir.", station:"Étape", listen:"Écouter", stop:"Arrêter",
@@ -1092,7 +1138,11 @@ fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:
   plStreakAria:"Série de bonnes réponses : {n}", plClean:"Carte parfaite", plCleanA:"Tous les choix de cette carte étaient justes du premier coup.",
   plDoneLine:"Carte terminée. Tout ce qui précède est le texte source, en entier.", plFromSource:"À la source",
   plSparksFin:"Étincelles d'intuition recueillies : {n}.",
-  certTo:"Ceci certifie que", styleChip:"Style" },
+  certTo:"Ceci certifie que", styleChip:"Style",
+  pmBaton:"La vue relais : chaque étape est dans le couloir de celui qui la porte. Ouvrez chaque étape.",
+  laneCO:"Bureau pays", laneHNS:"Société nationale hôte", laneAUD:"Auditeurs",
+  plWho:"Qui porte cette étape ?", plDoc:"Quel document appartient à cette étape ?", plCtrl:"Quel contrôle protège cette étape ?",
+  plDuty:"À qui revient cette tâche ?", plLock:"Verrouillez : trois choix rapides sur ce que vous venez d'explorer." },
 ar:{ checkBadge:"لعبة سريعة، ليست اختباراً", continueBtn:"متابعة", checkOrder:"تحقق من ترتيبي",
   sortYes:"صحيح", sortNo:"ليس تماماً", nice:"أحسنت.", almost:"اقتربت. انظر مرة أخرى.",
   goodSave:"تستحق التذكر.", station:"محطة", listen:"استمع", stop:"إيقاف",
@@ -1125,7 +1175,11 @@ ar:{ checkBadge:"لعبة سريعة، ليست اختباراً", continueBtn:"
   plStreakAria:"سلسلة الإجابات الصحيحة: {n}", plClean:"بطاقة كاملة", plCleanA:"كل اختيارات هذه البطاقة كانت صحيحة من المحاولة الأولى.",
   plDoneLine:"اكتملت البطاقة. كل ما سبق هو نص المصدر كاملاً.", plFromSource:"من المصدر",
   plSparksFin:"ومضات الفهم التي جمعتها: {n}.",
-  certTo:"نشهد بأن", styleChip:"الأسلوب" }
+  certTo:"نشهد بأن", styleChip:"الأسلوب",
+  pmBaton:"عرض تسليم العصا: كل خطوة في مسار من يحملها. افتح كل الخطوات.",
+  laneCO:"المكتب القُطري", laneHNS:"الجمعية الوطنية المضيفة", laneAUD:"المدققون",
+  plWho:"من يحمل هذه الخطوة؟", plDoc:"أي مستند يخص هذه الخطوة؟", plCtrl:"أي ضابط يحمي هذه الخطوة؟",
+  plDuty:"مهمة من هذه؟", plLock:"ثبّت ما تعلمته: ثلاثة قرارات سريعة عمّا استكشفته للتو." }
 };
 Object.keys(STR2).forEach(function(l){ Object.keys(STR2[l]).forEach(function(k){ STR[l][k]=STR2[l][k]; }); });
 
@@ -1224,42 +1278,42 @@ stations:[
       ar:"هذه هي إجراءات التدقيق نفسها، مبسوطة كالرحلة التي هي عليها فعلاً. استكشف كل خطوة أدناه: ماذا يحدث، ومن يقودها، وما المستندات التي تحتاجها، وما الضابط الذي يحميها. يمتلئ الخط كلما تقدمت."},
    r:3,
    proc:[
-     {nm:{en:"Determine and scope", ar:"تحديد الحاجة والنطاق"},
+     {nm:{en:"Determine and scope", ar:"تحديد الحاجة والنطاق"}, lane:"co",
       what:{en:"Confirm whether the project, the country office accounts or a consolidated set requires an external audit, and fix the audit form and scope against the signed grant agreement and the donor audit instructions.", ar:"تأكد مما إذا كان المشروع أو حسابات المكتب القُطري أو مجموعة موحّدة تتطلب تدقيقاً خارجياً، وثبّت شكل التدقيق ونطاقه وفق اتفاقية المنحة الموقعة وتعليمات التدقيق الخاصة بالمانح."},
       who:{en:"Country Manager, with the Project Manager and the finance focal point", ar:"المدير القُطري مع مدير المشروع ونقطة الارتكاز المالية"},
       docs:{en:"Signed grant agreement; donor audit instructions", ar:"اتفاقية المنحة الموقعة؛ تعليمات التدقيق الخاصة بالمانح"},
       ctrl:{en:"Scope is confirmed against the agreement before anything is procured", ar:"يُثبَّت النطاق وفق الاتفاقية قبل أي تعاقد"}},
-     {nm:{en:"Budget the fees", ar:"رصد الأتعاب في الميزانية"},
+     {nm:{en:"Budget the fees", ar:"رصد الأتعاب في الميزانية"}, lane:"co",
       what:{en:"Audit fees are budgeted from the start: the full fee in the donor approved budget for non-SPA projects. For DANIDA SPA projects only the local audit fee sits in the project budget; the global SPA audit fee is budgeted centrally at headquarters.", ar:"تُرصد أتعاب التدقيق منذ البداية: الأتعاب كاملة في الميزانية المعتمدة من المانح للمشاريع من غير اتفاقية الشراكة الاستراتيجية. أما مشاريع الاتفاقية فيُرصد في ميزانيتها أتعاب التدقيق المحلي فقط، بينما تُرصد أتعاب التدقيق الشامل مركزياً في المقر الرئيسي."},
       who:{en:"The proposal team with the finance focal point", ar:"فريق المقترح مع نقطة الارتكاز المالية"},
       docs:{en:"Donor approved budget", ar:"الميزانية المعتمدة من المانح"},
       ctrl:{en:"The SPA split rule: audit costs never surprise the project later", ar:"قاعدة الفصل في اتفاقية الشراكة: لا تفاجئ تكاليفُ التدقيق المشروعَ لاحقاً"}},
-     {nm:{en:"Appoint the auditor", ar:"تعيين المدقق"},
+     {nm:{en:"Appoint the auditor", ar:"تعيين المدقق"}, lane:"hns",
       what:{en:"The Host National Society contracts the local auditor through a competitive tender unless a framework agreement exists. The auditor must be a chartered accountant, a certified public accountant or an equivalent qualified professional, independent, affiliated to an international firm, and bound by an engagement letter.", ar:"تتعاقد الجمعية الوطنية المضيفة مع المدقق المحلي عبر مناقصة تنافسية ما لم توجد اتفاقية إطارية. ويجب أن يكون المدقق محاسباً قانونياً أو محاسباً معتمداً أو مهنياً مؤهلاً معادلاً، مستقلاً، تابعاً لشركة دولية، ومرتبطاً بخطاب تكليف."},
       who:{en:"HNS contracts; the International Controller and Adviser assesses the auditor with the HQ-appointed auditors", ar:"الجمعية تتعاقد؛ والمراقب والمستشار الدولي يقيّم المدقق مع مدققي المقر الرئيسي"},
       docs:{en:"Engagement letter; note to file for any deviation", ar:"خطاب التكليف؛ مذكرة ملف لأي انحراف"},
       ctrl:{en:"Independence, rotation preferably every five years, escalation of deviations", ar:"الاستقلالية، والتغيير كل خمس سنوات على نحو مفضّل، وتصعيد الانحرافات"}},
-     {nm:{en:"Prepare", ar:"التحضير"},
+     {nm:{en:"Prepare", ar:"التحضير"}, lane:"co",
       what:{en:"Terms of reference fold in the donor specifics: EU INTPA follows the Expenditure Verification Report terms, ECHO follows the Certified Financial Statements (CFS) guidelines, and for signed EU contracts the terms in the contract prevail. Financial statements are reconciled against Kompas and the previous audit, then quality assured.", ar:"تُدمج خصوصيات المانح في الشروط المرجعية: مشاريع المفوضية الأوروبية للشراكات الدولية تتبع شروط تقرير التحقق من النفقات، ومشاريع إيكو تتبع إرشادات البيانات المالية المعتمدة (CFS)، وللعقود الأوروبية الموقعة تسود الشروط الواردة في العقد. وتُسوّى البيانات المالية مع كومباس ومع التدقيق السابق، ثم تخضع لضمان الجودة."},
       who:{en:"Finance focal point under the Country Manager's supervision; the Adviser quality assures", ar:"نقطة الارتكاز المالية بإشراف المدير القُطري؛ والمستشار يضمن الجودة"},
       docs:{en:"Terms of reference; financial statements; reconciliations of cash transfers and opening balances", ar:"الشروط المرجعية؛ البيانات المالية؛ تسويات التحويلات النقدية والأرصدة الافتتاحية"},
       ctrl:{en:"Nothing reaches the auditors before quality assurance", ar:"لا شيء يصل إلى المدققين قبل ضمان الجودة"}},
-     {nm:{en:"Kick-off", ar:"الاجتماع الافتتاحي"},
+     {nm:{en:"Kick-off", ar:"الاجتماع الافتتاحي"}, lane:"hns",
       what:{en:"At least one week before the audit starts, the auditors, the partner or country office finance representatives and the DRC country team meet to agree logistics, counterparts and the documents to prepare.", ar:"قبل أسبوع على الأقل من بدء التدقيق، يجتمع المدققون وممثلو مالية الشريك أو المكتب القُطري وفريق البلد للاتفاق على الترتيبات والأشخاص المعنيين والمستندات المطلوب تجهيزها."},
       who:{en:"All parties; the partner convenes for field audits, the finance focal point for country office audits", ar:"جميع الأطراف؛ الشريك يدعو للاجتماع في التدقيق الميداني، ونقطة الارتكاز المالية في تدقيق المكتب القُطري"},
       docs:{en:"Document request list; the audit plan", ar:"قائمة المستندات المطلوبة؛ خطة التدقيق"},
       ctrl:{en:"The one-week minimum protects preparation time", ar:"حد الأسبوع الأدنى يحمي وقت التحضير"}},
-     {nm:{en:"Fieldwork", ar:"العمل الميداني"},
+     {nm:{en:"Fieldwork", ar:"العمل الميداني"}, lane:"aud",
       what:{en:"The auditors lead the on-site work: supporting documents are available, and the project focal points stay available for interviews, sampling, substantive testing and audit queries.", ar:"يقود المدققون العمل الميداني: تكون المستندات الداعمة متاحة، ويبقى المعنيون بالمشروع جاهزين للمقابلات وأخذ العينات والاختبارات الجوهرية واستفسارات التدقيق."},
       who:{en:"Auditors lead; focal points respond", ar:"المدققون يقودون؛ والمعنيون يستجيبون"},
       docs:{en:"All supporting documents, available on request", ar:"كل المستندات الداعمة، متاحة عند الطلب"},
       ctrl:{en:"Availability is the project's responsibility; gaps become findings", ar:"الإتاحة مسؤولية المشروع؛ والثغرات تتحول إلى ملاحظات"}},
-     {nm:{en:"Exit and draft", ar:"الختام والمسودة"},
+     {nm:{en:"Exit and draft", ar:"الختام والمسودة"}, lane:"aud",
       what:{en:"The exit meeting wraps up the fieldwork and summarises the findings, noting clarifications and outstanding documents. The draft report is reviewed with the partner and the country team, and one coordinated set of comments goes back to the auditors.", ar:"يلخّص الاجتماع الختامي العمل الميداني والملاحظات، مع تدوين التوضيحات والمستندات المتبقية. وتُراجع مسودة التقرير مع الشريك وفريق البلد، وتعود مجموعة واحدة منسّقة من التعليقات إلى المدققين."},
       who:{en:"Auditors present; the team reviews; the Adviser supports", ar:"المدققون يعرضون؛ والفريق يراجع؛ والمستشار يدعم"},
       docs:{en:"Draft audit report; consolidated comments", ar:"مسودة تقرير التدقيق؛ التعليقات الموحّدة"},
       ctrl:{en:"One voice back to the auditors, never parallel channels", ar:"صوت واحد يعود إلى المدققين، لا قنوات متوازية"}},
-     {nm:{en:"Sign-off and action", ar:"التوقيع وخطة العمل"},
+     {nm:{en:"Sign-off and action", ar:"التوقيع وخطة العمل"}, lane:"co",
       what:{en:"The signed report carries, as a minimum, the auditor's opinion, the management letter and the representation letter. A Plan of Action lists each finding, the unit concerned, the corrective measure, the deadline and the positions responsible for implementing and following up.", ar:"يحمل التقرير الموقّع، كحد أدنى، رأي المدقق وخطاب الإدارة وخطاب الإقرار. وتُسجّل خطة العمل كل ملاحظة والوحدة المعنية والإجراء التصحيحي والمهلة والوظائف المسؤولة عن التنفيذ والمتابعة."},
       who:{en:"Auditors sign; the Country Manager follows up; the Adviser files in Atlas; the Internal Control and Compliance Section learns", ar:"المدققون يوقّعون؛ والمدير القُطري يتابع؛ والمستشار يحفظ في أطلس؛ وقسم الرقابة الداخلية والامتثال يتعلم"},
       docs:{en:"Signed report with opinion, management letter, representation letter; Plan of Action", ar:"التقرير الموقّع برأي المدقق وخطاب الإدارة وخطاب الإقرار؛ خطة العمل"},
@@ -1856,6 +1910,27 @@ function renderStep(i){
   wireStep(sp,i);
 }
 
+/* the baton view: the procedure drawn as handoffs between the hands that carry it */
+function procHTML(sp){
+  var laneOrder=["co","hns","aud"];
+  var laneLbl={co:T("laneCO"), hns:T("laneHNS"), aud:T("laneAUD")};
+  var h='<div class="pm2" id="pmRoot">';
+  h+='<div class="pm2-sub">'+T("pmBaton")+'</div>';
+  h+='<div class="pm2-board" id="pm2Board">';
+  laneOrder.forEach(function(lk,li){
+    h+='<div class="pm2-lane" style="--lr:'+(li+1)+'">'+laneLbl[lk]+'</div>';
+  });
+  sp.proc.forEach(function(n,ni){
+    var lr=laneOrder.indexOf(n.lane||"co")+1;
+    h+='<button class="pm2-n" data-pm="'+ni+'" aria-pressed="false" style="--gc:'+(ni+2)+';--gr:'+lr+';animation-delay:'+(ni*55)+'ms">'+
+       '<span class="pm2-dot">'+(ni+1)+'</span><span class="pm2-nm">'+L(n.nm)+'</span>'+
+       '<span class="pm2-lanechip">'+laneLbl[n.lane||"co"]+'</span></button>';
+  });
+  h+='<svg class="pm2-svg" id="pm2Svg" aria-hidden="true"><polyline id="pm2Base" fill="none"/><polyline id="pm2Fill" fill="none"/></svg>';
+  h+='</div><div class="pm2-detail" id="pm2Detail" hidden></div><div class="pm-count" id="pmCount"></div></div>';
+  return h;
+}
+
 function cardHTML(sp){
   var h="";
   if(S.style==="watch"){
@@ -1881,14 +1956,7 @@ function cardHTML(sp){
     }).join("")+'</div>';
   }
   if(sp.proc){
-    h+='<div class="pm" id="pmRoot"><div class="pm-fill" id="pmFill"></div>'+sp.proc.map(function(n,ni){
-      return '<div class="pm-n" data-pm="'+ni+'"><span class="pm-dot">'+(ni+1)+'</span><div class="pm-card"><button class="pm-hd" data-pmh="'+ni+'"><span class="pm-nm">'+L(n.nm)+'</span><span class="chev">&#9662;</span></button><div class="pm-bd"><div class="pm-rows">'+
-        '<div class="pm-row r-what"><b class="tag">'+T("pmWhat")+'</b><span>'+L(n.what)+'</span></div>'+
-        '<div class="pm-row r-who"><b class="tag">'+T("pmWho")+'</b><span>'+L(n.who)+'</span></div>'+
-        '<div class="pm-row r-docs"><b class="tag">'+T("pmDocs")+'</b><span>'+L(n.docs)+'</span></div>'+
-        '<div class="pm-row r-ctrl"><b class="tag">'+T("pmCtrl")+'</b><span>'+L(n.ctrl)+'</span></div>'+
-        '</div></div></div></div>';
-    }).join("")+'</div><div class="pm-count" id="pmCount"></div>';
+    h+=procHTML(sp);
   }
   if(sp.q) h+='<div class="ln-quote">'+L(sp.q)+'</div>';
   if(sp.src) h+='<div class="ln-src">'+L(sp.src)+'</div>';
@@ -1935,6 +2003,7 @@ function plPlan(sp,stepIdx){
   var sents=splitSentences(bodyHtml);
   var beats=splitSentences(stripHtml(bodyHtml));
   if(sents.length!==beats.length) return {gaps:[], sents:sents}; /* split misalignment: degrade gracefully to plain reading */
+  if(sp.proc||sp.roles) return {gaps:[], sents:sents}; /* these cards play their own judgment-call games instead */
   var lang=S.lang||"en";
   var cand=[];
   sents.forEach(function(s,si){
@@ -2004,14 +2073,7 @@ function playCardHTML(sp,i){
     }).join("")+'</div>';
   }
   if(sp.proc){
-    tail+='<div class="pm" id="pmRoot"><div class="pm-fill" id="pmFill"></div>'+sp.proc.map(function(n,ni){
-      return '<div class="pm-n" data-pm="'+ni+'"><span class="pm-dot">'+(ni+1)+'</span><div class="pm-card"><button class="pm-hd" data-pmh="'+ni+'"><span class="pm-nm">'+L(n.nm)+'</span><span class="chev">&#9662;</span></button><div class="pm-bd"><div class="pm-rows">'+
-        '<div class="pm-row r-what"><b class="tag">'+T("pmWhat")+'</b><span>'+L(n.what)+'</span></div>'+
-        '<div class="pm-row r-who"><b class="tag">'+T("pmWho")+'</b><span>'+L(n.who)+'</span></div>'+
-        '<div class="pm-row r-docs"><b class="tag">'+T("pmDocs")+'</b><span>'+L(n.docs)+'</span></div>'+
-        '<div class="pm-row r-ctrl"><b class="tag">'+T("pmCtrl")+'</b><span>'+L(n.ctrl)+'</span></div>'+
-        '</div></div></div></div>';
-    }).join("")+'</div><div class="pm-count" id="pmCount"></div>';
+    tail+=procHTML(sp);
   }
   if(sp.q) tail+='<div class="pl-eyebrow">'+T("plFromSource")+'</div><div class="ln-quote">'+L(sp.q)+'</div>';
   if(sp.src) tail+='<div class="ln-src">'+L(sp.src)+'</div>';
@@ -2075,6 +2137,7 @@ function wirePlay(sp,i){
     $all("b.pl-gap.on").forEach(function(g2){ g2.classList.remove("on"); });
     if(cur>=gaps.length){
       box.innerHTML="";
+      $all(".ln-body .snt.pldim").forEach(function(s2){ s2.classList.remove("pldim"); });
       if(say) say.textContent=T("plDoneLine");
       finished=true;
       ding("ok");
@@ -2084,6 +2147,9 @@ function wirePlay(sp,i){
     var g=gaps[cur];
     var gapEl=$('b.pl-gap[data-gap="'+cur+'"]');
     if(gapEl) gapEl.classList.add("on");
+    /* spotlight: the sentence in play stands forward, the rest steps back */
+    var sentEl=gapEl?gapEl.closest(".snt"):null;
+    $all(".ln-body .snt").forEach(function(s2){ s2.classList.toggle("pldim", sentEl&&s2!==sentEl); });
     misses=0;
     box.innerHTML='<div class="pl-ask-h">'+T("plPick")+'</div><div class="pl-chips">'+
       g.chips.map(function(c,ci){ return '<button class="pl-chip" data-plc="'+ci+'">'+esc(c)+'</button>'; }).join("")+
@@ -2118,7 +2184,11 @@ function wirePlay(sp,i){
       });
     });
   }
-  if(!gaps.length){ revealTail(false); return; }
+  if(!gaps.length){
+    revealTail(false);
+    if(sp.roles) dutyQuiz(sp);
+    return;
+  }
   if(nb&&gate) nb.disabled=true;
   ask();
 }
@@ -2206,7 +2276,7 @@ function wireStep(sp,i){
   if(sp.t==="check") wireCheck(sp,i);
 }
 
-/* interactive process map: explore every step to continue */
+/* the baton view: explore every handoff to continue */
 function wireProc(sp,i){
   var seen={}, total=sp.proc.length;
   var nb=$("#nextBtn");
@@ -2214,35 +2284,183 @@ function wireProc(sp,i){
   var already=(S.done["c"+i]!==undefined);
   if(already){
     sp.proc.forEach(function(_,k){ seen[k]=1; });
+    $all(".pm2-n").forEach(function(n){ n.classList.add("seen"); });
+  }
+  var pathLen=0;
+  function drawPath(){
+    var svg=$("#pm2Svg"), base=$("#pm2Base"), fill=$("#pm2Fill"), board=$("#pm2Board");
+    if(!svg||!base||!fill||!board) return;
+    if(getComputedStyle(svg).display==="none") return;
+    var br=board.getBoundingClientRect();
+    if(!br.width) return;
+    var pts=[];
+    $all(".pm2-n",board).forEach(function(n){
+      var d=$(".pm2-dot",n).getBoundingClientRect();
+      pts.push((d.left+d.width/2-br.left).toFixed(1)+","+(d.top+d.height/2-br.top).toFixed(1));
+    });
+    base.setAttribute("points",pts.join(" "));
+    fill.setAttribute("points",pts.join(" "));
+    try{ pathLen=fill.getTotalLength(); }catch(e){ pathLen=0; }
+    if(pathLen){ fill.style.strokeDasharray=String(pathLen); updFill(); }
+  }
+  function updFill(){
+    var fill=$("#pm2Fill");
+    if(!fill||!pathLen) return;
+    var c=Object.keys(seen).length;
+    fill.style.strokeDashoffset=String(pathLen*(1-c/total));
+  }
+  function showDetail(ni){
+    var n=sp.proc[ni], d=$("#pm2Detail");
+    if(!d) return;
+    d.hidden=false;
+    d.innerHTML='<div class="pm2-dh"><span class="badge2">'+(ni+1)+' / '+total+'</span>'+L(n.nm)+'</div>'+
+      '<div class="pm-rows">'+
+      '<div class="pm-row r-what"><b class="tag">'+T("pmWhat")+'</b><span>'+L(n.what)+'</span></div>'+
+      '<div class="pm-row r-who"><b class="tag">'+T("pmWho")+'</b><span>'+L(n.who)+'</span></div>'+
+      '<div class="pm-row r-docs"><b class="tag">'+T("pmDocs")+'</b><span>'+L(n.docs)+'</span></div>'+
+      '<div class="pm-row r-ctrl"><b class="tag">'+T("pmCtrl")+'</b><span>'+L(n.ctrl)+'</span></div></div>';
+    $all(".pm2-n").forEach(function(x){
+      var on=+x.getAttribute("data-pm")===ni;
+      x.classList.toggle("on",on);
+      x.setAttribute("aria-pressed",on?"true":"false");
+    });
   }
   function upd(){
     var c=Object.keys(seen).length;
     var pc=$("#pmCount");
     if(pc) pc.innerHTML = c<total ? T("pmProgress").replace("{c}","<b>"+c+"</b>").replace("{t}",String(total)) : "&#10003; "+T("pmAll");
-    var fl=$("#pmFill");
-    if(fl) fl.style.height=((c/total)*100)+"%";
+    updFill();
     if(nb) nb.disabled = gate && c<total;
     if(c>=total && S.done["c"+i]===undefined){
       S.done["c"+i]=20; save();
       addPts(20, pc||$("#lnCard"));
       ding("ok");
+      if(S.style==="play") procQuiz(sp,i);
     }
   }
-  if(already){
-    $all(".pm-n").forEach(function(n){ n.classList.add("seen"); });
-  }
-  $all(".pm-hd").forEach(function(b){
+  $all(".pm2-n").forEach(function(b){
     b.addEventListener("click",function(){
-      var node=b.closest(".pm-n");
-      var ni=+b.getAttribute("data-pmh");
-      var wasOpen=node.classList.contains("open");
-      $all(".pm-n.open").forEach(function(o){ if(o!==node) o.classList.remove("open"); });
-      node.classList.toggle("open", !wasOpen);
-      if(!seen[ni]){ seen[ni]=1; node.classList.add("seen"); }
+      var ni=+b.getAttribute("data-pm");
+      if(!seen[ni]){ seen[ni]=1; b.classList.add("seen"); }
+      showDetail(ni);
       upd();
     });
   });
+  /* rAF for the visible case, timer fallback for occluded tabs where rAF freezes */
+  requestAnimationFrame(function(){ requestAnimationFrame(drawPath); });
+  setTimeout(drawPath,120);
+  setTimeout(function(){ if(!pathLen) drawPath(); },800);
+  var RZ2=null;
+  window.addEventListener("resize",function(){ clearTimeout(RZ2); RZ2=setTimeout(drawPath,220); });
   upd();
+}
+
+/* play mode, process card: three lock-it-in calls drawn from the step fields just explored */
+function procQuiz(sp,i){
+  var anchor=$("#pmCount");
+  if(!anchor||$("#plProcQuiz")) return;
+  var seed=S.cur*97+i*13;
+  var picks=[[seed%sp.proc.length,"who",T("plWho")],[(seed+3)%sp.proc.length,"docs",T("plDoc")],[(seed+5)%sp.proc.length,"ctrl",T("plCtrl")]];
+  var wrap=document.createElement("div");
+  wrap.id="plProcQuiz"; wrap.className="pl-ask";
+  anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
+  var qi=0;
+  function ask(){
+    if(qi>=picks.length){
+      wrap.innerHTML='<div class="pl-fb">✓ '+esc(T("plTrue"))+'</div>';
+      ding("ok");
+      setTimeout(function(){ wrap.remove(); },1800);
+      return;
+    }
+    var p=picks[qi], ni=p[0], fld=p[1];
+    var truth=L(sp.proc[ni][fld]);
+    var others=[];
+    sp.proc.forEach(function(n,k){ if(k!==ni){ var v=L(n[fld]); if(v!==truth&&others.indexOf(v)<0) others.push(v); } });
+    if(others.length<2){ qi++; ask(); return; }
+    var d1=others[(seed*7+qi)%others.length], d2=others[(seed*11+qi+2)%others.length];
+    var hops=0;
+    while(d2===d1&&hops<others.length){ hops++; d2=others[((seed*11+qi+2)+hops)%others.length]; }
+    var chips=[truth,d1,d2], rot=(seed+qi)%3;
+    chips=chips.slice(rot).concat(chips.slice(0,rot));
+    wrap.innerHTML='<div class="pl-ask-h">'+esc(T("plLock"))+' · '+(qi+1)+'/3</div>'+
+      '<div class="pl-ask-q">'+esc(L(sp.proc[ni].nm))+' · '+esc(p[2])+'</div>'+
+      '<div class="pl-chips">'+chips.map(function(c,ci){ return '<button class="pl-chip" data-pq="'+ci+'">'+esc(c)+'</button>'; }).join("")+
+      '</div><div class="pl-fb" id="pqFb"></div>';
+    var miss=0;
+    $all(".pl-chip",wrap).forEach(function(ch){
+      ch.addEventListener("click",function(){
+        var picked=chips[+ch.getAttribute("data-pq")];
+        var fb=$("#pqFb");
+        if(picked===truth){
+          ch.classList.add("yes");
+          if(miss===0){ PL_STREAK++; S.play.sparks++; save(); sparkFly(ch); ding("spark"); } else { PL_STREAK=0; }
+          if(fb) fb.textContent="✓ "+T("plTrue");
+          qi++;
+          setTimeout(ask,680);
+        } else {
+          miss++; PL_STREAK=0;
+          ch.classList.add("nope");
+          setTimeout(function(){ ch.classList.remove("nope"); ch.classList.add("no"); },380);
+          if(fb) fb.textContent=T("plNotThis");
+        }
+      });
+    });
+  }
+  ask();
+}
+
+/* play mode, roles card: whose duty is this? Verbatim duty clause, pick the position */
+function dutyQuiz(sp){
+  var box=$("#plAsk");
+  if(!box||!sp.roles||sp.roles.length<3) return;
+  var seed=S.cur*53+S.step*7;
+  var idxs=[seed%sp.roles.length,(seed+2)%sp.roles.length,(seed+4)%sp.roles.length];
+  idxs=idxs.filter(function(v,k){ return idxs.indexOf(v)===k; });
+  var qi=0;
+  function clause(r){
+    var t=stripHtml(L(r.d));
+    var c=t.split(/[,.؛،]/)[0].trim();
+    return c.length>96?c.slice(0,93)+"...":c;
+  }
+  function ask(){
+    if(qi>=idxs.length){
+      box.innerHTML='<div class="pl-fb">✓ '+esc(T("plTrue"))+'</div>';
+      ding("ok");
+      setTimeout(function(){ box.innerHTML=""; },1600);
+      return;
+    }
+    var ri=idxs[qi], truth=L(sp.roles[ri].nm);
+    var others=sp.roles.map(function(r){ return L(r.nm); }).filter(function(n){ return n!==truth; });
+    var d1=others[(seed+qi)%others.length], d2=others[(seed+qi+2)%others.length];
+    var h2=0;
+    while(d2===d1&&h2<others.length){ h2++; d2=others[((seed+qi+2)+h2)%others.length]; }
+    var chips=[truth,d1,d2], rot=(seed+qi)%3;
+    chips=chips.slice(rot).concat(chips.slice(0,rot));
+    box.innerHTML='<div class="pl-ask-h">'+esc(T("plDuty"))+' · '+(qi+1)+'/'+idxs.length+'</div>'+
+      '<div class="ln-quote" style="margin-top:0">'+esc(clause(sp.roles[ri]))+'</div>'+
+      '<div class="pl-chips" style="margin-top:12px">'+chips.map(function(c,ci){ return '<button class="pl-chip" data-dq="'+ci+'">'+esc(c)+'</button>'; }).join("")+
+      '</div><div class="pl-fb" id="dqFb"></div>';
+    var miss=0;
+    $all(".pl-chip",box).forEach(function(ch){
+      ch.addEventListener("click",function(){
+        var picked=chips[+ch.getAttribute("data-dq")];
+        var fb=$("#dqFb");
+        if(picked===truth){
+          ch.classList.add("yes");
+          if(miss===0){ PL_STREAK++; S.play.sparks++; save(); sparkFly(ch); ding("spark"); } else { PL_STREAK=0; }
+          if(fb) fb.textContent="✓ "+T("plTrue");
+          qi++;
+          setTimeout(ask,680);
+        } else {
+          miss++; PL_STREAK=0;
+          ch.classList.add("nope");
+          setTimeout(function(){ ch.classList.remove("nope"); ch.classList.add("no"); },380);
+          if(fb) fb.textContent=T("plNotThis");
+        }
+      });
+    });
+  }
+  ask();
 }
 
 /* watch mode: guided walkthrough player (the same content, played as a video) */
