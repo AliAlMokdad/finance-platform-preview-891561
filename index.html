@@ -545,11 +545,18 @@ button:focus-visible,.tb-rail:focus-visible{outline:2.5px solid var(--red);outli
 .pl-streak svg{width:12px;height:12px}
 .pl-streak.combo{animation:plCombo 1.2s ease 2;border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,162,39,.15)}
 @keyframes plCombo{50%{transform:scale(1.12)}}
-b.pl-gap{display:inline-block;color:transparent;min-width:86px;border-bottom:2px dashed var(--red);background:var(--red-soft);border-radius:3px;padding:0 6px;user-select:none}
-b.pl-gap.on{animation:blankPulse 1.8s ease-in-out infinite}
-b.pl-gap.fill{color:var(--ink);background:transparent;border-bottom-color:transparent;animation:plFill .55s ease;user-select:auto}
+.pl-arena{margin-top:26px;background:var(--canvas);border:1.5px solid var(--g5);border-inline-start:3px solid var(--gold);border-radius:14px;padding:18px 20px}
+.pl-arena[hidden]{display:none}
+.pl-arena .arn{animation:rvlIn .24s cubic-bezier(.2,.7,.2,1) both}
+.pl-ready-h{display:flex;align-items:center;gap:9px;font-size:15.5px;font-weight:800;color:var(--ink)}
+.pl-ready-h svg{width:15px;height:15px;color:var(--gold-ink);flex:0 0 auto}
+.pl-ready-s{font-size:13.5px;color:var(--g2);line-height:1.55;margin:7px 0 14px}
+.pl-line-q{font-size:15px;color:var(--body);line-height:1.6;background:#fff;border:1px solid var(--rule);border-radius:11px;padding:12px 15px;margin-bottom:12px}
+.pl-clause{font-style:italic}
+.pl-slot{display:inline-block;min-width:86px;border-bottom:2px dashed var(--red);background:var(--red-soft);border-radius:3px;padding:0 8px}
+.pl-slot.fill{background:transparent;border-bottom-color:transparent;font-weight:700;color:var(--ink);animation:plFill .55s ease}
 @keyframes plFill{from{background:var(--red-soft);box-shadow:inset 0 -2px 0 var(--red)}to{background:transparent}}
-@keyframes blankPulse{0%,100%{box-shadow:0 0 0 0 rgba(227,10,11,0)}50%{box-shadow:0 0 0 5px rgba(227,10,11,.22)}}
+.pl-done2{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--green);flex-wrap:wrap}
 .pl-ask{margin-top:16px}
 .pl-ask-h{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--g3);margin-bottom:9px}
 .pl-chips{display:flex;flex-wrap:wrap;gap:9px}
@@ -587,8 +594,6 @@ b.pl-gap.fill{color:var(--ink);background:transparent;border-bottom-color:transp
 .pm2-dh .badge2{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:#fff;background:var(--red);border-radius:9px;padding:3px 9px;flex:0 0 auto}
 .pm2-detail .pm-rows{padding:0}
 .pl-ask-q{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:10px}
-.snt.pldim{opacity:.35;transition:opacity .45s ease}
-.snt{transition:opacity .45s ease}
 @media (max-width:640px){
   .pm2-board{display:flex;flex-direction:column;align-items:stretch;gap:9px;padding:12px}
   .pm2-lane{display:none}
@@ -608,6 +613,7 @@ b.pl-gap.fill{color:var(--ink);background:transparent;border-bottom-color:transp
 .res-row svg{width:16px;height:16px;flex:0 0 auto}
 .ref-link svg{width:13px;height:13px;vertical-align:-2px;margin-inline-end:4px}
 #langBtn .gl svg{display:block}
+#liShare svg{width:15px;height:15px;color:#0A66C2}
 
 @media (prefers-reduced-motion:reduce){
   .wl-star,.wl-word{animation:none}
@@ -625,12 +631,11 @@ b.pl-gap.fill{color:var(--ink);background:transparent;border-bottom-color:transp
   .map-st,.lib-c{animation:none}
   .fin-tier.gold::after{animation:none;display:none}
   .tb-pts.bump{animation:none}
-  b.pl-gap.on,b.pl-gap.fill,.pl-chip.nope,.pl-streak.combo{animation:none}
+  .pl-slot.fill,.pl-chip.nope,.pl-streak.combo,.pl-arena .arn{animation:none}
   .spark-fly{display:none}
   .ln-card.tiltable{transition:none}
   .pm2-n,.pm2-detail{animation:none}
   #pm2Fill{transition:none}
-  .snt,.snt.pldim{transition:none}
 }
 </style>
 </head>
@@ -977,7 +982,8 @@ var GLYPHS={
   fx:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg>',
   kompas:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5 13.8 13.8 8.5 15.5l1.7-5.3z"/></svg>',
   warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 2.5 20h19z"/><path d="M12 10v4M12 17.2v.3"/></svg>',
-  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  li:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.72C24 .77 23.2 0 22.22 0z"/></svg>'
 };
 (function buildStyles(){
   var defs=[
@@ -1057,18 +1063,23 @@ en:{ checkBadge:"Quick game, not a test", continueBtn:"Continue", checkOrder:"Ch
   certScore:"Score", certDate:"Date", halfway:"Halfway there. Keep going.", protoOnly:"Prototype",
   m1:"Module 1", modN:"Module {n}", min:"min",
   railLbl:"Your journey · Station {a} of {b}", stClearH:"Station cleared",
-  stylePlay:"Play and confirm", stylePlayD:"Each step becomes a quick game. Call the key words, then watch the SOP's own text confirm itself, word for word.",
+  stylePlay:"Play after reading", stylePlayD:"Read each card in full, undisturbed. Then make a few quick calls on what you read, in the SOP's own words.",
   plPick:"Which words does the SOP use here?", plTrue:"Confirmed, word for word.",
   plNotThis:"Not this one. It belongs elsewhere in this module.", plHint:"Here it is. Tap it to place it.",
   plStreak3:"Three in a row. Sharp reading.", plStreak5:"Five in a row. You think like a controller.", plStreak8:"Eight in a row. The SOP is becoming yours.",
   plStreakAria:"Insight streak: {n}", plClean:"Clean card", plCleanA:"Every call on this card was right the first time.",
-  plDoneLine:"Card complete. Everything above is the source text, in full.", plFromSource:"From the source",
+  plDoneLine:"Locked in. Every answer above is the SOP's own wording.", plFromSource:"From the source",
+  plReadyH:"Ready to lock it in?", plReadyS:"A short recall round on what you just read. The card stays open above you.",
+  plReadyB:"Play this card", plCallN:"Call {a} of {b}",
   plSparksFin:"Insight sparks collected: {n}.",
   certTo:"This is to certify that", styleChip:"Style",
   pmBaton:"The baton view: each step sits in the lane of who carries it. Open every step.",
   laneCO:"Country office", laneHNS:"Host National Society", laneAUD:"Auditors",
   plWho:"Who carries this step?", plDoc:"Which document belongs to this step?", plCtrl:"Which control guards this step?",
-  plDuty:"Whose duty is this?", plLock:"Lock it in: three quick calls on what you just explored." },
+  plDuty:"Whose duty is this?", plLock:"Lock it in: three quick calls on what you just explored.",
+  liShare:"Share on LinkedIn",
+  liToast:"Your certificate is downloading. LinkedIn opens with your post ready: attach the certificate image and share.",
+  liPost:"I completed the module \"{module}\" on the Danish Red Cross International Finance Learning Platform, with a score of {score}/100.\n\nGood finance is not paperwork. It is the promise that money given for people in crisis arrives as impact. Proud to keep learning how that promise is kept.\n\n#DanishRedCross #RedCross #HumanitarianFinance #LearningAndDevelopment #InternationalFinance #Compliance #Audit" },
 da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"Tjek min rækkefølge",
   sortYes:"Rigtigt", sortNo:"Ikke helt", nice:"Flot.", almost:"Tæt på. Kig en gang til.",
   goodSave:"Værd at huske.", station:"Station", listen:"Lyt", stop:"Stop",
@@ -1094,18 +1105,23 @@ da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"
   certScore:"Resultat", certDate:"Dato", halfway:"Halvvejs. Bliv ved.", protoOnly:"Prototype",
   m1:"Modul 1", modN:"Modul {n}", min:"min",
   railLbl:"Din rejse · Station {a} af {b}", stClearH:"Station gennemført",
-  stylePlay:"Spil og bekræft", stylePlayD:"Hvert trin bliver et lille spil. Gæt nøgleordene, og se procedurens egen tekst bekræfte sig selv, ord for ord.",
+  stylePlay:"Spil efter læsningen", stylePlayD:"Læs hvert kort færdigt i ro. Bagefter tager du et par hurtige valg om det, du har læst, med procedurens egne ord.",
   plPick:"Hvilke ord bruger proceduren her?", plTrue:"Bekræftet, ord for ord.",
   plNotThis:"Ikke den. Den hører hjemme et andet sted i modulet.", plHint:"Her er den. Tryk for at sætte den ind.",
   plStreak3:"Tre i træk. Skarpt læst.", plStreak5:"Fem i træk. Du tænker som en controller.", plStreak8:"Otte i træk. Proceduren er ved at blive din.",
   plStreakAria:"Indsigtsstime: {n}", plClean:"Fejlfrit kort", plCleanA:"Alle valg på dette kort sad rigtigt i første forsøg.",
-  plDoneLine:"Kortet er fuldført. Alt ovenfor er kildeteksten i sin helhed.", plFromSource:"Fra kilden",
+  plDoneLine:"Låst fast. Hvert svar ovenfor er procedurens egne ord.", plFromSource:"Fra kilden",
+  plReadyH:"Klar til at låse det fast?", plReadyS:"En kort runde om det, du lige har læst. Kortet bliver stående åbent ovenfor.",
+  plReadyB:"Spil kortet", plCallN:"Valg {a} af {b}",
   plSparksFin:"Indsigtsgnister samlet: {n}.",
   certTo:"Det bekræftes hermed, at", styleChip:"Stil",
   pmBaton:"Stafet-visningen: hvert trin ligger i banen hos den, der bærer det. Åbn alle trin.",
   laneCO:"Landekontor", laneHNS:"Host National Society", laneAUD:"Revisorer",
   plWho:"Hvem bærer dette trin?", plDoc:"Hvilket dokument hører til dette trin?", plCtrl:"Hvilken kontrol beskytter dette trin?",
-  plDuty:"Hvis opgave er dette?", plLock:"Lås det fast: tre hurtige valg om det, du lige har udforsket." },
+  plDuty:"Hvis opgave er dette?", plLock:"Lås det fast: tre hurtige valg om det, du lige har udforsket.",
+  liShare:"Del på LinkedIn",
+  liToast:"Dit kursusbevis hentes. LinkedIn åbner med dit opslag klar: vedhæft beviset som billede, og del.",
+  liPost:"Jeg har gennemført modulet \"{module}\" på Røde Kors' International Finance Learning Platform med {score}/100 point.\n\nGod økonomistyring er ikke papirarbejde. Det er løftet om, at penge givet til mennesker i krise når frem som virkning. Stolt af at lære mere om, hvordan det løfte holdes.\n\n#RødeKors #HumanitærØkonomi #Læring #InternationalFinance #Compliance #Revision" },
 fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:"Vérifier mon ordre",
   sortYes:"Vrai", sortNo:"Pas tout à fait", nice:"Bien vu.", almost:"Presque. Regardez encore.",
   goodSave:"À retenir.", station:"Étape", listen:"Écouter", stop:"Arrêter",
@@ -1131,18 +1147,23 @@ fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:
   certScore:"Score", certDate:"Date", halfway:"À mi-chemin. Continuez.", protoOnly:"Prototype",
   m1:"Module 1", modN:"Module {n}", min:"min",
   railLbl:"Votre parcours · Étape {a} sur {b}", stClearH:"Étape terminée",
-  stylePlay:"Jouer et confirmer", stylePlayD:"Chaque étape devient un petit jeu. Devinez les mots clés, puis voyez le texte de la procédure se confirmer, mot pour mot.",
+  stylePlay:"Jouer après la lecture", stylePlayD:"Lisez chaque carte en entier, sans interruption. Ensuite, quelques choix rapides sur ce que vous venez de lire, avec les mots de la procédure.",
   plPick:"Quels mots la procédure utilise-t-elle ici ?", plTrue:"Confirmé, mot pour mot.",
   plNotThis:"Pas celui-ci. Il appartient à un autre passage du module.", plHint:"Le voici. Touchez-le pour le placer.",
   plStreak3:"Trois de suite. Belle lecture.", plStreak5:"Cinq de suite. Vous pensez comme un contrôleur.", plStreak8:"Huit de suite. La procédure devient la vôtre.",
   plStreakAria:"Série de bonnes réponses : {n}", plClean:"Carte parfaite", plCleanA:"Tous les choix de cette carte étaient justes du premier coup.",
-  plDoneLine:"Carte terminée. Tout ce qui précède est le texte source, en entier.", plFromSource:"À la source",
+  plDoneLine:"Verrouillé. Chaque réponse ci-dessus reprend les mots mêmes de la procédure.", plFromSource:"À la source",
+  plReadyH:"À vous de jouer.", plReadyS:"Une courte série de rappels sur ce que vous venez de lire. La carte reste ouverte au-dessus.",
+  plReadyB:"Jouer cette carte", plCallN:"Choix {a} sur {b}",
   plSparksFin:"Étincelles d'intuition recueillies : {n}.",
   certTo:"Ceci certifie que", styleChip:"Style",
   pmBaton:"La vue relais : chaque étape est dans le couloir de celui qui la porte. Ouvrez chaque étape.",
   laneCO:"Bureau pays", laneHNS:"Société nationale hôte", laneAUD:"Auditeurs",
   plWho:"Qui porte cette étape ?", plDoc:"Quel document appartient à cette étape ?", plCtrl:"Quel contrôle protège cette étape ?",
-  plDuty:"À qui revient cette tâche ?", plLock:"Verrouillez : trois choix rapides sur ce que vous venez d'explorer." },
+  plDuty:"À qui revient cette tâche ?", plLock:"Verrouillez : trois choix rapides sur ce que vous venez d'explorer.",
+  liShare:"Partager sur LinkedIn",
+  liToast:"Votre certificat se télécharge. LinkedIn s'ouvre avec votre publication prête : joignez l'image du certificat et partagez.",
+  liPost:"J'ai terminé le module « {module} » sur l'International Finance Learning Platform de la Croix-Rouge danoise, avec un score de {score}/100.\n\nUne bonne gestion financière n'est pas de la paperasse. C'est la promesse que l'argent donné pour des personnes en crise devient un impact réel. Fier de continuer à apprendre comment cette promesse est tenue.\n\n#CroixRouge #FinanceHumanitaire #Apprentissage #FinanceInternationale #Conformité #Audit" },
 ar:{ checkBadge:"لعبة سريعة، ليست اختباراً", continueBtn:"متابعة", checkOrder:"تحقق من ترتيبي",
   sortYes:"صحيح", sortNo:"ليس تماماً", nice:"أحسنت.", almost:"اقتربت. انظر مرة أخرى.",
   goodSave:"تستحق التذكر.", station:"محطة", listen:"استمع", stop:"إيقاف",
@@ -1168,18 +1189,23 @@ ar:{ checkBadge:"لعبة سريعة، ليست اختباراً", continueBtn:"
   certScore:"النتيجة", certDate:"التاريخ", halfway:"في منتصف الطريق. واصل.", protoOnly:"نموذج تجريبي",
   m1:"الوحدة 1", modN:"الوحدة {n}", min:"د",
   railLbl:"رحلتك · المحطة {a} من {b}", stClearH:"أُنجزت المحطة",
-  stylePlay:"العب وأكِّد", stylePlayD:"يتحول كل قسم إلى لعبة سريعة. خمّن العبارات المفتاحية، ثم شاهد نص الإجراءات يتأكد أمامك حرفياً.",
+  stylePlay:"العب بعد القراءة", stylePlayD:"اقرأ كل بطاقة كاملة دون مقاطعة، ثم اتخذ بضعة قرارات سريعة عمّا قرأت، بكلمات نص الإجراءات نفسها.",
   plPick:"أي عبارة يستخدمها نص الإجراءات هنا؟", plTrue:"تأكّد النص، حرفياً.",
   plNotThis:"ليست هذه العبارة. مكانها في موضع آخر من هذه الوحدة.", plHint:"ها هي العبارة. اخترها لتضعها في مكانها.",
   plStreak3:"ثلاث إجابات متتالية. قراءة دقيقة.", plStreak5:"خمس إجابات متتالية. تفكر كما يفكر المراقب المالي.", plStreak8:"ثماني إجابات متتالية. أصبحت الإجراءات في متناولك.",
   plStreakAria:"سلسلة الإجابات الصحيحة: {n}", plClean:"بطاقة كاملة", plCleanA:"كل اختيارات هذه البطاقة كانت صحيحة من المحاولة الأولى.",
-  plDoneLine:"اكتملت البطاقة. كل ما سبق هو نص المصدر كاملاً.", plFromSource:"من المصدر",
+  plDoneLine:"ثُبِّت ما تعلمته. كل إجابة أعلاه هي بكلمات نص الإجراءات نفسها.", plFromSource:"من المصدر",
+  plReadyH:"هل نثبّت ما قرأته؟", plReadyS:"جولة قصيرة لاستدعاء ما قرأته للتو. تبقى البطاقة مفتوحة أعلاه.",
+  plReadyB:"العب هذه البطاقة", plCallN:"القرار {a} من {b}",
   plSparksFin:"ومضات الفهم التي جمعتها: {n}.",
   certTo:"نشهد بأن", styleChip:"الأسلوب",
   pmBaton:"عرض تسليم العصا: كل خطوة في مسار من يحملها. افتح كل الخطوات.",
   laneCO:"المكتب القُطري", laneHNS:"الجمعية الوطنية المضيفة", laneAUD:"المدققون",
   plWho:"من يحمل هذه الخطوة؟", plDoc:"أي مستند يخص هذه الخطوة؟", plCtrl:"أي ضابط يحمي هذه الخطوة؟",
-  plDuty:"مهمة من هذه؟", plLock:"ثبّت ما تعلمته: ثلاثة قرارات سريعة عمّا استكشفته للتو." }
+  plDuty:"مهمة من هذه؟", plLock:"ثبّت ما تعلمته: ثلاثة قرارات سريعة عمّا استكشفته للتو.",
+  liShare:"المشاركة على LinkedIn",
+  liToast:"يجري تنزيل شهادتك. يفتح LinkedIn ومنشورك جاهز: أرفق صورة الشهادة وشارك.",
+  liPost:"أتممت وحدة \"{module}\" على منصة تعلّم المالية الدولية للصليب الأحمر الدنماركي بنتيجة {score}/100.\n\nالإدارة المالية الجيدة ليست أوراقاً إدارية، بل هي الوعد بأن المال الممنوح لأشخاص في أزمة يصل أثراً حقيقياً. فخور بمواصلة تعلّم كيفية الوفاء بهذا الوعد.\n\n#الصليب_الأحمر #المالية_الإنسانية #تعلم #الامتثال #التدقيق" }
 };
 Object.keys(STR2).forEach(function(l){ Object.keys(STR2[l]).forEach(function(k){ STR[l][k]=STR2[l][k]; }); });
 
@@ -1896,6 +1922,7 @@ function startCourse(){
 
 function renderStep(i){
   shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T);
+  PLAY_DONE=true;
   var steps=stepsFlat();
   if(i>=steps.length){ finishCourse(); return; }
   show("s-learn");
@@ -2016,7 +2043,7 @@ function plPlan(sp,stepIdx){
     if(first<0||plain.indexOf(t.toLowerCase(),first+1)>=0) return; /* term must occur exactly once */
     cand.push({si:si, term:t});
   });
-  var maxGaps=(sp.proc||sp.roles)?1:3;
+  var maxGaps=3;
   cand.sort(function(a,b){
     var aw=(a.si===0?1:0), bw=(b.si===0?1:0);
     if(aw!==bw) return aw-bw;
@@ -2041,45 +2068,36 @@ function plPlan(sp,stepIdx){
   return {gaps:gaps.filter(function(g){ return !!g.chips; }), sents:sents};
 }
 function playCardHTML(sp,i){
-  var plan=plPlan(sp,i);
-  sp._plan=plan;
-  var gapBySent={};
-  plan.gaps.forEach(function(g,gi){ gapBySent[g.si]=gi; });
-  var bodySp=plan.sents.map(function(s,si){
-    var inner=s;
-    if(gapBySent[si]!==undefined){
-      inner=s.replace(/<b>([\s\S]*?)<\/b>/,'<b class="pl-gap" data-gap="'+gapBySent[si]+'">$1</b>');
-    }
-    return '<span class="snt" data-snt="'+si+'">'+inner+'</span>';
-  }).join(" ");
+  /* the card renders complete and untouched, exactly like reading; the Arena waits at the end */
+  var bodyHtml=L(sp.b);
+  var sents=splitSentences(bodyHtml);
+  var bodySp=(sents.length>1)?sents.map(function(s,si){ return '<span class="snt" data-snt="'+si+'">'+s+'</span>'; }).join(" "):bodyHtml;
   var h='<div class="ln-kicker pl-kick">'+L(sp.k)+
     '<span class="pl-streak" role="status" id="plStreak" style="display:none">'+SPARK_SVG+'<span id="plStreakN">0</span></span></div>'+
     '<h2 class="ln-h">'+L(sp.h)+'</h2><div class="ln-body">'+bodySp+'</div>'+
-    '<div id="plAsk" class="pl-ask"></div><div id="plSay" class="vh" aria-live="polite"></div>';
-  var tail='';
+    '<div id="plSay" class="vh" aria-live="polite"></div>';
   if(sp.visual==="cycle"){
-    tail+='<div class="cyc">'+MODULE.cycle.map(function(c,ci){
+    h+='<div class="cyc">'+MODULE.cycle.map(function(c,ci){
       return '<div class="cyc-n'+(ci===sp.vOn?" on":"")+'"><div class="cyc-b">'+c.n+'</div><div class="cyc-nm">'+L(c.nm)+'</div></div>'+(ci<MODULE.cycle.length-1?'<div class="cyc-a">→</div>':'');
     }).join("")+'</div>';
   }
   if(sp.visual==="grid"){
-    tail+='<div class="pgrid">'+MODULE.principles.map(function(p,pi){
+    h+='<div class="pgrid">'+MODULE.principles.map(function(p,pi){
       return '<div class="ptile" style="animation-delay:'+(pi*70)+'ms"><span class="pn">0'+(pi+1)+'</span>'+L(p)+'</div>';
     }).join("")+'</div>';
   }
   if(sp.roles){
-    tail+='<div class="rl-list">'+sp.roles.map(function(r,ri){
+    h+='<div class="rl-list">'+sp.roles.map(function(r,ri){
       return '<div class="rl" style="--rc:'+r.c+'"><button class="rl-h" data-rl="'+ri+'">'+L(r.nm)+'<span class="chev">&#9662;</span></button><div class="rl-b"><p>'+L(r.d)+'</p></div></div>';
     }).join("")+'</div>';
   }
   if(sp.proc){
-    tail+=procHTML(sp);
+    h+=procHTML(sp);
   }
-  if(sp.q) tail+='<div class="pl-eyebrow">'+T("plFromSource")+'</div><div class="ln-quote">'+L(sp.q)+'</div>';
-  if(sp.src) tail+='<div class="ln-src">'+L(sp.src)+'</div>';
-  if(sp.r) tail+='<div><button class="ref-link" data-reflink>'+GLYPHS.link+' '+T("refLabel")+': '+esc((MODULE.resources&&MODULE.resources[sp.r-1])?L(MODULE.resources[sp.r-1]):(T("resource")+" "+sp.r))+'</button></div>';
-  tail+='<div class="pl-done" id="plDone"></div>';
-  h+='<div id="plTail"'+(plan.gaps.length?' style="display:none"':'')+'>'+tail+'</div>';
+  if(sp.q) h+='<div class="pl-eyebrow">'+T("plFromSource")+'</div><div class="ln-quote">'+L(sp.q)+'</div>';
+  if(sp.src) h+='<div class="ln-src">'+L(sp.src)+'</div>';
+  if(sp.r) h+='<div><button class="ref-link" data-reflink>'+GLYPHS.link+' '+T("refLabel")+': '+esc((MODULE.resources&&MODULE.resources[sp.r-1])?L(MODULE.resources[sp.r-1]):(T("resource")+" "+sp.r))+'</button></div>';
+  h+='<section class="pl-arena" id="plArena" role="group" aria-labelledby="plArenaH"></section>';
   h+='<div class="ln-foot">'+
      '<button class="tts-btn" id="ttsBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg><span data-tlabel>'+T("listen")+'</span></button>'+
      '<span class="spacer"></span>'+
@@ -2096,101 +2114,151 @@ function sparkFly(el){
   document.body.appendChild(s);
   setTimeout(function(){ s.remove(); },1100);
 }
-function wirePlay(sp,i){
-  var plan=sp._plan||{gaps:[],sents:[]};
-  var gaps=plan.gaps;
-  var nb=$("#nextBtn");
-  var say=$("#plSay");
-  var gate=!isAdmin();
-  var cur=0, misses=0, cardMisses=0, finished=false;
-  function streakUI(){
-    var pill=$("#plStreak"), n2=$("#plStreakN");
-    if(!pill||!n2) return;
-    n2.textContent=String(PL_STREAK);
-    pill.style.display=PL_STREAK>=2?"":"none";
-    pill.setAttribute("aria-label",T("plStreakAria").replace("{n}",String(PL_STREAK)));
-    if(PL_STREAK===3) toast(T("plStreak3"),2400);
-    if(PL_STREAK===5) toast(T("plStreak5"),2600);
-    if(PL_STREAK===8) toast(T("plStreak8"),2800);
-    if(PL_STREAK===3||PL_STREAK===5||PL_STREAK===8){ pill.classList.remove("combo"); void pill.offsetWidth; pill.classList.add("combo"); }
-  }
-  function revealTail(played){
-    var tl=$("#plTail"); if(tl) tl.style.display="";
-    var pd=$("#plDone");
-    if(pd) pd.innerHTML=played?esc(T("plDoneLine"))+(cardMisses===0?' <span class="pl-clean" title="'+esc(T("plCleanA"))+'">'+SPARK_SVG+' '+esc(T("plClean"))+'</span>':''):"";
-    if(sp.roles){
-      $all(".rl-h").forEach(function(b){
-        b.addEventListener("click",function(){
-          var me=b.parentNode, was=me.classList.contains("open");
-          $all(".rl.open").forEach(function(o){ if(o!==me) o.classList.remove("open"); });
-          me.classList.toggle("open", !was);
-        });
-      });
-    }
-    if(sp.proc){ wireProc(sp,i); }
-    else if(nb) nb.disabled=false;
-    var rl2=$("[data-reflink]");
-    if(rl2) rl2.addEventListener("click", function(){ toast(T("refToast"),3200); });
+/* PLAY_DONE gates Continue in play mode; reset per card in renderStep */
+var PLAY_DONE=true;
+function streakPill(){
+  var pill=$("#plStreak"), n2=$("#plStreakN");
+  if(!pill||!n2) return;
+  n2.textContent=String(PL_STREAK);
+  pill.style.display=PL_STREAK>=2?"":"none";
+  pill.setAttribute("aria-label",T("plStreakAria").replace("{n}",String(PL_STREAK)));
+  if(PL_STREAK===3) toast(T("plStreak3"),2400);
+  if(PL_STREAK===5) toast(T("plStreak5"),2600);
+  if(PL_STREAK===8) toast(T("plStreak8"),2800);
+  if(PL_STREAK===3||PL_STREAK===5||PL_STREAK===8){ pill.classList.remove("combo"); void pill.offsetWidth; pill.classList.add("combo"); }
+}
+/* shared round runner: one Arena, 1-3 calls, kind 2-miss reveal, cosmetic rewards only */
+function runRound(calls){
+  var arena=$("#plArena");
+  if(!arena||!calls.length){ PLAY_DONE=true; var nb0=$("#nextBtn"); if(nb0) nb0.disabled=false; return; }
+  arena.hidden=false;
+  var qi=0, cardMisses=0;
+  function fin(){
+    arena.innerHTML='<div class="pl-done2">✓ '+esc(T("plDoneLine"))+(cardMisses===0?' <span class="pl-clean" title="'+esc(T("plCleanA"))+'">'+SPARK_SVG+' '+esc(T("plClean"))+'</span>':'')+'</div>';
+    PLAY_DONE=true;
+    var nb=$("#nextBtn");
+    if(nb){ nb.disabled=false; try{ nb.focus(); }catch(e){} }
+    var say=$("#plSay"); if(say) say.textContent=T("plDoneLine");
+    ding("ok");
   }
   function ask(){
-    var box=$("#plAsk"); if(!box) return;
-    $all("b.pl-gap.on").forEach(function(g2){ g2.classList.remove("on"); });
-    if(cur>=gaps.length){
-      box.innerHTML="";
-      $all(".ln-body .snt.pldim").forEach(function(s2){ s2.classList.remove("pldim"); });
-      if(say) say.textContent=T("plDoneLine");
-      finished=true;
-      ding("ok");
-      setTimeout(function(){ revealTail(true); }, 360);
-      return;
-    }
-    var g=gaps[cur];
-    var gapEl=$('b.pl-gap[data-gap="'+cur+'"]');
-    if(gapEl) gapEl.classList.add("on");
-    /* spotlight: the sentence in play stands forward, the rest steps back */
-    var sentEl=gapEl?gapEl.closest(".snt"):null;
-    $all(".ln-body .snt").forEach(function(s2){ s2.classList.toggle("pldim", sentEl&&s2!==sentEl); });
-    misses=0;
-    box.innerHTML='<div class="pl-ask-h">'+T("plPick")+'</div><div class="pl-chips">'+
-      g.chips.map(function(c,ci){ return '<button class="pl-chip" data-plc="'+ci+'">'+esc(c)+'</button>'; }).join("")+
-      '</div><div class="pl-fb" id="plFb"></div>';
-    $all(".pl-chip",box).forEach(function(ch){
+    if(qi>=calls.length){ fin(); return; }
+    var c=calls[qi], misses=0, done=false;
+    arena.innerHTML='<div class="pl-ask-h arn" id="plArenaH" tabindex="-1">'+esc(T("plCallN").replace("{a}",String(qi+1)).replace("{b}",String(calls.length)))+' · '+esc(c.header)+'</div>'+
+      (c.line?'<div class="pl-line-q arn">'+c.line+'</div>':'')+
+      '<div class="pl-chips arn">'+c.chips.map(function(ch,ci){ return '<button class="pl-chip" data-rr="'+ci+'">'+esc(ch)+'</button>'; }).join("")+'</div>'+
+      '<div class="pl-fb arn" id="rrFb"></div>';
+    var say=$("#plSay");
+    if(say) say.textContent=T("plCallN").replace("{a}",String(qi+1)).replace("{b}",String(calls.length))+" "+c.header;
+    var hd=$("#plArenaH"); if(hd){ try{ hd.focus(); }catch(e){} }
+    $all(".pl-chip",arena).forEach(function(ch){
       ch.addEventListener("click",function(){
-        if(finished) return;
-        var picked=g.chips[+ch.getAttribute("data-plc")];
-        var fb=$("#plFb");
-        if(picked.toLowerCase()===g.term.toLowerCase()){
-          ch.classList.add("yes");
-          if(gapEl){ gapEl.classList.remove("on"); gapEl.classList.add("fill"); }
-          if(misses===0){ PL_STREAK++; S.play.sparks++; save(); sparkFly(gapEl||ch); ding("spark"); }
+        if(done) return;
+        var picked=c.chips[+ch.getAttribute("data-rr")];
+        var fb=$("#rrFb");
+        if(picked===c.truth){
+          done=true;
+          ch.classList.add("yes"); ch.classList.remove("no");
+          if(c.onCorrect) c.onCorrect(arena);
+          if(misses===0){ PL_STREAK++; S.play.sparks++; save(); sparkFly(ch); ding("spark"); }
           else { PL_STREAK=0; }
-          streakUI();
+          streakPill();
           if(fb) fb.textContent="✓ "+T("plTrue");
-          if(say) say.textContent=T("plTrue")+" "+stripHtml(plan.sents[g.si]);
-          cur++;
-          setTimeout(ask, 720);
+          if(say&&c.confirm) say.textContent=T("plTrue")+" "+c.confirm;
+          qi++; cardMisses+=misses;
+          setTimeout(ask,760);
         } else {
-          misses++; cardMisses++; PL_STREAK=0; streakUI();
+          misses++; PL_STREAK=0; streakPill();
           ch.classList.add("nope");
           setTimeout(function(){ ch.classList.remove("nope"); ch.classList.add("no"); },380);
           if(fb) fb.textContent=T("plNotThis")+(misses>=2?" "+T("plHint"):"");
           if(misses>=2){
-            var ti=-1;
-            g.chips.forEach(function(c,ci){ if(c.toLowerCase()===g.term.toLowerCase()) ti=ci; });
-            var tc=$('.pl-chip[data-plc="'+ti+'"]',box);
-            if(tc) tc.classList.add("yes");
+            c.chips.forEach(function(x,xi){
+              if(x===c.truth){
+                var tc=$('.pl-chip[data-rr="'+xi+'"]',arena);
+                if(tc){ tc.classList.add("yes"); tc.classList.remove("no"); }
+              }
+            });
           }
         }
       });
     });
   }
-  if(!gaps.length){
-    revealTail(false);
-    if(sp.roles) dutyQuiz(sp);
+  ask();
+}
+/* call builders: every answer is a verbatim field, every distractor a real sibling value */
+function narrativeCalls(sp,i){
+  var plan=plPlan(sp,i);
+  return plan.gaps.map(function(g){
+    var plain=stripHtml(plan.sents[g.si]);
+    var low=plain.toLowerCase(), ti=low.indexOf(g.term.toLowerCase());
+    var line=(ti>=0)?esc(plain.slice(0,ti))+'<span class="pl-slot"></span>'+esc(plain.slice(ti+g.term.length)):esc(plain);
+    var truthVerbatim=(ti>=0)?plain.substr(ti,g.term.length):g.term;
+    return {header:T("plPick"), line:line, chips:g.chips, truth:g.term, confirm:plain,
+      onCorrect:function(arena){ var s=$(".pl-slot",arena); if(s){ s.textContent=truthVerbatim; s.classList.add("fill"); } }};
+  });
+}
+function rolesCalls(sp){
+  var seed=S.cur*53+S.step*7;
+  var idxs=[seed%sp.roles.length,(seed+2)%sp.roles.length,(seed+4)%sp.roles.length];
+  idxs=idxs.filter(function(v,k){ return idxs.indexOf(v)===k; });
+  return idxs.map(function(ri,k){
+    var truth=L(sp.roles[ri].nm);
+    var others=sp.roles.map(function(r){ return L(r.nm); }).filter(function(n){ return n!==truth; });
+    var d1=others[(seed+k)%others.length], d2=others[(seed+k+2)%others.length];
+    var h2=0;
+    while(d2===d1&&h2<others.length){ h2++; d2=others[((seed+k+2)+h2)%others.length]; }
+    var t=stripHtml(L(sp.roles[ri].d));
+    var clause=t.split(/[,.؛،]/)[0].trim();
+    if(clause.length>96) clause=clause.slice(0,93)+"...";
+    var chips=[truth,d1,d2], rot=(seed+k)%3;
+    chips=chips.slice(rot).concat(chips.slice(0,rot));
+    return {header:T("plDuty"), line:'<span class="pl-clause">'+esc(clause)+'</span>', chips:chips, truth:truth};
+  });
+}
+function procCalls(sp,i){
+  var seed=S.cur*97+i*13, n=sp.proc.length, out=[];
+  var picks=[[seed%n,"who",T("plWho")],[(seed+3)%n,"docs",T("plDoc")],[(seed+5)%n,"ctrl",T("plCtrl")]];
+  picks.forEach(function(p,k){
+    var ni=p[0], fld=p[1], truth=L(sp.proc[ni][fld]);
+    var others=[];
+    sp.proc.forEach(function(nd,j){ if(j!==ni){ var v=L(nd[fld]); if(v!==truth&&others.indexOf(v)<0) others.push(v); } });
+    if(others.length<2) return;
+    var d1=others[(seed*7+k)%others.length], d2=others[(seed*11+k+2)%others.length];
+    var hops=0;
+    while(d2===d1&&hops<others.length){ hops++; d2=others[((seed*11+k+2)+hops)%others.length]; }
+    var chips=[truth,d1,d2], rot=(seed+k)%3;
+    chips=chips.slice(rot).concat(chips.slice(0,rot));
+    out.push({header:L(sp.proc[ni].nm)+" · "+p[2], chips:chips, truth:truth});
+  });
+  return out;
+}
+function wirePlay(sp,i){
+  var nb=$("#nextBtn");
+  var gate=!isAdmin();
+  var arena=$("#plArena");
+  PLAY_DONE=true;
+  if(!arena) return;
+  if(sp.proc){
+    /* the map exploration IS the reading; the lock-in round auto-starts in the Arena after the 8th step */
+    arena.hidden=true;
+    if(S.done["c"+i]!==undefined){ return; } /* revisits stay unlocked */
+    PLAY_DONE=false;
+    if(nb&&gate) nb.disabled=true;
     return;
   }
+  var calls=sp.roles?rolesCalls(sp):narrativeCalls(sp,i);
+  if(!calls.length){ arena.remove(); return; }
+  PLAY_DONE=false;
   if(nb&&gate) nb.disabled=true;
-  ask();
+  arena.innerHTML='<div class="pl-ready"><div class="pl-ready-h" id="plArenaH" tabindex="-1">'+SPARK_SVG+' '+esc(T("plReadyH"))+'</div>'+
+    '<div class="pl-ready-s">'+esc(T("plReadyS"))+'</div>'+
+    '<button class="btn ghost" id="plReadyB">'+esc(T("plReadyB"))+'</button></div>';
+  var rb=$("#plReadyB");
+  if(rb) rb.addEventListener("click",function(){
+    shutUp();
+    runRound(calls);
+  });
 }
 /* QA helper: dump every generated gap and its chips for review */
 function playAudit(){
@@ -2255,23 +2323,21 @@ function wireStep(sp,i){
   }
   var nb=$("#nextBtn");
   if(nb) nb.addEventListener("click", function(){ advanceTo(i+1); });
-  if(sp.t==="card"&&S.style==="play"){
-    wirePlay(sp,i);
-  } else {
-    var rl=$("[data-reflink]");
-    if(rl) rl.addEventListener("click", function(){ toast(T("refToast"),3200); });
-    if(sp.roles){
-      $all(".rl-h").forEach(function(b){
-        b.addEventListener("click",function(){
-          var me=b.parentNode, was=me.classList.contains("open");
-          $all(".rl.open").forEach(function(o){ if(o!==me) o.classList.remove("open"); });
-          me.classList.toggle("open", !was);
-        });
+  /* the reading surface is identical in every style; play only adds the Arena at the end */
+  var rl=$("[data-reflink]");
+  if(rl) rl.addEventListener("click", function(){ toast(T("refToast"),3200); });
+  if(sp.roles){
+    $all(".rl-h").forEach(function(b){
+      b.addEventListener("click",function(){
+        var me=b.parentNode, was=me.classList.contains("open");
+        $all(".rl.open").forEach(function(o){ if(o!==me) o.classList.remove("open"); });
+        me.classList.toggle("open", !was);
       });
-    }
-    if(sp.proc) wireProc(sp,i);
-    if(sp.t==="card"&&S.style==="watch") wireWatch(sp,i);
+    });
   }
+  if(sp.t==="card"&&S.style==="play") wirePlay(sp,i);
+  if(sp.proc) wireProc(sp,i);
+  if(sp.t==="card"&&S.style==="watch") wireWatch(sp,i);
   if(sp.t==="card") wireTilt($("#lnCard"));
   if(sp.t==="check") wireCheck(sp,i);
 }
@@ -2330,7 +2396,7 @@ function wireProc(sp,i){
     var pc=$("#pmCount");
     if(pc) pc.innerHTML = c<total ? T("pmProgress").replace("{c}","<b>"+c+"</b>").replace("{t}",String(total)) : "&#10003; "+T("pmAll");
     updFill();
-    if(nb) nb.disabled = gate && c<total;
+    if(nb) nb.disabled = gate && (c<total || !PLAY_DONE);
     if(c>=total && S.done["c"+i]===undefined){
       S.done["c"+i]=20; save();
       addPts(20, pc||$("#lnCard"));
@@ -2355,112 +2421,17 @@ function wireProc(sp,i){
   upd();
 }
 
-/* play mode, process card: three lock-it-in calls drawn from the step fields just explored */
+/* play mode, process card: the lock-in round auto-starts in the Arena after full exploration */
 function procQuiz(sp,i){
-  var anchor=$("#pmCount");
-  if(!anchor||$("#plProcQuiz")) return;
-  var seed=S.cur*97+i*13;
-  var picks=[[seed%sp.proc.length,"who",T("plWho")],[(seed+3)%sp.proc.length,"docs",T("plDoc")],[(seed+5)%sp.proc.length,"ctrl",T("plCtrl")]];
-  var wrap=document.createElement("div");
-  wrap.id="plProcQuiz"; wrap.className="pl-ask";
-  anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
-  var qi=0;
-  function ask(){
-    if(qi>=picks.length){
-      wrap.innerHTML='<div class="pl-fb">✓ '+esc(T("plTrue"))+'</div>';
-      ding("ok");
-      setTimeout(function(){ wrap.remove(); },1800);
-      return;
-    }
-    var p=picks[qi], ni=p[0], fld=p[1];
-    var truth=L(sp.proc[ni][fld]);
-    var others=[];
-    sp.proc.forEach(function(n,k){ if(k!==ni){ var v=L(n[fld]); if(v!==truth&&others.indexOf(v)<0) others.push(v); } });
-    if(others.length<2){ qi++; ask(); return; }
-    var d1=others[(seed*7+qi)%others.length], d2=others[(seed*11+qi+2)%others.length];
-    var hops=0;
-    while(d2===d1&&hops<others.length){ hops++; d2=others[((seed*11+qi+2)+hops)%others.length]; }
-    var chips=[truth,d1,d2], rot=(seed+qi)%3;
-    chips=chips.slice(rot).concat(chips.slice(0,rot));
-    wrap.innerHTML='<div class="pl-ask-h">'+esc(T("plLock"))+' · '+(qi+1)+'/3</div>'+
-      '<div class="pl-ask-q">'+esc(L(sp.proc[ni].nm))+' · '+esc(p[2])+'</div>'+
-      '<div class="pl-chips">'+chips.map(function(c,ci){ return '<button class="pl-chip" data-pq="'+ci+'">'+esc(c)+'</button>'; }).join("")+
-      '</div><div class="pl-fb" id="pqFb"></div>';
-    var miss=0;
-    $all(".pl-chip",wrap).forEach(function(ch){
-      ch.addEventListener("click",function(){
-        var picked=chips[+ch.getAttribute("data-pq")];
-        var fb=$("#pqFb");
-        if(picked===truth){
-          ch.classList.add("yes");
-          if(miss===0){ PL_STREAK++; S.play.sparks++; save(); sparkFly(ch); ding("spark"); } else { PL_STREAK=0; }
-          if(fb) fb.textContent="✓ "+T("plTrue");
-          qi++;
-          setTimeout(ask,680);
-        } else {
-          miss++; PL_STREAK=0;
-          ch.classList.add("nope");
-          setTimeout(function(){ ch.classList.remove("nope"); ch.classList.add("no"); },380);
-          if(fb) fb.textContent=T("plNotThis");
-        }
-      });
-    });
-  }
-  ask();
-}
-
-/* play mode, roles card: whose duty is this? Verbatim duty clause, pick the position */
-function dutyQuiz(sp){
-  var box=$("#plAsk");
-  if(!box||!sp.roles||sp.roles.length<3) return;
-  var seed=S.cur*53+S.step*7;
-  var idxs=[seed%sp.roles.length,(seed+2)%sp.roles.length,(seed+4)%sp.roles.length];
-  idxs=idxs.filter(function(v,k){ return idxs.indexOf(v)===k; });
-  var qi=0;
-  function clause(r){
-    var t=stripHtml(L(r.d));
-    var c=t.split(/[,.؛،]/)[0].trim();
-    return c.length>96?c.slice(0,93)+"...":c;
-  }
-  function ask(){
-    if(qi>=idxs.length){
-      box.innerHTML='<div class="pl-fb">✓ '+esc(T("plTrue"))+'</div>';
-      ding("ok");
-      setTimeout(function(){ box.innerHTML=""; },1600);
-      return;
-    }
-    var ri=idxs[qi], truth=L(sp.roles[ri].nm);
-    var others=sp.roles.map(function(r){ return L(r.nm); }).filter(function(n){ return n!==truth; });
-    var d1=others[(seed+qi)%others.length], d2=others[(seed+qi+2)%others.length];
-    var h2=0;
-    while(d2===d1&&h2<others.length){ h2++; d2=others[((seed+qi+2)+h2)%others.length]; }
-    var chips=[truth,d1,d2], rot=(seed+qi)%3;
-    chips=chips.slice(rot).concat(chips.slice(0,rot));
-    box.innerHTML='<div class="pl-ask-h">'+esc(T("plDuty"))+' · '+(qi+1)+'/'+idxs.length+'</div>'+
-      '<div class="ln-quote" style="margin-top:0">'+esc(clause(sp.roles[ri]))+'</div>'+
-      '<div class="pl-chips" style="margin-top:12px">'+chips.map(function(c,ci){ return '<button class="pl-chip" data-dq="'+ci+'">'+esc(c)+'</button>'; }).join("")+
-      '</div><div class="pl-fb" id="dqFb"></div>';
-    var miss=0;
-    $all(".pl-chip",box).forEach(function(ch){
-      ch.addEventListener("click",function(){
-        var picked=chips[+ch.getAttribute("data-dq")];
-        var fb=$("#dqFb");
-        if(picked===truth){
-          ch.classList.add("yes");
-          if(miss===0){ PL_STREAK++; S.play.sparks++; save(); sparkFly(ch); ding("spark"); } else { PL_STREAK=0; }
-          if(fb) fb.textContent="✓ "+T("plTrue");
-          qi++;
-          setTimeout(ask,680);
-        } else {
-          miss++; PL_STREAK=0;
-          ch.classList.add("nope");
-          setTimeout(function(){ ch.classList.remove("nope"); ch.classList.add("no"); },380);
-          if(fb) fb.textContent=T("plNotThis");
-        }
-      });
-    });
-  }
-  ask();
+  var arena=$("#plArena");
+  if(!arena||arena.dataset.run==="1") return;
+  arena.dataset.run="1";
+  var calls=procCalls(sp,i);
+  if(!calls.length){ PLAY_DONE=true; var nb=$("#nextBtn"); if(nb) nb.disabled=false; return; }
+  arena.hidden=false;
+  arena.innerHTML='<div class="pl-ask-h" id="plArenaH" tabindex="-1">'+esc(T("plLock"))+'</div>';
+  try{ arena.scrollIntoView({block:"nearest",behavior:"smooth"}); }catch(e){}
+  setTimeout(function(){ runRound(calls); },460);
 }
 
 /* watch mode: guided walkthrough player (the same content, played as a video) */
@@ -2756,7 +2727,8 @@ function finishCourse(){
     '<h2 class="fin-h">'+T("finishH")+' '+esc(S.name.split(" ")[0])+'</h2>'+
     '<p class="fin-sub">'+(MODULE.finText?L(MODULE.finText):T("finishSub"))+(S.startedAt?' '+fmtDoneIn(Math.max(1,Math.round((Date.now()-S.startedAt)/60000))):'')+(S.style==="play"&&S.play&&S.play.sparks?' '+T("plSparksFin").replace("{n}",String(S.play.sparks)):'')+'</p>'+
     '<div class="fin-cta"><button class="btn" id="dlCert">'+T("downloadCert")+'</button>'+
-    '<button class="btn ghost" id="mgrCert">'+T("notifyMgr")+'</button></div>'+
+    '<button class="btn ghost" id="mgrCert">'+T("notifyMgr")+'</button>'+
+    '<button class="btn ghost" id="liShare">'+GLYPHS.li+' '+T("liShare")+'</button></div>'+
     '<div class="mgr-row" id="mgrRow" style="display:none"><label for="mgrIn">'+T("mgrEmail")+'</label><div class="mgr-line"><input id="mgrIn" type="email" placeholder="manager@rodekors.dk"><button class="btn" id="mgrSend">'+T("sendBtn")+'</button></div></div>'+
     '<div class="cert-frame"><canvas id="certCv" width="1500" height="1060"></canvas></div>'+
     '<div class="next-h">'+T("resourcesH")+'</div><div class="res-list">'+(MODULE.resources||[]).map(function(rr,ri){ return '<button class="res-row" data-res>'+GLYPHS.doc+' <span style="flex:1">'+esc(L(rr))+'</span></button>'; }).join("")+'</div>'+
@@ -2823,6 +2795,15 @@ function finishCourse(){
     $("#mgrIn").style.borderColor="";
     S.mgr=v; save();
     sendToMgr(v);
+  });
+  var li=$("#liShare");
+  if(li) li.addEventListener("click",function(){
+    var post=T("liPost").replace("{module}",L(MODULE.title)).replace("{score}",String(S.pts));
+    try{ $("#dlCert").click(); }catch(e){}
+    setTimeout(function(){
+      try{ window.open("https://www.linkedin.com/feed/?shareActive=true&text="+encodeURIComponent(post),"_blank","noopener"); }catch(e){}
+    },350);
+    toast(T("liToast"),4500);
   });
   $all("[data-res]").forEach(function(b){ b.addEventListener("click",function(){ toast(T("refToast"),3200); }); });
   $all("[data-nextmod]").forEach(function(b){
