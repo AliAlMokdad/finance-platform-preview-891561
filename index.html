@@ -15,7 +15,7 @@
   --night:#141216; --rule:#E8E2DC;
   --gold:#C9A227; --gold-ink:#8A6D12; --silver:#9AA3AD; --bronze:#A8672E; --green:#3E7C5A;
   --p2:#3A5C97; --p3:#A8632E; --p4:#3E7C5A;
-  --shadow:0 2px 10px rgba(41,39,41,.07); --shadow-lg:0 14px 44px rgba(41,39,41,.16);
+  --shadow:0 2px 10px rgba(41,39,41,.07); --shadow-md:0 6px 22px rgba(41,39,41,.10); --shadow-lg:0 14px 44px rgba(41,39,41,.16);
   --sans:'Inter',-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
   --mono:'JetBrains Mono','Cascadia Mono',Consolas,monospace;
 }
@@ -77,11 +77,11 @@ input,select{font-family:inherit}
   border-radius:14px;padding:15px 34px;transition:.2s;letter-spacing:.01em}
 #startBtn:hover{background:var(--red-deep);transform:translateY(-2px);box-shadow:0 10px 30px rgba(227,10,11,.35)}
 .wl-proto{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-family:var(--mono);
-  font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.32);z-index:2}
+  font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);z-index:2}
 
 /* ============ TOPBAR ============ */
-#topbar{position:fixed;top:0;left:0;right:0;height:62px;background:rgba(250,247,244,.94);backdrop-filter:blur(8px);
-  border-bottom:1px solid var(--rule);display:none;align-items:center;gap:16px;padding:0 22px;z-index:40}
+#topbar{position:fixed;top:0;left:0;right:0;height:62px;background:rgba(250,247,244,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--rule);box-shadow:inset 0 1px 0 rgba(255,255,255,.6);display:none;align-items:center;gap:16px;padding:0 22px;z-index:40}
 #topbar.show{display:flex}
 .tb-brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--ink);font-size:14.5px;letter-spacing:.01em}
 .tb-logo{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:3px 8px;display:flex;align-items:center}
@@ -122,7 +122,7 @@ html[dir="rtl"] .rail-fill{transform-origin:right}
 .fld input{width:100%;font-size:16px;color:var(--ink);background:var(--canvas);border:1.5px solid var(--g5);
   border-radius:12px;padding:13px 16px;outline:none;transition:.2s}
 .fld input:focus{border-color:var(--red);background:#fff;box-shadow:0 0 0 4px var(--red-soft)}
-.fld .hint{font-size:12.5px;color:var(--g3);margin-top:6px;line-height:1.45}
+.fld .hint{font-size:12.5px;color:var(--g2);margin-top:6px;line-height:1.45}
 .fld.err input{border-color:var(--red)}
 .fld .errmsg{display:none;font-size:12.5px;color:var(--red);margin-top:6px;font-weight:600}
 .fld.err .errmsg{display:block}
@@ -176,7 +176,7 @@ html[dir="rtl"] .rk-word{text-align:right}
   letter-spacing:.16em;text-transform:uppercase;color:var(--g2);background:#fff;border:1px solid var(--rule);
   border-radius:22px;padding:7px 17px;margin-bottom:20px;box-shadow:var(--shadow)}
 .station-tag .dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
-.ln-card{background:var(--paper);border:1px solid var(--rule);border-radius:22px;box-shadow:var(--shadow-lg);
+.ln-card{background:var(--paper);border:1px solid var(--rule);border-radius:22px;box-shadow:var(--shadow-md);
   padding:40px 44px;width:100%;animation:cardIn .5s cubic-bezier(.2,.7,.2,1) both}
 @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
 .ln-kicker{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
@@ -191,7 +191,7 @@ html[dir="rtl"] .ln-quote{border-left:0;border-right:3px solid var(--red);paddin
 .tts-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--g5);color:var(--ink);
   font-size:13.5px;font-weight:700;border-radius:11px;padding:10px 16px;transition:.2s}
 .tts-btn:hover{border-color:var(--ink)}
-.tts-btn.on{border-color:var(--red);color:var(--red);background:var(--red-soft)}
+.tts-btn.on{border-color:var(--red);color:var(--red-deep);background:var(--red-soft)}
 .tts-btn svg{width:17px;height:17px}
 /* watch mode: guided walkthrough player */
 .vid-stage{position:relative;background:var(--ink);border-radius:14px;aspect-ratio:16/9;margin:0 0 22px;overflow:hidden;
@@ -230,7 +230,7 @@ html[dir="rtl"] .wl-title,html[dir="rtl"] .h1,html[dir="rtl"] .ln-h,html[dir="rt
   font-family:var(--mono);font-weight:700;font-size:18px;border:2px solid var(--g5);background:var(--canvas);color:var(--g3);transition:.25s}
 .map-st .inf{flex:1;min-width:0}
 .map-st .snm{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:3px}
-.map-st .sdt{font-family:var(--mono);font-size:11.5px;color:var(--g3);letter-spacing:.05em}
+.map-st .sdt{font-family:var(--mono);font-size:11.5px;color:var(--g2);letter-spacing:.05em}
 .map-st .act{flex:0 0 auto;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
   border-radius:18px;padding:7px 16px;border:1.5px solid var(--g5);color:var(--g4);background:#fff}
 .map-st.done{border-color:var(--green)}
@@ -243,7 +243,7 @@ html[dir="rtl"] .wl-title,html[dir="rtl"] .h1,html[dir="rtl"] .ln-h,html[dir="rt
 @keyframes mapPulse{0%,100%{box-shadow:0 0 0 5px var(--red-soft)}50%{box-shadow:0 0 0 10px rgba(227,10,11,.07)}}
 .map-st.lock{opacity:.55}
 .map-st.lock .bub{background:var(--g6)}
-.map-foot{margin-top:26px;font-family:var(--mono);font-size:11.5px;color:var(--g4);letter-spacing:.06em;text-align:center}
+.map-foot{margin-top:26px;font-family:var(--mono);font-size:11.5px;color:var(--g2);letter-spacing:.06em;text-align:center}
 .tb-map{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:6px 13px;font-family:var(--mono);font-size:11.5px;
   font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);transition:.18s;box-shadow:var(--shadow)}
 .tb-map:hover{border-color:var(--red);color:var(--red)}
@@ -347,6 +347,27 @@ html[dir="rtl"] .wl-title,html[dir="rtl"] .h1,html[dir="rtl"] .ln-h,html[dir="rt
 .res-row{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--rule);border-radius:12px;
   padding:12px 17px;font-size:14px;font-weight:600;color:var(--ink);transition:.18s;text-align:start}
 .res-row:hover{border-color:var(--red);transform:translateY(-1px);box-shadow:var(--shadow)}
+/* LinkedIn share: a deliberate three-step panel, the learner controls each step */
+.li-row{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:16px 18px;max-width:480px;width:100%;margin:0 auto 26px;text-align:start;box-shadow:var(--shadow)}
+.li-howto{font-size:13px;color:var(--g2);line-height:1.5;margin-bottom:11px}
+.li-cap{width:100%;font-family:var(--sans);font-size:13px;line-height:1.55;color:var(--ink);background:var(--canvas);border:1.5px solid var(--g5);border-radius:11px;padding:11px 13px;resize:vertical;outline:none}
+.li-cap:focus{border-color:var(--red);background:#fff}
+.li-acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:11px}
+.li-acts .btn{flex:1 1 auto}
+.li-acts .btn svg{width:16px;height:16px;vertical-align:-3px;margin-inline-end:5px}
+/* Play "The Call": invitation, confidence dial, the SOP's ruling, the verdict */
+.pl-take{animation:plPulse 1.1s ease 1}
+@keyframes plPulse{0%,100%{box-shadow:0 8px 24px rgba(227,10,11,.3)}45%{box-shadow:0 0 0 6px var(--red-soft)}}
+.pl-confide{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:11px;animation:rvlIn .25s cubic-bezier(.2,.7,.2,1) both}
+.pl-confide[hidden]{display:none}
+.pl-confide-q{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--g3);margin-inline-end:2px}
+.pl-conf{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.03em;border:1.5px solid var(--g5);background:var(--paper);border-radius:999px;padding:7px 16px;color:var(--ink);transition:.16s}
+.pl-conf:hover{border-color:var(--gold);transform:translateY(-1px)}
+.pl-chip.staged{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.18)}
+.pl-ruling{margin-top:12px;font-size:14px;line-height:1.62;color:var(--body);background:#fff;border:1px solid var(--rule);border-inline-start:3px solid var(--green);border-radius:11px;padding:12px 15px;animation:rvlIn .3s cubic-bezier(.2,.7,.2,1) both}
+.pl-ruling b.lead{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);display:block;margin-bottom:5px}
+.pl-verdict{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:15px;font-weight:800;color:var(--green);margin-top:4px}
+.pl-standing{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-ink)}
 /* cycle visual */
 .cyc{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin:22px 0 4px}
 .cyc-n{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:96px}
@@ -367,7 +388,7 @@ html[dir="rtl"] .cyc-a{transform:scaleX(-1)}
 .ck-head{display:flex;align-items:center;gap:10px;margin-bottom:18px}
 .ck-badge{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
   color:#fff;background:var(--ink);border-radius:20px;padding:6px 14px}
-.ck-pts{font-family:var(--mono);font-size:11.5px;color:var(--g3);letter-spacing:.06em}
+.ck-pts{font-family:var(--mono);font-size:11.5px;color:var(--g2);letter-spacing:.06em}
 /* sort (true/false) */
 .sort-stage{position:relative;min-height:240px;margin:18px 0 8px}
 .sort-card{position:absolute;inset:0;background:var(--canvas);border:1.5px solid var(--g5);border-radius:16px;
@@ -435,7 +456,12 @@ html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
 /* ============ FINISH ============ */
 #s-finish{padding-top:62px}
 .fin-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:40px 22px 64px;max-width:760px;margin:0 auto;width:100%;text-align:center}
-.fin-score{font-family:var(--mono);font-weight:700;font-size:clamp(58px,9vw,86px);color:var(--ink);line-height:1;letter-spacing:-.02em}
+.fin-score{font-family:var(--sans);font-weight:800;font-size:clamp(58px,9vw,86px);color:var(--ink);line-height:1;letter-spacing:-.02em}
+.recap-list{list-style:none;max-width:520px;margin:0 auto 30px;text-align:start;display:flex;flex-direction:column;gap:8px}
+.recap-list li{position:relative;padding-inline-start:26px;font-size:14.5px;color:var(--body);line-height:1.5}
+.recap-list li::before{content:"✓";position:absolute;inset-inline-start:0;color:var(--green);font-weight:800}
+.fin-insight{max-width:520px;margin:-6px auto 24px;font-size:13.5px;color:var(--g2)}
+.fin-insight-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);margin-inline-end:6px}
 .fin-score small{font-size:.38em;color:var(--g3);font-weight:500}
 .fin-tier{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:15px;border-radius:24px;padding:9px 22px;margin:16px 0 6px}
 .fin-tier.gold{background:#FBF4DC;color:#8a6d12;border:1.5px solid var(--gold)}
@@ -566,8 +592,8 @@ button:focus-visible,.tb-rail:focus-visible{outline:2.5px solid var(--red);outli
 .pl-chip.yes{border-color:var(--green);box-shadow:0 0 0 3px rgba(62,124,90,.18)}
 .pl-chip.nope{animation:shake .4s ease}
 .pl-fb{font-size:12.5px;color:var(--g2);min-height:18px;margin-top:8px}
-.pl-eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--g3);margin-top:18px}
-.pl-done{font-family:var(--mono);font-size:11px;color:var(--g4);margin-top:14px;letter-spacing:.03em}
+.pl-eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--g2);margin-top:18px}
+.pl-done{font-family:var(--mono);font-size:11px;color:var(--g2);margin-top:14px;letter-spacing:.03em}
 .pl-clean{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-ink);border:1px dashed var(--gold);border-radius:999px;padding:4px 12px;margin-inline-start:10px}
 .spark-fly{position:fixed;z-index:70;font-weight:800;color:var(--gold-ink);font-size:15px;pointer-events:none;animation:plFly 1.05s cubic-bezier(.2,.7,.2,1) both;white-space:nowrap}
 @keyframes plFly{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-46px) scale(1.15)}}
@@ -636,6 +662,7 @@ button:focus-visible,.tb-rail:focus-visible{outline:2.5px solid var(--red);outli
   .ln-card.tiltable{transition:none}
   .pm2-n,.pm2-detail{animation:none}
   #pm2Fill{transition:none}
+  .pl-take,.pl-ruling,.pl-confide{animation:none}
 }
 </style>
 </head>
@@ -729,6 +756,8 @@ var RK_LOGO="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAZABkAAD/7AARRHVja3kAAQAE
    Danish Red Cross · built 2026-06-11 · no backend, no build step
    ================================================================= */
 
+/* ---------- prototype flag: one switch makes the build production-clean ---------- */
+var DEMO=true;
 /* ---------- i18n ---------- */
 var LANGS = [
   {code:"en", name:"English",  glyph:"🇬🇧", dir:"ltr", live:true},
@@ -894,6 +923,7 @@ function show(id){
 /* ---------- welcome screen ---------- */
 (function buildWelcome(){
   var stars=$("#wlStars"), html="";
+  if(!stars||!$("#wlCloud")||!$("#langBtn")) return; /* defensive bootstrap: never let a markup rename halt all script */
   for(var i=0;i<34;i++){
     var b=(i%4===0)?" b":"";
     html+='<span class="wl-star'+b+'" style="top:'+(3+Math.random()*92)+'%;left:'+(2+Math.random()*96)+'%;animation-delay:'+(Math.random()*4).toFixed(2)+'s;animation-duration:'+(3.6+Math.random()*2.4).toFixed(2)+'s"></span>';
@@ -1069,8 +1099,12 @@ en:{ checkBadge:"Quick game, not a test", continueBtn:"Continue", checkOrder:"Ch
   plStreak3:"Three in a row. Sharp reading.", plStreak5:"Five in a row. You think like a controller.", plStreak8:"Eight in a row. The SOP is becoming yours.",
   plStreakAria:"Insight streak: {n}", plClean:"Clean card", plCleanA:"Every call on this card was right the first time.",
   plDoneLine:"Locked in. Every answer above is the SOP's own wording.", plFromSource:"From the source",
-  plReadyH:"Ready to lock it in?", plReadyS:"A short recall round on what you just read. The card stays open above you.",
-  plReadyB:"Play this card", plCallN:"Call {a} of {b}",
+  plReadyH:"You are the controller on this file.", plReadyS:"You have read it. Now make the calls a finance leader makes. The card stays open above you.",
+  plReadyB:"Take the call", plCallN:"Call {a} of {b}",
+  plCommit:"How sure are you?", plConfSure:"I am sure", plConfMaybe:"Fairly sure",
+  plRuleLead:"The SOP rules", plRightSure:"Confident and correct. That is the instinct the SOP wants.", plRightMaybe:"Right call. Trust it next time.",
+  plVerdict:"Calls made: {n}.", plStanding:"You ruled like a controller.",
+  recapH:"What you carry forward", plInsightLead:"Your judgment", plInsightRight:"confident and right: {n}", plInsightWrong:"to revisit: {m}",
   plSparksFin:"Insight sparks collected: {n}.",
   certTo:"This is to certify that", styleChip:"Style",
   pmBaton:"The baton view: each step sits in the lane of who carries it. Open every step.",
@@ -1078,8 +1112,10 @@ en:{ checkBadge:"Quick game, not a test", continueBtn:"Continue", checkOrder:"Ch
   plWho:"Who carries this step?", plDoc:"Which document belongs to this step?", plCtrl:"Which control guards this step?",
   plDuty:"Whose duty is this?", plLock:"Lock it in: three quick calls on what you just explored.",
   liShare:"Share on LinkedIn",
-  liToast:"Your certificate is downloading. LinkedIn opens with your post ready: attach the certificate image and share.",
-  liPost:"I completed the module \"{module}\" on the Danish Red Cross International Finance Learning Platform, with a score of {score}/100.\n\nGood finance is not paperwork. It is the promise that money given for people in crisis arrives as impact. Proud to keep learning how that promise is kept.\n\n#DanishRedCross #RedCross #HumanitarianFinance #LearningAndDevelopment #InternationalFinance #Compliance #Audit" },
+  liHowto:"Three steps, all yours: copy your post, save the certificate image, then open LinkedIn and attach it.",
+  liCopy:"Copy post", liCopied:"Post copied to your clipboard.", liSaveImg:"Save certificate image", liOpen:"Open LinkedIn",
+  liToast:"LinkedIn is opening with your post ready. Attach the certificate image you saved, and share.",
+  liPost:"I completed the module \"{module}\" on the Danish Red Cross International Finance Learning Platform.\n\nGood finance is not paperwork. It is the promise that money given for people in crisis arrives as impact. Proud to keep learning how that promise is kept.\n\n#HumanitarianFinance #RedCross #LearningAndDevelopment" },
 da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"Tjek min rækkefølge",
   sortYes:"Rigtigt", sortNo:"Ikke helt", nice:"Flot.", almost:"Tæt på. Kig en gang til.",
   goodSave:"Værd at huske.", station:"Station", listen:"Lyt", stop:"Stop",
@@ -1111,8 +1147,12 @@ da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"
   plStreak3:"Tre i træk. Skarpt læst.", plStreak5:"Fem i træk. Du tænker som en controller.", plStreak8:"Otte i træk. Proceduren er ved at blive din.",
   plStreakAria:"Indsigtsstime: {n}", plClean:"Fejlfrit kort", plCleanA:"Alle valg på dette kort sad rigtigt i første forsøg.",
   plDoneLine:"Låst fast. Hvert svar ovenfor er procedurens egne ord.", plFromSource:"Fra kilden",
-  plReadyH:"Klar til at låse det fast?", plReadyS:"En kort runde om det, du lige har læst. Kortet bliver stående åbent ovenfor.",
-  plReadyB:"Spil kortet", plCallN:"Valg {a} af {b}",
+  plReadyH:"Du er den controller, der sidder på sagen.", plReadyS:"Du har læst den. Træf nu de valg, en økonomiansvarlig træffer. Kortet bliver stående åbent ovenfor.",
+  plReadyB:"Træf beslutningen", plCallN:"Valg {a} af {b}",
+  plCommit:"Hvor sikker er du?", plConfSure:"Jeg er sikker", plConfMaybe:"Ret sikker",
+  plRuleLead:"Proceduren siger", plRightSure:"Sikker og rigtig. Det er den fornemmelse, proceduren vil have.", plRightMaybe:"Rigtigt valg. Stol på det næste gang.",
+  plVerdict:"Valg truffet: {n}.", plStanding:"Du traf valgene som en controller.",
+  recapH:"Det tager du med", plInsightLead:"Din dømmekraft", plInsightRight:"sikker og rigtig: {n}", plInsightWrong:"til genbesøg: {m}",
   plSparksFin:"Indsigtsgnister samlet: {n}.",
   certTo:"Det bekræftes hermed, at", styleChip:"Stil",
   pmBaton:"Stafet-visningen: hvert trin ligger i banen hos den, der bærer det. Åbn alle trin.",
@@ -1120,8 +1160,10 @@ da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"
   plWho:"Hvem bærer dette trin?", plDoc:"Hvilket dokument hører til dette trin?", plCtrl:"Hvilken kontrol beskytter dette trin?",
   plDuty:"Hvis opgave er dette?", plLock:"Lås det fast: tre hurtige valg om det, du lige har udforsket.",
   liShare:"Del på LinkedIn",
-  liToast:"Dit kursusbevis hentes. LinkedIn åbner med dit opslag klar: vedhæft beviset som billede, og del.",
-  liPost:"Jeg har gennemført modulet \"{module}\" på Røde Kors' International Finance Learning Platform med {score}/100 point.\n\nGod økonomistyring er ikke papirarbejde. Det er løftet om, at penge givet til mennesker i krise når frem som virkning. Stolt af at lære mere om, hvordan det løfte holdes.\n\n#RødeKors #HumanitærØkonomi #Læring #InternationalFinance #Compliance #Revision" },
+  liHowto:"Tre trin, du styrer selv: kopiér dit opslag, gem beviset som billede, og åbn så LinkedIn og vedhæft det.",
+  liCopy:"Kopiér opslag", liCopied:"Opslaget er kopieret.", liSaveImg:"Gem beviset som billede", liOpen:"Åbn LinkedIn",
+  liToast:"LinkedIn åbner med dit opslag klar. Vedhæft det bevis, du gemte, og del.",
+  liPost:"Jeg har gennemført modulet \"{module}\" på Røde Kors' International Finance Learning Platform.\n\nGod økonomistyring er ikke papirarbejde. Det er løftet om, at penge givet til mennesker i krise når frem som virkning. Stolt af at lære mere om, hvordan det løfte holdes.\n\n#HumanitærØkonomi #RødeKors #Læring" },
 fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:"Vérifier mon ordre",
   sortYes:"Vrai", sortNo:"Pas tout à fait", nice:"Bien vu.", almost:"Presque. Regardez encore.",
   goodSave:"À retenir.", station:"Étape", listen:"Écouter", stop:"Arrêter",
@@ -1153,8 +1195,12 @@ fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:
   plStreak3:"Trois de suite. Belle lecture.", plStreak5:"Cinq de suite. Vous pensez comme un contrôleur.", plStreak8:"Huit de suite. La procédure devient la vôtre.",
   plStreakAria:"Série de bonnes réponses : {n}", plClean:"Carte parfaite", plCleanA:"Tous les choix de cette carte étaient justes du premier coup.",
   plDoneLine:"Verrouillé. Chaque réponse ci-dessus reprend les mots mêmes de la procédure.", plFromSource:"À la source",
-  plReadyH:"À vous de jouer.", plReadyS:"Une courte série de rappels sur ce que vous venez de lire. La carte reste ouverte au-dessus.",
-  plReadyB:"Jouer cette carte", plCallN:"Choix {a} sur {b}",
+  plReadyH:"C'est vous le contrôleur sur ce dossier.", plReadyS:"Vous l'avez lu. Prenez maintenant les décisions d'un responsable financier. La carte reste ouverte au-dessus.",
+  plReadyB:"Prenez la décision", plCallN:"Choix {a} sur {b}",
+  plCommit:"Quel est votre niveau de certitude ?", plConfSure:"J'en suis sûr", plConfMaybe:"Plutôt sûr",
+  plRuleLead:"La procédure tranche", plRightSure:"Sûr et juste. C'est l'instinct que la procédure attend.", plRightMaybe:"Bon choix. Faites-vous confiance la prochaine fois.",
+  plVerdict:"Décisions prises : {n}.", plStanding:"Vous avez décidé comme un contrôleur.",
+  recapH:"Ce que vous retenez", plInsightLead:"Votre jugement", plInsightRight:"sûr et juste : {n}", plInsightWrong:"à revoir : {m}",
   plSparksFin:"Étincelles d'intuition recueillies : {n}.",
   certTo:"Ceci certifie que", styleChip:"Style",
   pmBaton:"La vue relais : chaque étape est dans le couloir de celui qui la porte. Ouvrez chaque étape.",
@@ -1162,8 +1208,10 @@ fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:
   plWho:"Qui porte cette étape ?", plDoc:"Quel document appartient à cette étape ?", plCtrl:"Quel contrôle protège cette étape ?",
   plDuty:"À qui revient cette tâche ?", plLock:"Verrouillez : trois choix rapides sur ce que vous venez d'explorer.",
   liShare:"Partager sur LinkedIn",
-  liToast:"Votre certificat se télécharge. LinkedIn s'ouvre avec votre publication prête : joignez l'image du certificat et partagez.",
-  liPost:"J'ai terminé le module « {module} » sur l'International Finance Learning Platform de la Croix-Rouge danoise, avec un score de {score}/100.\n\nUne bonne gestion financière n'est pas de la paperasse. C'est la promesse que l'argent donné pour des personnes en crise devient un impact réel. Fier de continuer à apprendre comment cette promesse est tenue.\n\n#CroixRouge #FinanceHumanitaire #Apprentissage #FinanceInternationale #Conformité #Audit" },
+  liHowto:"Trois étapes, vous gardez la main : copiez votre publication, enregistrez le certificat en image, puis ouvrez LinkedIn et joignez-le.",
+  liCopy:"Copier la publication", liCopied:"Publication copiée.", liSaveImg:"Enregistrer le certificat", liOpen:"Ouvrir LinkedIn",
+  liToast:"LinkedIn s'ouvre avec votre publication prête. Joignez le certificat enregistré et partagez.",
+  liPost:"J'ai terminé le module « {module} » sur l'International Finance Learning Platform de la Croix-Rouge danoise.\n\nUne bonne gestion financière n'est pas de la paperasse. C'est la promesse que l'argent donné pour des personnes en crise devient un impact réel. Fier de continuer à apprendre comment cette promesse est tenue.\n\n#FinanceHumanitaire #CroixRouge #Apprentissage" },
 ar:{ checkBadge:"لعبة سريعة، ليست اختباراً", continueBtn:"متابعة", checkOrder:"تحقق من ترتيبي",
   sortYes:"صحيح", sortNo:"ليس تماماً", nice:"أحسنت.", almost:"اقتربت. انظر مرة أخرى.",
   goodSave:"تستحق التذكر.", station:"محطة", listen:"استمع", stop:"إيقاف",
@@ -1195,8 +1243,12 @@ ar:{ checkBadge:"لعبة سريعة، ليست اختباراً", continueBtn:"
   plStreak3:"ثلاث إجابات متتالية. قراءة دقيقة.", plStreak5:"خمس إجابات متتالية. تفكر كما يفكر المراقب المالي.", plStreak8:"ثماني إجابات متتالية. أصبحت الإجراءات في متناولك.",
   plStreakAria:"سلسلة الإجابات الصحيحة: {n}", plClean:"بطاقة كاملة", plCleanA:"كل اختيارات هذه البطاقة كانت صحيحة من المحاولة الأولى.",
   plDoneLine:"ثُبِّت ما تعلمته. كل إجابة أعلاه هي بكلمات نص الإجراءات نفسها.", plFromSource:"من المصدر",
-  plReadyH:"هل نثبّت ما قرأته؟", plReadyS:"جولة قصيرة لاستدعاء ما قرأته للتو. تبقى البطاقة مفتوحة أعلاه.",
-  plReadyB:"العب هذه البطاقة", plCallN:"القرار {a} من {b}",
+  plReadyH:"أنت المراقب المالي المسؤول عن هذا الملف.", plReadyS:"قرأتها. الآن اتخذ القرارات التي يتخذها المسؤول المالي. تبقى البطاقة مفتوحة أعلاه.",
+  plReadyB:"اتخذ القرار", plCallN:"القرار {a} من {b}",
+  plCommit:"ما مدى ثقتك؟", plConfSure:"أنا متأكد", plConfMaybe:"شبه متأكد",
+  plRuleLead:"ينص نص الإجراءات", plRightSure:"ثقة وإصابة. هذا هو الحدس الذي يريده نص الإجراءات.", plRightMaybe:"قرار صحيح. ثق بحدسك في المرة القادمة.",
+  plVerdict:"عدد القرارات: {n}.", plStanding:"اتخذت قراراتك كما يفعل المراقب المالي.",
+  recapH:"ما تأخذه معك", plInsightLead:"حُكمك", plInsightRight:"واثق ومصيب: {n}", plInsightWrong:"للمراجعة: {m}",
   plSparksFin:"ومضات الفهم التي جمعتها: {n}.",
   certTo:"نشهد بأن", styleChip:"الأسلوب",
   pmBaton:"عرض تسليم العصا: كل خطوة في مسار من يحملها. افتح كل الخطوات.",
@@ -1204,8 +1256,10 @@ ar:{ checkBadge:"لعبة سريعة، ليست اختباراً", continueBtn:"
   plWho:"من يحمل هذه الخطوة؟", plDoc:"أي مستند يخص هذه الخطوة؟", plCtrl:"أي ضابط يحمي هذه الخطوة؟",
   plDuty:"مهمة من هذه؟", plLock:"ثبّت ما تعلمته: ثلاثة قرارات سريعة عمّا استكشفته للتو.",
   liShare:"المشاركة على LinkedIn",
-  liToast:"يجري تنزيل شهادتك. يفتح LinkedIn ومنشورك جاهز: أرفق صورة الشهادة وشارك.",
-  liPost:"أتممت وحدة \"{module}\" على منصة تعلّم المالية الدولية للصليب الأحمر الدنماركي بنتيجة {score}/100.\n\nالإدارة المالية الجيدة ليست أوراقاً إدارية، بل هي الوعد بأن المال الممنوح لأشخاص في أزمة يصل أثراً حقيقياً. فخور بمواصلة تعلّم كيفية الوفاء بهذا الوعد.\n\n#الصليب_الأحمر #المالية_الإنسانية #تعلم #الامتثال #التدقيق" }
+  liHowto:"ثلاث خطوات بيدك: انسخ منشورك، احفظ الشهادة صورةً، ثم افتح LinkedIn وأرفقها.",
+  liCopy:"نسخ المنشور", liCopied:"تم نسخ المنشور.", liSaveImg:"حفظ صورة الشهادة", liOpen:"فتح LinkedIn",
+  liToast:"يفتح LinkedIn ومنشورك جاهز. أرفق صورة الشهادة التي حفظتها وشارك.",
+  liPost:"أكملت وحدة \"{module}\" على منصة الصليب الأحمر الدنماركي لتعلّم المالية الدولية.\n\nالإدارة المالية الجيدة ليست أوراقاً إدارية، بل هي الوعد بأن المال الممنوح لأشخاص في أزمة يصل أثراً حقيقياً. فخور بمواصلة التعلّم كيف يُحفظ هذا الوعد.\n\n#التمويل_الإنساني #الصليب_الأحمر #التعلّم_والتطوير" }
 };
 Object.keys(STR2).forEach(function(l){ Object.keys(STR2[l]).forEach(function(k){ STR[l][k]=STR2[l][k]; }); });
 
@@ -1901,7 +1955,7 @@ function stationClear(si, after){
     '<div class="sc-h">'+T("stClearH")+'</div><div class="sc-n">'+L(MODULE.stations[si].nm)+'</div></div>';
   o.classList.add("in");
   buildDots();
-  ding("station"); confetti(26);
+  ding("station");
   o.onclick=go; document.addEventListener("keydown", go);
   setTimeout(function(){ if(gen===SC_GEN) go(); }, 1250);
 }
@@ -2134,55 +2188,75 @@ function runRound(calls){
   arena.hidden=false;
   var qi=0, cardMisses=0;
   function fin(){
-    arena.innerHTML='<div class="pl-done2">✓ '+esc(T("plDoneLine"))+(cardMisses===0?' <span class="pl-clean" title="'+esc(T("plCleanA"))+'">'+SPARK_SVG+' '+esc(T("plClean"))+'</span>':'')+'</div>';
+    var made=calls.length, clean=(cardMisses===0);
+    arena.innerHTML='<div class="pl-verdict">'+esc("✓")+' <span>'+esc(T("plVerdict").replace("{n}",String(made)))+'</span>'+
+      (clean?' <span class="pl-clean" title="'+esc(T("plCleanA"))+'">'+SPARK_SVG+' '+esc(T("plClean"))+'</span>':'')+
+      ' <span class="pl-standing">'+esc(T("plStanding"))+'</span></div>';
     PLAY_DONE=true;
     var nb=$("#nextBtn");
-    if(nb){ nb.disabled=false; try{ nb.focus(); }catch(e){} }
-    var say=$("#plSay"); if(say) say.textContent=T("plDoneLine");
+    if(nb){ nb.disabled=false; nb.removeAttribute("title"); try{ nb.focus(); }catch(e){} }
+    var say=$("#plSay"); if(say) say.textContent=T("plVerdict").replace("{n}",String(made))+" "+T("plStanding");
     ding("ok");
   }
   function ask(){
     if(qi>=calls.length){ fin(); return; }
-    var c=calls[qi], misses=0, done=false;
+    var c=calls[qi], misses=0, done=false, staged=-1;
     arena.innerHTML='<div class="pl-ask-h arn" id="plArenaH" tabindex="-1">'+esc(T("plCallN").replace("{a}",String(qi+1)).replace("{b}",String(calls.length)))+' · '+esc(c.header)+'</div>'+
       (c.line?'<div class="pl-line-q arn">'+c.line+'</div>':'')+
       '<div class="pl-chips arn">'+c.chips.map(function(ch,ci){ return '<button class="pl-chip" data-rr="'+ci+'">'+esc(ch)+'</button>'; }).join("")+'</div>'+
+      '<div class="pl-confide arn" id="rrConf" hidden><span class="pl-confide-q">'+esc(T("plCommit"))+'</span><button class="pl-conf" data-cf="1">'+esc(T("plConfSure"))+'</button><button class="pl-conf" data-cf="0">'+esc(T("plConfMaybe"))+'</button></div>'+
       '<div class="pl-fb arn" id="rrFb"></div>';
     var say=$("#plSay");
     if(say) say.textContent=T("plCallN").replace("{a}",String(qi+1)).replace("{b}",String(calls.length))+" "+c.header;
     var hd=$("#plArenaH"); if(hd){ try{ hd.focus(); }catch(e){} }
+    var conf=$("#rrConf");
+    function showRuling(text){
+      if(!text) return;
+      var r=document.createElement("div");
+      r.className="pl-ruling";
+      r.innerHTML='<b class="lead">'+esc(T("plRuleLead"))+'</b>'+esc(text);
+      arena.appendChild(r);
+    }
+    function resolve(sure){
+      if(done||staged<0) return;
+      if(conf) conf.hidden=true;
+      var picked=c.chips[staged], fb=$("#rrFb");
+      var st=$('.pl-chip[data-rr="'+staged+'"]',arena);
+      if(picked===c.truth){
+        done=true;
+        if(sure){ S.play.sureRight=(S.play.sureRight||0)+1; save(); }
+        if(st){ st.classList.add("yes"); st.classList.remove("no","staged"); }
+        if(c.onCorrect) c.onCorrect(arena);
+        if(misses===0){ PL_STREAK++; S.play.sparks++; save(); if(sure&&st) sparkFly(st); ding("spark"); }
+        else { PL_STREAK=0; }
+        streakPill();
+        if(fb) fb.textContent="✓ "+(misses===0?T(sure?"plRightSure":"plRightMaybe"):T("plTrue"));
+        showRuling(c.ruling);
+        if(say&&c.confirm) say.textContent=T("plTrue")+" "+c.confirm;
+        qi++; cardMisses+=misses;
+        setTimeout(ask, c.ruling?1600:820);
+      } else {
+        misses++; PL_STREAK=0; streakPill();
+        if(sure){ S.play.sureWrong=(S.play.sureWrong||0)+1; save(); }
+        if(st){ st.classList.remove("staged"); st.classList.add("nope"); }
+        setTimeout(function(){ if(st){ st.classList.remove("nope"); st.classList.add("no"); } },380);
+        if(fb) fb.textContent=T("plNotThis")+(misses>=2?" "+T("plHint"):"");
+        staged=-1;
+        if(misses>=2){
+          c.chips.forEach(function(x,xi){ if(x===c.truth){ var t2=$('.pl-chip[data-rr="'+xi+'"]',arena); if(t2){ t2.classList.add("yes"); t2.classList.remove("no"); } } });
+        }
+      }
+    }
     $all(".pl-chip",arena).forEach(function(ch){
       ch.addEventListener("click",function(){
-        if(done) return;
-        var picked=c.chips[+ch.getAttribute("data-rr")];
-        var fb=$("#rrFb");
-        if(picked===c.truth){
-          done=true;
-          ch.classList.add("yes"); ch.classList.remove("no");
-          if(c.onCorrect) c.onCorrect(arena);
-          if(misses===0){ PL_STREAK++; S.play.sparks++; save(); sparkFly(ch); ding("spark"); }
-          else { PL_STREAK=0; }
-          streakPill();
-          if(fb) fb.textContent="✓ "+T("plTrue");
-          if(say&&c.confirm) say.textContent=T("plTrue")+" "+c.confirm;
-          qi++; cardMisses+=misses;
-          setTimeout(ask,760);
-        } else {
-          misses++; PL_STREAK=0; streakPill();
-          ch.classList.add("nope");
-          setTimeout(function(){ ch.classList.remove("nope"); ch.classList.add("no"); },380);
-          if(fb) fb.textContent=T("plNotThis")+(misses>=2?" "+T("plHint"):"");
-          if(misses>=2){
-            c.chips.forEach(function(x,xi){
-              if(x===c.truth){
-                var tc=$('.pl-chip[data-rr="'+xi+'"]',arena);
-                if(tc){ tc.classList.add("yes"); tc.classList.remove("no"); }
-              }
-            });
-          }
-        }
+        if(done||ch.classList.contains("no")) return;
+        staged=+ch.getAttribute("data-rr");
+        $all(".pl-chip",arena).forEach(function(x){ if(!x.classList.contains("no")) x.classList.remove("staged"); });
+        ch.classList.add("staged");
+        if(conf) conf.hidden=false;
       });
     });
+    if(conf) $all(".pl-conf",conf).forEach(function(b){ b.addEventListener("click",function(){ resolve(b.getAttribute("data-cf")==="1"); }); });
   }
   ask();
 }
@@ -2194,7 +2268,7 @@ function narrativeCalls(sp,i){
     var low=plain.toLowerCase(), ti=low.indexOf(g.term.toLowerCase());
     var line=(ti>=0)?esc(plain.slice(0,ti))+'<span class="pl-slot"></span>'+esc(plain.slice(ti+g.term.length)):esc(plain);
     var truthVerbatim=(ti>=0)?plain.substr(ti,g.term.length):g.term;
-    return {header:T("plPick"), line:line, chips:g.chips, truth:g.term, confirm:plain,
+    return {header:T("plPick"), line:line, chips:g.chips, truth:g.term, confirm:plain, ruling:plain,
       onCorrect:function(arena){ var s=$(".pl-slot",arena); if(s){ s.textContent=truthVerbatim; s.classList.add("fill"); } }};
   });
 }
@@ -2213,7 +2287,7 @@ function rolesCalls(sp){
     if(clause.length>96) clause=clause.slice(0,93)+"...";
     var chips=[truth,d1,d2], rot=(seed+k)%3;
     chips=chips.slice(rot).concat(chips.slice(0,rot));
-    return {header:T("plDuty"), line:'<span class="pl-clause">'+esc(clause)+'</span>', chips:chips, truth:truth};
+    return {header:T("plDuty"), line:'<span class="pl-clause">'+esc(clause)+'</span>', chips:chips, truth:truth, ruling:t};
   });
 }
 function procCalls(sp,i){
@@ -2229,7 +2303,7 @@ function procCalls(sp,i){
     while(d2===d1&&hops<others.length){ hops++; d2=others[((seed*11+k+2)+hops)%others.length]; }
     var chips=[truth,d1,d2], rot=(seed+k)%3;
     chips=chips.slice(rot).concat(chips.slice(0,rot));
-    out.push({header:L(sp.proc[ni].nm)+" · "+p[2], chips:chips, truth:truth});
+    out.push({header:L(sp.proc[ni].nm)+" · "+p[2], chips:chips, truth:truth, ruling:L(sp.proc[ni].what)});
   });
   return out;
 }
@@ -2250,10 +2324,10 @@ function wirePlay(sp,i){
   var calls=sp.roles?rolesCalls(sp):narrativeCalls(sp,i);
   if(!calls.length){ arena.remove(); return; }
   PLAY_DONE=false;
-  if(nb&&gate) nb.disabled=true;
+  if(nb&&gate){ nb.disabled=true; nb.title=T("plReadyS"); }
   arena.innerHTML='<div class="pl-ready"><div class="pl-ready-h" id="plArenaH" tabindex="-1">'+SPARK_SVG+' '+esc(T("plReadyH"))+'</div>'+
     '<div class="pl-ready-s">'+esc(T("plReadyS"))+'</div>'+
-    '<button class="btn ghost" id="plReadyB">'+esc(T("plReadyB"))+'</button></div>';
+    '<button class="btn pl-take" id="plReadyB">'+esc(T("plReadyB"))+'</button></div>';
   var rb=$("#plReadyB");
   if(rb) rb.addEventListener("click",function(){
     shutUp();
@@ -2416,8 +2490,10 @@ function wireProc(sp,i){
   requestAnimationFrame(function(){ requestAnimationFrame(drawPath); });
   setTimeout(drawPath,120);
   setTimeout(function(){ if(!pathLen) drawPath(); },800);
-  var RZ2=null;
-  window.addEventListener("resize",function(){ clearTimeout(RZ2); RZ2=setTimeout(drawPath,220); });
+  /* single module-scope baton resize handler: replace any prior one so re-renders never stack listeners */
+  if(window._batonRZ) window.removeEventListener("resize", window._batonRZ);
+  window._batonRZ=function(){ clearTimeout(window._batonRZ_t); window._batonRZ_t=setTimeout(drawPath,220); };
+  window.addEventListener("resize", window._batonRZ);
   upd();
 }
 
@@ -2721,6 +2797,13 @@ function finishCourse(){
     return '<div class="next-c"><span class="lk">'+GLYPHS.lock+'</span><span class="ni">'+(GLYPHS[n.icon]||n.icon)+'</span><div class="nn">'+L(n.nm)+'</div><div class="nd">'+L(n.d)+'</div>'+
       '<div class="nd" style="margin-top:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">'+T("lockedSoon")+'</div></div>';
   }).join("");
+  var takeaways=[];
+  MODULE.stations.forEach(function(st){ st.steps.forEach(function(sp){ if(sp.t==="card"&&sp.h) takeaways.push(L(sp.h)); }); });
+  var recapHtml='<div class="next-h">'+T("recapH")+'</div><ul class="recap-list">'+takeaways.slice(0,7).map(function(t){ return '<li>'+esc(t)+'</li>'; }).join("")+'</ul>';
+  var insightHtml="";
+  if(S.style==="play"&&S.play&&((S.play.sureRight||0)+(S.play.sureWrong||0))>0){
+    insightHtml='<div class="fin-insight"><span class="fin-insight-h">'+esc(T("plInsightLead"))+'</span> '+esc(T("plInsightRight").replace("{n}",String(S.play.sureRight||0)))+((S.play.sureWrong||0)?' · '+esc(T("plInsightWrong").replace("{m}",String(S.play.sureWrong))):'')+'</div>';
+  }
   $("#s-finish").innerHTML=ambHTML()+'<div class="fin-wrap'+(noMo?'':' staging')+'">'+
     '<div class="fin-score"><span id="scoreNum">0</span> <small>'+T("scoreOf")+'</small></div>'+
     '<div class="fin-tier '+tr.cls+'">'+(tr.cls==="gold"?"★ ":"")+tr.lbl+'</div>'+
@@ -2730,7 +2813,11 @@ function finishCourse(){
     '<button class="btn ghost" id="mgrCert">'+T("notifyMgr")+'</button>'+
     '<button class="btn ghost" id="liShare">'+GLYPHS.li+' '+T("liShare")+'</button></div>'+
     '<div class="mgr-row" id="mgrRow" style="display:none"><label for="mgrIn">'+T("mgrEmail")+'</label><div class="mgr-line"><input id="mgrIn" type="email" placeholder="manager@rodekors.dk"><button class="btn" id="mgrSend">'+T("sendBtn")+'</button></div></div>'+
+    '<div class="li-row" id="liRow" style="display:none"><div class="li-howto">'+T("liHowto")+'</div>'+
+    '<textarea class="li-cap" id="liCap" readonly rows="6" aria-label="LinkedIn post"></textarea>'+
+    '<div class="li-acts"><button class="btn ghost" id="liCopy">'+T("liCopy")+'</button><button class="btn ghost" id="liSave">'+T("liSaveImg")+'</button><button class="btn" id="liOpen">'+GLYPHS.li+' '+T("liOpen")+'</button></div></div>'+
     '<div class="cert-frame"><canvas id="certCv" width="1500" height="1060"></canvas></div>'+
+    insightHtml+recapHtml+
     '<div class="next-h">'+T("resourcesH")+'</div><div class="res-list">'+(MODULE.resources||[]).map(function(rr,ri){ return '<button class="res-row" data-res>'+GLYPHS.doc+' <span style="flex:1">'+esc(L(rr))+'</span></button>'; }).join("")+'</div>'+
     '<div class="next-h">'+T("nextUp")+'</div><div class="next-grid">'+nx+'</div>'+
     '<button class="fin-restart" id="reset0">'+T("restart")+'</button></div>';
@@ -2747,7 +2834,7 @@ function finishCourse(){
   if(noMo){ el.textContent=S.pts; ding("finish"); }
   else {
     var n=0, target=S.pts;
-    var iv=setInterval(function(){ n+=2; if(n>=target){ n=target; clearInterval(iv); confetti(110); ding("finish"); staged(); } el.textContent=n; },24);
+    var iv=setInterval(function(){ if(!el.isConnected){ clearInterval(iv); return; } n+=2; if(n>=target){ n=target; clearInterval(iv); confetti(110); ding("finish"); staged(); } el.textContent=n; },24);
   }
   /* wire buttons FIRST so a drawing error can never disable them */
   $("#dlCert").addEventListener("click",function(){
@@ -2796,13 +2883,30 @@ function finishCourse(){
     S.mgr=v; save();
     sendToMgr(v);
   });
+  function liText(){ return T("liPost").replace("{module}",L(MODULE.title)).replace("{score}",String(S.pts)); }
   var li=$("#liShare");
   if(li) li.addEventListener("click",function(){
-    var post=T("liPost").replace("{module}",L(MODULE.title)).replace("{score}",String(S.pts));
-    try{ $("#dlCert").click(); }catch(e){}
-    setTimeout(function(){
-      try{ window.open("https://www.linkedin.com/feed/?shareActive=true&text="+encodeURIComponent(post),"_blank","noopener"); }catch(e){}
-    },350);
+    var row=$("#liRow");
+    var opening=(row.style.display==="none"||!row.style.display);
+    row.style.display=opening?"":"none";
+    if(opening){ var ta=$("#liCap"); if(ta){ ta.value=liText(); try{ ta.focus(); ta.setSelectionRange(0,0); }catch(e){} } }
+  });
+  var liCp=$("#liCopy");
+  if(liCp) liCp.addEventListener("click",function(){
+    var txt=liText(); var ta=$("#liCap");
+    function ok(){ toast(T("liCopied"),2600); }
+    function manual(){ if(ta){ ta.focus(); ta.select(); try{ document.execCommand("copy"); ok(); }catch(e){} } }
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(ok,manual); }
+      else manual();
+    }catch(e){ manual(); }
+  });
+  var liSv=$("#liSave");
+  if(liSv) liSv.addEventListener("click",function(){ try{ $("#dlCert").click(); }catch(e){} });
+  var liOp=$("#liOpen");
+  if(liOp) liOp.addEventListener("click",function(){
+    /* open LinkedIn synchronously inside the click gesture (Safari popup rules) */
+    try{ window.open("https://www.linkedin.com/feed/?shareActive=true&text="+encodeURIComponent(liText()),"_blank","noopener"); }catch(e){}
     toast(T("liToast"),4500);
   });
   $all("[data-res]").forEach(function(b){ b.addEventListener("click",function(){ toast(T("refToast"),3200); }); });
@@ -2829,8 +2933,9 @@ function drawCert(){
   var cv=$("#certCv"), x=cv.getContext("2d");
   var W=1500,H=1060;
   x.fillStyle="#FBF8F4"; x.fillRect(0,0,W,H);
-  /* border */
+  /* border: red outer, gold hairline, grey inner */
   x.strokeStyle="#E30A0B"; x.lineWidth=5; x.strokeRect(46,46,W-92,H-92);
+  x.strokeStyle="#C9A227"; x.lineWidth=1; x.strokeRect(54,54,W-108,H-108);
   x.strokeStyle="#DDD7D2"; x.lineWidth=1.5; x.strokeRect(62,62,W-124,H-124);
   /* Røde Kors logo (genuine mark) */
   var lh=92, lw=240;
@@ -2888,9 +2993,8 @@ function drawCert(){
     x.stroke();
   }
   x.restore();
-  /* proto tag */
-  x.fillStyle="#B5B0AC"; x.font="500 17px "+FM;
-  x.fillText(T("protoOnly"), W/2, 990);
+  /* proto tag (DEMO only; flip DEMO to false for a production-clean certificate) */
+  if(DEMO){ x.fillStyle="#B5B0AC"; x.font="500 17px "+FM; x.fillText(T("protoOnly"), W/2, 990); }
 }
 function rRect(x,a,b,w,h,r){ x.beginPath(); x.moveTo(a+r,b); x.arcTo(a+w,b,a+w,b+h,r); x.arcTo(a+w,b+h,a,b+h,r); x.arcTo(a,b+h,a,b,r); x.arcTo(a,b,a+w,b,r); x.closePath(); }
 
