@@ -325,7 +325,6 @@ html[dir="rtl"] .wl-title,html[dir="rtl"] .h1,html[dir="rtl"] .ln-h,html[dir="rt
 .pm-count{font-family:var(--mono);font-size:12.5px;color:var(--g3);letter-spacing:.06em;margin-top:14px;text-align:center}
 .pm-count b{color:var(--red)}
 /* depth and parallax */
-.ln-wrap{perspective:1400px}
 .wl-cloud{transition:transform .4s ease-out;will-change:transform}
 @media (prefers-reduced-motion:reduce){.rl-b,.pm-bd,.pm-fill,.pm-dot{transition:none}.wl-cloud{transition:none}}
 /* read-along + living cards injected */
@@ -567,9 +566,6 @@ html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
 .map-wrap,.lib-wrap,.fin-wrap{position:relative;z-index:1}
 .map-fill{position:absolute;top:28px;inset-inline-start:49.25px;width:2.5px;background:var(--red);border-radius:2px;z-index:0;max-height:calc(100% - 56px);height:0;transition:height .9s cubic-bezier(.2,.7,.2,1)}
 
-/* ============ CARD TILT ============ */
-.ln-card.tiltable{transition:transform .55s cubic-bezier(.2,.7,.2,1);will-change:transform}
-.ln-card.tilting{transition:none}
 
 /* ============ WELCOME STAGECRAFT ============ */
 .wl-inner>*{animation:rise .65s cubic-bezier(.2,.7,.2,1) both}
@@ -700,7 +696,6 @@ button:focus-visible,.tb-rail:focus-visible{outline:2.5px solid var(--red);outli
   .tb-pts.bump{animation:none}
   .pl-slot.fill,.pl-chip.nope,.pl-streak.combo,.pl-arena .arn{animation:none}
   .spark-fly{display:none}
-  .ln-card.tiltable{transition:none}
   .pm2-n,.pm2-detail{animation:none}
   #pm2Fill{transition:none}
   .pl-take,.pl-ruling,.pl-confide{animation:none}
@@ -2288,34 +2283,6 @@ function playAudit(){
   try{ console.table(rows); }catch(e){ console.log(rows); }
   return rows.length+" gaps";
 }
-/* subtle pointer tilt on reading cards (desktop fine-pointer only) */
-function wireTilt(card){
-  if(!card) return;
-  try{
-    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if(!window.matchMedia("(pointer: fine)").matches) return;
-  }catch(e){ return; }
-  var raf=0, ready=false;
-  setTimeout(function(){ if(!card.isConnected) return; card.style.animation="none"; card.classList.add("tiltable"); ready=true; },620);
-  card.addEventListener("pointermove",function(e){
-    if(!ready||raf) return;
-    var cx=e.clientX, cy=e.clientY;
-    raf=requestAnimationFrame(function(){
-      raf=0;
-      var r=card.getBoundingClientRect();
-      if(!r.width||!r.height) return;
-      var px=(cx-r.left)/r.width-.5, py=(cy-r.top)/r.height-.5;
-      card.classList.add("tilting");
-      card.style.transform="rotateX("+(-py*2.2).toFixed(2)+"deg) rotateY("+(px*2.6).toFixed(2)+"deg)";
-    });
-  });
-  card.addEventListener("pointerleave",function(){
-    if(raf){ cancelAnimationFrame(raf); raf=0; }
-    card.classList.remove("tilting");
-    card.style.transform="";
-  });
-}
-
 function plainText(sp){
   var d=document.createElement("div"); d.innerHTML=L(sp.b);
   return L(sp.h)+". "+d.textContent;
@@ -2350,7 +2317,6 @@ function wireStep(sp,i){
   if(sp.t==="card"&&S.style==="play") wirePlay(sp,i);
   if(sp.proc) wireProc(sp,i);
   if(sp.t==="card"&&S.style==="watch") wireWatch(sp,i);
-  if(sp.t==="card") wireTilt($("#lnCard"));
   if(sp.t==="check") wireCheck(sp,i);
 }
 
