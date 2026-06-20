@@ -314,14 +314,16 @@ html[dir="rtl"] .suite-ph-nm{letter-spacing:0}
 .map-lib:hover{color:var(--red)}
 /* roles + process map injected */
 /* roles accordion */
-.rl-list{display:flex;flex-direction:column;gap:10px;margin:20px 0 4px}
+.rl-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0 4px}
+.rl:last-child:nth-child(odd){grid-column:1 / -1}
+@media (max-width:560px){.rl-list{grid-template-columns:1fr}}
 .rl{background:var(--canvas);border:1.5px solid var(--g5);border-radius:14px;overflow:hidden;transition:.2s;border-inline-start:5px solid var(--rc,var(--red))}
-.rl.open{background:#fff;box-shadow:var(--shadow)}
+.rl.open{background:#fff;box-shadow:var(--shadow-md);grid-column:1 / -1}
 .rl-h{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;padding:15px 18px;font-size:15.5px;font-weight:800;color:var(--ink);text-align:start}
 .rl-h .chev{margin-inline-start:auto;color:var(--g4);transition:transform .25s}
 .rl.open .chev{transform:rotate(180deg)}
 .rl-b{max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease,opacity .3s;padding:0 18px}
-.rl.open .rl-b{max-height:300px;opacity:1;padding:0 18px 16px}
+.rl.open .rl-b{max-height:380px;opacity:1;padding:0 18px 16px}
 .rl-b p{font-size:14.5px;color:var(--body);line-height:1.6;margin:0}
 /* interactive process map */
 .pm{position:relative;margin:24px 0 6px;padding-inline-start:36px}
@@ -1869,7 +1871,7 @@ function showMap(){
         '<span class="sdt">'+m.n+' '+T("stepsLbl")+' · ~'+(mins[m.si]||3)+' '+T("min")+'</span></span>'+
         '<span class="act">'+act+'</span></button>';
     }).join("")+
-    '</div><div class="map-foot">'+T("mapHint")+'</div></div>';
+    '</div></div>';
   $("#s-map").innerHTML=h;
   show("s-map"); buildDots(); ringTo(S.pts);
   /* walked-path fill grows to the current station */
@@ -2763,9 +2765,7 @@ function finishCourse(){
     return '<div class="next-c"><span class="lk">'+GLYPHS.lock+'</span><span class="ni">'+(GLYPHS[n.icon]||n.icon)+'</span><div class="nn">'+L(n.nm)+'</div><div class="nd">'+L(n.d)+'</div>'+
       '<div class="nd" style="margin-top:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">'+T("lockedSoon")+'</div></div>';
   }).join("");
-  var takeaways=[];
-  MODULE.stations.forEach(function(st){ st.steps.forEach(function(sp){ if(sp.t==="card"&&sp.h) takeaways.push(L(sp.h)); }); });
-  var recapHtml='<div class="next-h">'+T("recapH")+'</div><ul class="recap-list">'+takeaways.slice(0,7).map(function(t){ return '<li>'+esc(t)+'</li>'; }).join("")+'</ul>';
+  var recapHtml="";
   var insightHtml="";
   if(S.style==="play"&&S.play&&((S.play.sureRight||0)+(S.play.sureWrong||0))>0){
     insightHtml='<div class="fin-insight"><span class="fin-insight-h">'+esc(T("plInsightLead"))+'</span> '+esc(T("plInsightRight").replace("{n}",String(S.play.sureRight||0)))+((S.play.sureWrong||0)?' · '+esc(T("plInsightWrong").replace("{m}",String(S.play.sureWrong))):'')+'</div>';
@@ -2776,9 +2776,7 @@ function finishCourse(){
     '<h2 class="fin-h">'+T("finishH")+' '+esc(S.name.split(" ")[0])+'</h2>'+
     '<p class="fin-sub">'+(MODULE.finText?L(MODULE.finText):T("finishSub"))+(S.startedAt?' '+fmtDoneIn(Math.max(1,Math.round((Date.now()-S.startedAt)/60000))):'')+(S.style==="play"&&S.play&&S.play.sparks?' '+T("plSparksFin").replace("{n}",String(S.play.sparks)):'')+'</p>'+
     '<div class="fin-cta"><button class="btn" id="dlCert">'+T("downloadCert")+'</button>'+
-    '<button class="btn ghost" id="mgrCert">'+T("notifyMgr")+'</button>'+
     '<button class="btn ghost" id="liShare">'+GLYPHS.li+' '+T("liShare")+'</button></div>'+
-    '<div class="mgr-row" id="mgrRow" style="display:none"><label for="mgrIn">'+T("mgrEmail")+'</label><div class="mgr-line"><input id="mgrIn" type="email" placeholder="manager@rodekors.dk"><button class="btn" id="mgrSend">'+T("sendBtn")+'</button></div></div>'+
     '<div class="li-row" id="liRow" style="display:none"><div class="li-howto">'+T("liHowto")+'</div>'+
     '<textarea class="li-cap" id="liCap" readonly rows="6" aria-label="LinkedIn post"></textarea>'+
     '<div class="li-acts"><button class="btn ghost" id="liCopy">'+T("liCopy")+'</button><button class="btn ghost" id="liSave">'+T("liSaveImg")+'</button><button class="btn" id="liOpen">'+GLYPHS.li+' '+T("liOpen")+'</button></div></div>'+
@@ -2825,29 +2823,6 @@ function finishCourse(){
         },"image/png");
       } else { fallbackTab(); }
     }catch(e){ fallbackTab(); }
-  });
-  function sendToMgr(addr){
-    var body=T("mailBody").replace("{name}",S.name).replace("{module}",L(MODULE.title)).replace("{score}",S.pts);
-    var href="mailto:"+encodeURIComponent(addr)+"?subject="+encodeURIComponent(T("mailSub")+" "+S.name)+"&body="+encodeURIComponent(body);
-    try{ window.location.href=href; }catch(e){}
-    toast(T("mailOpened"),3800);
-  }
-  $("#mgrCert").addEventListener("click",function(){
-    var row=$("#mgrRow");
-    if(row.style.display==="none"){
-      row.style.display="";
-      var inp=$("#mgrIn"); if(S.mgr) inp.value=S.mgr;
-      inp.focus();
-      return;
-    }
-    $("#mgrSend").click();
-  });
-  $("#mgrSend").addEventListener("click",function(){
-    var v=$("#mgrIn").value.trim();
-    if(!emailOk(v)){ $("#mgrIn").style.borderColor="var(--red)"; return; }
-    $("#mgrIn").style.borderColor="";
-    S.mgr=v; save();
-    sendToMgr(v);
   });
   function liText(){ return T("liPost").replace("{module}",L(MODULE.title)).replace("{score}",String(S.pts)); }
   var li=$("#liShare");
