@@ -685,6 +685,17 @@ html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
 .fin-cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-bottom:38px}
 .cert-frame{background:#fff;border:1px solid var(--rule);border-radius:16px;box-shadow:var(--shadow-lg);padding:14px;max-width:640px;width:100%;margin-bottom:36px;position:relative;overflow:hidden}
 .cert-frame canvas{width:100%;height:auto;border-radius:8px;display:block}
+.fin-record{background:#fff;border:1px solid var(--rule);border-radius:16px;box-shadow:var(--shadow);max-width:640px;width:100%;margin:0 auto 36px;padding:22px 26px;text-align:start}
+.rec-h{font-family:var(--mono);font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--g2);margin-bottom:14px;display:flex;align-items:center;gap:9px}
+.rec-h::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);flex:0 0 auto}
+.rec-grid{margin:0}
+.rec-row{display:flex;gap:18px;align-items:baseline;padding:11px 0;border-top:1px solid var(--rule)}
+.rec-row:first-child{border-top:0}
+.rec-row dt{flex:0 0 138px;font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--g3);margin:0}
+.rec-row dd{flex:1;min-width:0;margin:0;font-size:14.5px;color:var(--ink);font-weight:600;line-height:1.45}
+.rec-ref{font-family:var(--mono);font-weight:700;letter-spacing:.04em}
+.rec-note{margin:15px 0 0;font-size:12px;color:var(--g3);line-height:1.55}
+@media (max-width:520px){.rec-row{flex-direction:column;gap:3px}.rec-row dt{flex:none}}
 .next-h{font-family:var(--mono);font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--g2);margin-bottom:16px}
 .next-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;width:100%}
 .next-c{background:#fff;border:1px solid var(--rule);border-radius:15px;padding:20px 17px;text-align:start;position:relative;transition:.2s}
@@ -719,7 +730,7 @@ html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
 /* ============ FINISH CEREMONY ============ */
 .fin-wrap.staging .fin-tier,.fin-wrap.staging .fin-h,.fin-wrap.staging .fin-sub,
 .fin-wrap.staging .fin-cta,.fin-wrap.staging .cert-frame,.fin-wrap.staging .next-h,
-.fin-wrap.staging .res-list,.fin-wrap.staging .next-grid,.fin-wrap.staging .path-next,.fin-wrap.staging .fin-restart{opacity:0;pointer-events:none}
+.fin-wrap.staging .res-list,.fin-wrap.staging .next-grid,.fin-wrap.staging .path-next,.fin-wrap.staging .fin-record,.fin-wrap.staging .fin-restart{opacity:0;pointer-events:none}
 .fin-wrap.s1 .fin-tier{opacity:1;pointer-events:auto;animation:stampIn .5s cubic-bezier(.34,1.4,.5,1) both}
 @keyframes stampIn{0%{opacity:0;transform:scale(1.7)}55%{opacity:1;transform:scale(.94) rotate(-1deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
 .fin-wrap.s2 .fin-h,.fin-wrap.s2 .fin-sub{opacity:1;animation:rvlIn .45s both}
@@ -728,7 +739,7 @@ html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
 .fin-wrap.s3 .cert-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.45),transparent 60%);transform:translateX(-120%) skewX(-14deg);animation:certSweep 1.1s .4s var(--ease-out) both;pointer-events:none}
 @keyframes certSweep{to{transform:translateX(120%) skewX(-14deg)}}
 @keyframes certIn{from{opacity:0;transform:translateY(26px) scale(.985)}to{opacity:1;transform:none}}
-.fin-wrap.s4 .fin-cta,.fin-wrap.s4 .next-h,.fin-wrap.s4 .res-list,.fin-wrap.s4 .next-grid,.fin-wrap.s4 .path-next,.fin-wrap.s4 .fin-restart{opacity:1;pointer-events:auto;animation:rvlIn .5s both}
+.fin-wrap.s4 .fin-cta,.fin-wrap.s4 .next-h,.fin-wrap.s4 .res-list,.fin-wrap.s4 .next-grid,.fin-wrap.s4 .path-next,.fin-wrap.s4 .fin-record,.fin-wrap.s4 .fin-restart{opacity:1;pointer-events:auto;animation:rvlIn .5s both}
 .fin-wrap.s4 .res-list{animation-delay:.07s}.fin-wrap.s4 .next-grid,.fin-wrap.s4 .path-next{animation-delay:.14s}.fin-wrap.s4 .fin-restart{animation-delay:.2s}
 .fin-tier.gold{position:relative;overflow:hidden}
 .fin-tier.gold::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-18deg);animation:shine 1.1s .55s ease-out both}
@@ -1491,6 +1502,7 @@ en:{ checkBadge:"Short exercise, not a test", continueBtn:"Continue", checkOrder
   resumeMsg:"Welcome back. Your progress has been saved.",
   finishH:"Module complete,", finishSub:"You have followed the money through an entire project. This is the foundation the rest of the curriculum builds on.",
   scoreOf:"of 100", tierGold:"Completed with Distinction", tierSilver:"Completed with Merit", tierDone:"Completed",
+  recordH:"Record of completion", recName:"Name", recCourse:"Module", recStd:"Standard", recStdVal:"DRC Audit SOPs, DRAFT V02 (pre-final), not yet validated", recDate:"Date", recScore:"Score", recBy:"Issued by", recByVal:"Danish Red Cross · International Finance", recRef:"Record reference", recNote:"Generated on this device. In production this record is verified in the controlled document library.",
   downloadCert:"Download certificate", notifyMgr:"Send certificate to my line manager", notified:"Certificate notification prepared for",
   nextUp:"Recommended next", lockedSoon:"Coming next", restart:"Restart from the beginning",
   certTitle:"CERTIFICATE OF COMPLETION", certHas:"has completed", certAt:"International Finance Learning Platform · Danish Red Cross",
@@ -1647,6 +1659,7 @@ ar:{ checkBadge:"تمرين قصير، وليس اختباراً", continueBtn:"
   resumeMsg:"أهلاً بعودتك. حُفظ تقدمك.",
   finishH:"اكتملت الوحدة،", finishSub:"تابعت المال عبر مشروع كامل. هذا هو الأساس الذي تُبنى عليه بقية المنهج.",
   scoreOf:"من 100", tierGold:"أُنجز بامتياز", tierSilver:"أُنجز بجدارة", tierDone:"أُنجز",
+  recordH:"سجل الإتمام", recName:"الاسم", recCourse:"الوحدة", recStd:"المعيار", recStdVal:"إجراءات التدقيق، مسودة V02 (قبل النهائية)، لم تُعتمد بعد", recDate:"التاريخ", recScore:"الدرجة", recBy:"الجهة المُصدِرة", recByVal:"الصليب الأحمر الدنماركي · المالية الدولية", recRef:"مرجع السجل", recNote:"أُنشئ هذا السجل على هذا الجهاز. في النسخة الإنتاجية يُوثَّق ضمن مكتبة الوثائق المعتمدة.",
   downloadCert:"تنزيل الشهادة", notifyMgr:"إرسال الشهادة إلى مديري المباشر", notified:"تم تجهيز إشعار الشهادة إلى",
   nextUp:"المقترح تالياً", lockedSoon:"قريباً", restart:"البدء من جديد",
   certTitle:"شهادة إتمام", certHas:"قد أتمّ", certAt:"منصة تعلّم المالية الدولية · الصليب الأحمر الدنماركي",
@@ -3468,6 +3481,15 @@ function finishCourse(){
     '<textarea class="li-cap" id="liCap" readonly rows="6" aria-label="LinkedIn post"></textarea>'+
     '<div class="li-acts"><button class="btn ghost" id="liCopy">'+T("liCopy")+'</button><button class="btn ghost" id="liSave">'+T("liSaveImg")+'</button><button class="btn" id="liOpen">'+GLYPHS.li+' '+T("liOpen")+'</button></div></div>'+
     '<div class="cert-frame"><canvas id="certCv" width="1500" height="1060"></canvas></div>'+
+    '<div class="fin-record"><div class="rec-h">'+esc(T("recordH"))+'</div><dl class="rec-grid">'+
+    '<div class="rec-row"><dt>'+esc(T("recName"))+'</dt><dd>'+esc(S.name||"")+'</dd></div>'+
+    '<div class="rec-row"><dt>'+esc(T("recCourse"))+'</dt><dd>'+esc(L(MODULE.title))+'</dd></div>'+
+    '<div class="rec-row"><dt>'+esc(T("recStd"))+'</dt><dd>'+esc(T("recStdVal"))+'</dd></div>'+
+    '<div class="rec-row"><dt>'+esc(T("recDate"))+'</dt><dd>'+esc((function(){var d=new Date();function p(n){return(n<10?"0":"")+n;}return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());})())+'</dd></div>'+
+    '<div class="rec-row"><dt>'+esc(T("recScore"))+'</dt><dd>'+S.pts+' / 100 · '+esc(tr.lbl)+'</dd></div>'+
+    '<div class="rec-row"><dt>'+esc(T("recBy"))+'</dt><dd>'+esc(T("recByVal"))+'</dd></div>'+
+    '<div class="rec-row"><dt>'+esc(T("recRef"))+'</dt><dd class="rec-ref">'+esc((function(){var s=(S.name||"")+"|"+S.cur+"|"+S.pts,h=0,i;for(i=0;i<s.length;i++){h=((h<<5)-h+s.charCodeAt(i))|0;}return"RK-AUD-"+(h>>>0).toString(36).toUpperCase();})())+'</dd></div>'+
+    '</dl><p class="rec-note">'+esc(T("recNote"))+'</p></div>'+
     insightHtml+recapHtml+
     '<div class="next-h">'+T("resourcesH")+'</div><div class="res-list">'+(MODULE.resources||[]).map(function(rr,ri){ return '<button class="res-row" data-res>'+GLYPHS.doc+' <span style="flex:1">'+esc(L(rr))+'</span></button>'; }).join("")+'</div>'+
     '<div class="next-h">'+T("nextUp")+'</div><div class="path-next">'+nx+'</div>'+
