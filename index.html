@@ -1080,6 +1080,16 @@ html{scrollbar-width:thin;scrollbar-color:#B5B0AC transparent}
 @keyframes styleCardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){#styleGrid .style-c{animation:none}#styleGrid .style-c:hover{transform:none}#styleGrid .style-c:hover .ic{transform:none}}
 .wl-cloud{-webkit-mask-image:radial-gradient(108% 108% at 50% 44%,#000 60%,transparent 100%);mask-image:radial-gradient(108% 108% at 50% 44%,#000 60%,transparent 100%)}
+/* Skilljar-derived touches 2026-06-20: reading measure + focus mode (design-only, no text) */
+.ln-body{max-width:33em;}
+body.focusread .shell-grid.has-rail{grid-template-columns:1fr !important;gap:0 !important;}
+body.focusread aside.shell-rail{display:none !important;}
+body.focusread .shell-main{max-width:720px;margin-inline:auto;}
+body.focusread .ln-body{margin-inline:auto;}
+body.focusread header.show .tb-mid{opacity:.55;transition:opacity .2s;}
+body.focusread header.show .tb-mid:hover,body.focusread header.show .tb-mid:focus-within{opacity:1;}
+.tb-focus.on{background:#B30808;color:#fff;border-color:#B30808;}
+@media (prefers-reduced-motion:no-preference){.shell-main{transition:max-width .3s ease;}}
 </style>
 </head>
 <body>
@@ -3857,6 +3867,36 @@ applyStrings();
   }catch(e){}
 })();
 
+</script>
+<script>
+/* Skilljar-derived focus-mode toggle 2026-06-20 (revised). Icon-only, native styling, gated to the lesson screen (s-learn), Esc to exit. Observes only the screen sections so it never fires on chat updates. Design-only, no text content. */
+(function(){
+  var btn=null;
+  function makeBtn(){
+    if(btn) return btn;
+    var bar=document.getElementById('topbar'); if(!bar) return null;
+    var lang=document.getElementById('tbLang');
+    btn=document.createElement('button');
+    btn.id='tbFocus'; btn.className='tb-map tb-focus'; btn.type='button'; btn.style.display='none';
+    btn.setAttribute('aria-label','Focus mode'); btn.title='Focus mode'; btn.setAttribute('aria-pressed','false');
+    btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
+    btn.addEventListener('click',function(){var on=document.body.classList.toggle('focusread');btn.classList.toggle('on',on);btn.setAttribute('aria-pressed',on?'true':'false');});
+    if(lang&&lang.parentNode) lang.parentNode.insertBefore(btn,lang); else bar.appendChild(btn);
+    return btn;
+  }
+  function exitFocus(){ if(document.body.classList.contains('focusread')){ document.body.classList.remove('focusread'); if(btn){btn.classList.remove('on');btn.setAttribute('aria-pressed','false');} } }
+  function gate(){ if(!btn) return; var s=document.querySelector('.screen.show'); var onLearn=!!s&&s.id==='s-learn'; btn.style.display=onLearn?'':'none'; if(!onLearn) exitFocus(); }
+  function init(){
+    if(!makeBtn()) return false;
+    var screens=document.querySelectorAll('.screen'); if(!screens.length) return false;
+    var mo=new MutationObserver(gate);
+    screens.forEach(function(s){ mo.observe(s,{attributes:true,attributeFilter:['class']}); });
+    gate(); return true;
+  }
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') exitFocus(); });
+  function boot(){ if(init()) return; var w=new MutationObserver(function(){ if(init()) w.disconnect(); }); w.observe(document.documentElement,{childList:true,subtree:true}); }
+  if(document.readyState!=='loading') boot(); else document.addEventListener('DOMContentLoaded',boot);
+})();
 </script>
 </body>
 </html>
