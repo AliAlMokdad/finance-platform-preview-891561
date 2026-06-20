@@ -812,6 +812,31 @@ button:focus-visible,.tb-rail:focus-visible{outline:2.5px solid var(--red);outli
 .pl-ask-h{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--g3);margin-bottom:9px}
 .pl-chips{display:flex;flex-wrap:wrap;gap:9px}
 .pl-chip{border:1.5px solid var(--g5);background:var(--paper);border-radius:12px;padding:9px 14px;font-size:13.5px;font-weight:600;color:var(--ink);transition:.18s;text-align:start;box-shadow:var(--shadow)}
+/* Practice while reading: Scout chat role-play (offline; reuses verbatim call data) */
+.rp-chat{display:flex;flex-direction:column;gap:10px}
+.rp-chat:focus{outline:none}
+.rp-msg{display:flex;gap:8px;align-items:flex-end;animation:rpIn .26s var(--ease-out) both}
+.rp-msg.scout{justify-content:flex-start}
+.rp-msg.me{justify-content:flex-end}
+.rp-av{flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:rgba(201,162,39,.16);color:var(--gold-ink);display:flex;align-items:center;justify-content:center}
+.rp-av svg{width:17px;height:17px}
+.rp-av.sm{width:26px;height:26px}
+.rp-av.sm svg{width:15px;height:15px}
+.rp-bub{max-width:80%;font-size:14px;line-height:1.56;padding:10px 14px;border-radius:14px}
+.rp-bub.scout{background:#fff;border:1px solid var(--rule);border-end-start-radius:4px;color:var(--body)}
+.rp-bub.me{background:var(--ink);color:#fff;border-end-end-radius:4px;font-weight:600}
+.rp-bub.is-typing{padding:11px 14px}
+.rp-scene-q{margin-top:7px;font-size:14px;line-height:1.6;color:var(--body)}
+.rp-typing{display:inline-flex;gap:5px;align-items:center}
+.rp-typing i{width:6px;height:6px;border-radius:50%;background:var(--g4);animation:rpDot 1s infinite ease-in-out}
+.rp-typing i:nth-child(2){animation-delay:.16s}
+.rp-typing i:nth-child(3){animation-delay:.32s}
+.rp-replies{margin-top:2px}
+.rp-evid{margin-top:2px}
+.rp-invite .pl-ready-h{gap:10px}
+@keyframes rpIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes rpDot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){.rp-msg{animation:none}.rp-typing i{animation:none}}
 .pl-chip:hover{border-color:var(--g3);transform:translateY(-1px)}
 .pl-chip.no{opacity:.45;border-style:dashed;transform:none;pointer-events:none}
 .pl-chip.yes{border-color:var(--green);box-shadow:0 0 0 3px rgba(62,124,90,.18)}
@@ -1596,7 +1621,7 @@ en:{ checkBadge:"Short exercise, not a test", continueBtn:"Continue", checkOrder
   certScore:"Score", certDate:"Date", halfway:"Halfway through.", protoOnly:"Prototype",
   m1:"Module 1", modN:"Module {n}", min:"min",
   railLbl:"Your journey · Station {a} of {b}", stClearH:"Station complete",
-  stylePlay:"Practice after reading", stylePlayD:"Read each card in full, without interruption. Then answer a few short questions on what you read, using the SOP's own wording.",
+  stylePlay:"Practice while reading", stylePlayD:"After each card, step into a short scenario with Scout, your practice partner. Scout plays a role from the step and you apply what you just read. The card stays open above.",
   plPick:"Which wording does the SOP use here?", plTrue:"Confirmed, word for word.",
   plNotThis:"Not this one. It belongs to a different step in this module.", plHint:"Here it is. Select it to place it.",
   plStreak3:"Three correct in a row. Close reading.", plStreak5:"Five correct in a row. You are reading the SOP precisely.", plStreak8:"Eight correct in a row. You know this SOP well.",
@@ -1614,6 +1639,13 @@ en:{ checkBadge:"Short exercise, not a test", continueBtn:"Continue", checkOrder
   laneCO:"Country office", laneHNS:"Host National Society", laneAUD:"Auditors",
   plWho:"Who is responsible for this step?", plDoc:"Which document belongs to this step?", plCtrl:"Which control applies to this step?",
   plDuty:"Whose responsibility is this?", plLock:"Confirm what you have learned: three short questions on the step you just explored.",
+  rpName:"Scout", rpRole:"your practice partner",
+  rpInviteH:"Practise it with Scout", rpInviteS:"Scout takes on a role from this step. Apply what you just read. The card stays open above for reference.", rpInviteB:"Step in",
+  rpTyping:"Scout is typing", rpYourTurn:"Your reply",
+  rpSceneConcept:"I am covering this file and I want the wording exact. Help me complete this line:",
+  rpSceneRole:"Someone has to take this on and I am not sure who owns it. Whose duty is it?",
+  rpSceneStep:"I have reached {step}. {ask}",
+  rpAgain:"Not quite. Look again and pick once more.", rpGotIt:"Yes, exactly. Thank you.", rpClose:"That helped. You read it closely, and it shows.",
   liShare:"Share on LinkedIn",
   liHowto:"Three steps: copy your post, save the certificate image, then open LinkedIn and attach it.",
   liCopy:"Copy post", liCopied:"Post copied to your clipboard.", liSaveImg:"Save certificate image", liOpen:"Open LinkedIn",
@@ -1645,7 +1677,7 @@ da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"
   certScore:"Resultat", certDate:"Dato", halfway:"Halvvejs. Bliv ved.", protoOnly:"Prototype",
   m1:"Modul 1", modN:"Modul {n}", min:"min",
   railLbl:"Din rejse · Station {a} af {b}", stClearH:"Station gennemført",
-  stylePlay:"Spil efter læsningen", stylePlayD:"Læs hvert kort færdigt i ro. Bagefter tager du et par hurtige valg om det, du har læst, med procedurens egne ord.",
+  stylePlay:"Øv mens du læser", stylePlayD:"Efter hvert kort træder du ind i et kort scenarie med Scout, din øvemakker. Scout spiller en rolle fra trinnet, og du anvender det, du lige har læst. Kortet bliver stående åbent ovenfor.",
   plPick:"Hvilke ord bruger proceduren her?", plTrue:"Bekræftet, ord for ord.",
   plNotThis:"Ikke den. Den hører hjemme et andet sted i modulet.", plHint:"Her er den. Tryk for at sætte den ind.",
   plStreak3:"Tre i træk. Skarpt læst.", plStreak5:"Fem i træk. Du tænker som en controller.", plStreak8:"Otte i træk. Proceduren er ved at blive din.",
@@ -1694,7 +1726,7 @@ fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:
   certScore:"Score", certDate:"Date", halfway:"À mi-chemin. Continuez.", protoOnly:"Prototype",
   m1:"Module 1", modN:"Module {n}", min:"min",
   railLbl:"Votre parcours · Étape {a} sur {b}", stClearH:"Étape terminée",
-  stylePlay:"Jouer après la lecture", stylePlayD:"Lisez chaque carte en entier, sans interruption. Ensuite, quelques choix rapides sur ce que vous venez de lire, avec les mots de la procédure.",
+  stylePlay:"S'exercer en lisant", stylePlayD:"Après chaque carte, entrez dans un court scénario avec Scout, votre partenaire d'entraînement. Scout joue un rôle de l'étape et vous appliquez ce que vous venez de lire. La carte reste ouverte au-dessus.",
   plPick:"Quels mots la procédure utilise-t-elle ici ?", plTrue:"Confirmé, mot pour mot.",
   plNotThis:"Pas celui-ci. Il appartient à un autre passage du module.", plHint:"Le voici. Touchez-le pour le placer.",
   plStreak3:"Trois de suite. Belle lecture.", plStreak5:"Cinq de suite. Vous pensez comme un contrôleur.", plStreak8:"Huit de suite. La procédure devient la vôtre.",
@@ -1753,7 +1785,7 @@ ar:{ checkBadge:"تمرين قصير، وليس اختباراً", continueBtn:"
   certScore:"النتيجة", certDate:"التاريخ", halfway:"في منتصف الطريق.", protoOnly:"نموذج تجريبي",
   m1:"الوحدة 1", modN:"الوحدة {n}", min:"د",
   railLbl:"رحلتك · المحطة {a} من {b}", stClearH:"أُنجزت المحطة",
-  stylePlay:"تدرّب بعد القراءة", stylePlayD:"اقرأ كل بطاقة كاملة دون مقاطعة، ثم أجب عن بضعة أسئلة قصيرة عمّا قرأت، بكلمات نص الإجراءات نفسها.",
+  stylePlay:"تدرّب أثناء القراءة", stylePlayD:"بعد كل بطاقة، ادخل في موقف قصير مع Scout، شريك تدريبك. يؤدّي Scout دوراً من الخطوة وتطبّق أنت ما قرأته للتو. تبقى البطاقة مفتوحة أعلاه.",
   plPick:"أي عبارة يستخدمها نص الإجراءات هنا؟", plTrue:"تأكّد النص، حرفياً.",
   plNotThis:"ليست هذه العبارة. مكانها في خطوة أخرى من هذه الوحدة.", plHint:"ها هي العبارة. اخترها لتضعها في مكانها.",
   plStreak3:"ثلاث إجابات متتالية. قراءة دقيقة.", plStreak5:"خمس إجابات متتالية. قراءتك لنص الإجراءات دقيقة.", plStreak8:"ثماني إجابات متتالية. أصبحت الإجراءات في متناولك.",
@@ -1771,6 +1803,13 @@ ar:{ checkBadge:"تمرين قصير، وليس اختباراً", continueBtn:"
   laneCO:"المكتب القُطري", laneHNS:"الجمعية الوطنية المضيفة", laneAUD:"المدققون",
   plWho:"من المسؤول عن هذه الخطوة؟", plDoc:"أي مستند يخص هذه الخطوة؟", plCtrl:"أي ضابط ينطبق على هذه الخطوة؟",
   plDuty:"مسؤولية من هذه؟", plLock:"أكّد ما تعلمته: ثلاثة أسئلة قصيرة عن الخطوة التي استكشفتها للتو.",
+  rpName:"Scout", rpRole:"شريك تدريبك",
+  rpInviteH:"تدرّب عليها مع Scout", rpInviteS:"يتقمّص Scout دوراً من هذه الخطوة. طبّق ما قرأته للتو. تبقى البطاقة مفتوحة أعلاه للرجوع إليها.", rpInviteB:"ابدأ التدريب",
+  rpTyping:"يكتب Scout", rpYourTurn:"ردّك",
+  rpSceneConcept:"أنا أغطّي هذا الملف وأريد الصياغة دقيقة. ساعدني في إكمال هذه الجملة:",
+  rpSceneRole:"على أحدهم تولّي هذه المهمة ولستُ متأكداً لمن تعود. مسؤولية من هذه؟",
+  rpSceneStep:"وصلتُ إلى {step}. {ask}",
+  rpAgain:"ليس تماماً. انظر مرة أخرى واختر من جديد.", rpGotIt:"نعم، تماماً. شكراً لك.", rpClose:"كان ذلك مفيداً. لقد قرأتها بتمعّن، وهذا واضح.",
   liShare:"المشاركة على LinkedIn",
   liHowto:"ثلاث خطوات بيدك: انسخ منشورك، احفظ الشهادة صورةً، ثم افتح LinkedIn وأرفقها.",
   liCopy:"نسخ المنشور", liCopied:"تم نسخ المنشور.", liSaveImg:"حفظ صورة الشهادة", liOpen:"فتح LinkedIn",
@@ -2903,82 +2942,102 @@ function streakPill(){
   if(PL_STREAK===8) toast(T("plStreak8"),2800);
   if(PL_STREAK===3||PL_STREAK===5||PL_STREAK===8){ pill.classList.remove("combo"); void pill.offsetWidth; pill.classList.add("combo"); }
 }
-/* shared round runner: one Arena, 1-3 calls, kind 2-miss reveal, cosmetic rewards only */
+var RP_AV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="2"/><rect x="17" y="13" width="4" height="6" rx="2"/><path d="M20 19a3.4 3.4 0 0 1-3.4 3H14"/></svg>';
+/* shared round runner: Scout chat role-play, 1-3 calls, kind 2-miss reveal, cosmetic rewards only, verbatim rulings */
 function runRound(calls){
   var arena=$("#plArena");
   if(!arena||!calls.length){ PLAY_DONE=true; var nb0=$("#nextBtn"); if(nb0) nb0.disabled=false; return; }
   arena.hidden=false;
+  arena.innerHTML='<div class="rp-chat" id="rpChat" role="log" aria-live="polite" aria-label="'+esc(T("rpName"))+' · '+esc(T("rpRole"))+'" tabindex="-1"></div>';
+  var chat=$("#rpChat"), say=$("#plSay");
+  try{ chat.focus(); }catch(e){}
   var qi=0, cardMisses=0;
+  function seen(n){ try{ n.scrollIntoView({block:"nearest"}); }catch(e){} return n; }
+  function meBubble(txt){ var m=document.createElement("div"); m.className="rp-msg me"; m.innerHTML='<div class="rp-bub me">'+esc(txt)+'</div>'; chat.appendChild(m); return seen(m); }
+  function scoutBubble(html,cls){ var m=document.createElement("div"); m.className="rp-msg scout"; m.innerHTML='<span class="rp-av" aria-hidden="true">'+RP_AV+'</span><div class="rp-bub scout'+(cls?" "+cls:"")+'">'+html+'</div>'; chat.appendChild(m); return seen(m); }
+  function scoutSay(html, cb, cls){
+    if(!chat.isConnected) return;
+    var t=scoutBubble('<span class="rp-typing"><i></i><i></i><i></i></span>',"is-typing");
+    if(say) say.textContent=T("rpTyping");
+    setTimeout(function(){ if(!chat.isConnected) return; t.remove(); scoutBubble(html,cls); if(cb) cb(); },560);
+  }
+  function evidence(text){ if(!text) return; var r=document.createElement("div"); r.className="pl-ruling rp-evid"; r.innerHTML='<b class="lead">'+esc(T("plRuleLead"))+'</b>'+esc(text); chat.appendChild(r); seen(r); }
+  function sceneHtml(c){
+    if(c.kind==="role") return esc(T("rpSceneRole"))+(c.line?'<div class="rp-scene-q">'+c.line+'</div>':'');
+    if(c.kind==="step") return esc(T("rpSceneStep").replace("{step}",c.subject||"").replace("{ask}",c.ask||T("plPick")));
+    return esc(T("rpSceneConcept"))+(c.line?'<div class="rp-scene-q">'+c.line+'</div>':'');
+  }
   function fin(){
-    var made=calls.length, clean=(cardMisses===0);
-    arena.innerHTML='<div class="pl-verdict">'+esc("✓")+' <span>'+esc(T("plVerdict").replace("{n}",String(made)))+'</span>'+
-      (clean?' <span class="pl-clean" title="'+esc(T("plCleanA"))+'">'+SPARK_SVG+' '+esc(T("plClean"))+'</span>':'')+
-      ' <span class="pl-standing">'+esc(T("plStanding"))+'</span></div>';
     PLAY_DONE=true;
-    var nb=$("#nextBtn");
-    if(nb){ nb.disabled=false; nb.removeAttribute("title"); try{ nb.focus(); }catch(e){} }
-    var say=$("#plSay"); if(say) say.textContent=T("plVerdict").replace("{n}",String(made))+" "+T("plStanding");
+    var made=calls.length, clean=(cardMisses===0);
+    var nb=$("#nextBtn"); if(nb){ nb.disabled=false; nb.removeAttribute("title"); }
+    scoutSay(esc(T("rpClose")), function(){
+      var v=document.createElement("div"); v.className="pl-verdict rp-verd";
+      v.innerHTML=esc("✓")+' <span>'+esc(T("plVerdict").replace("{n}",String(made)))+'</span>'+
+        (clean?' <span class="pl-clean" title="'+esc(T("plCleanA"))+'">'+SPARK_SVG+' '+esc(T("plClean"))+'</span>':'')+
+        ' <span class="pl-standing">'+esc(T("plStanding"))+'</span>';
+      chat.appendChild(v); seen(v);
+      var nb2=$("#nextBtn"); if(nb2){ try{ nb2.focus(); }catch(e){} }
+    });
+    if(say) say.textContent=T("plVerdict").replace("{n}",String(made))+" "+T("plStanding");
     ding("ok");
   }
   function ask(){
+    if(!chat.isConnected) return;
     if(qi>=calls.length){ fin(); return; }
     var c=calls[qi], misses=0, done=false, staged=-1;
-    arena.innerHTML='<div class="pl-ask-h arn" id="plArenaH" tabindex="-1">'+esc(T("plCallN").replace("{a}",String(qi+1)).replace("{b}",String(calls.length)))+' · '+esc(c.header)+'</div>'+
-      (c.line?'<div class="pl-line-q arn">'+c.line+'</div>':'')+
-      '<div class="pl-chips arn">'+c.chips.map(function(ch,ci){ return '<button class="pl-chip" data-rr="'+ci+'">'+esc(ch)+'</button>'; }).join("")+'</div>'+
-      '<div class="pl-confide arn" id="rrConf" hidden><span class="pl-confide-q">'+esc(T("plCommit"))+'</span><button class="pl-conf" data-cf="1">'+esc(T("plConfSure"))+'</button><button class="pl-conf" data-cf="0">'+esc(T("plConfMaybe"))+'</button></div>'+
-      '<div class="pl-fb arn" id="rrFb"></div>';
-    var say=$("#plSay");
-    if(say) say.textContent=T("plCallN").replace("{a}",String(qi+1)).replace("{b}",String(calls.length))+" "+c.header;
-    var hd=$("#plArenaH"); if(hd){ try{ hd.focus(); }catch(e){} }
-    var conf=$("#rrConf");
-    function showRuling(text){
-      if(!text) return;
-      var r=document.createElement("div");
-      r.className="pl-ruling";
-      r.innerHTML='<b class="lead">'+esc(T("plRuleLead"))+'</b>'+esc(text);
-      arena.appendChild(r);
+    scoutSay(sceneHtml(c), offer);
+    function offer(){
+      if(!chat.isConnected||done) return null;
+      var row=document.createElement("div"); row.className="rp-replies";
+      row.innerHTML='<div class="pl-chips" role="group" aria-label="'+esc(T("rpYourTurn"))+'">'+c.chips.map(function(ch,ci){ return '<button class="pl-chip" data-rr="'+ci+'">'+esc(ch)+'</button>'; }).join("")+'</div>'+
+        '<div class="pl-confide" id="rrConf" hidden><span class="pl-confide-q">'+esc(T("plCommit"))+'</span><button class="pl-conf" data-cf="1">'+esc(T("plConfSure"))+'</button><button class="pl-conf" data-cf="0">'+esc(T("plConfMaybe"))+'</button></div>';
+      chat.appendChild(row); seen(row);
+      var conf=$("#rrConf",row);
+      $all(".pl-chip",row).forEach(function(ch){
+        ch.addEventListener("click",function(){
+          if(done||ch.classList.contains("no")||ch.disabled) return;
+          staged=+ch.getAttribute("data-rr");
+          $all(".pl-chip",row).forEach(function(x){ if(!x.classList.contains("no")) x.classList.remove("staged"); });
+          ch.classList.add("staged");
+          if(conf) conf.hidden=false;
+        });
+      });
+      if(conf) $all(".pl-conf",conf).forEach(function(b){ b.addEventListener("click",function(){ resolve(b.getAttribute("data-cf")==="1", row); }); });
+      return row;
     }
-    function resolve(sure){
+    function resolve(sure, row){
       if(done||staged<0) return;
-      if(conf) conf.hidden=true;
-      var picked=c.chips[staged], fb=$("#rrFb");
-      var st=$('.pl-chip[data-rr="'+staged+'"]',arena);
+      var picked=c.chips[staged];
+      var mb=meBubble(picked);
+      row.remove(); staged=-1;
       if(picked===c.truth){
         done=true;
         if(sure){ S.play.sureRight=(S.play.sureRight||0)+1; save(); }
-        if(st){ st.classList.add("yes"); st.classList.remove("no","staged"); }
-        if(c.onCorrect) c.onCorrect(arena);
-        if(misses===0){ PL_STREAK++; S.play.sparks++; save(); if(sure&&st) sparkFly(st); ding("spark"); }
-        else { PL_STREAK=0; }
+        if(misses===0){ PL_STREAK++; S.play.sparks++; save(); if(sure) sparkFly(mb); ding("spark"); } else { PL_STREAK=0; }
         streakPill();
-        if(fb) fb.textContent="✓ "+(misses===0?T(sure?"plRightSure":"plRightMaybe"):T("plTrue"));
-        showRuling(c.ruling);
         if(say&&c.confirm) say.textContent=T("plTrue")+" "+c.confirm;
-        qi++; cardMisses+=misses;
-        setTimeout(ask, c.ruling?1600:820);
+        scoutSay(esc(misses===0?T(sure?"plRightSure":"plRightMaybe"):T("plTrue")), function(){
+          evidence(c.ruling);
+          qi++; cardMisses+=misses;
+          setTimeout(ask, c.ruling?1100:600);
+        });
       } else {
         misses++; PL_STREAK=0; streakPill();
         if(sure){ S.play.sureWrong=(S.play.sureWrong||0)+1; save(); }
-        if(st){ st.classList.remove("staged"); st.classList.add("nope"); }
-        setTimeout(function(){ if(st){ st.classList.remove("nope"); st.classList.add("no"); } },380);
-        if(fb) fb.textContent=T("plNotThis")+(misses>=2?" "+T("plHint"):"");
-        staged=-1;
-        if(misses>=2){
-          c.chips.forEach(function(x,xi){ if(x===c.truth){ var t2=$('.pl-chip[data-rr="'+xi+'"]',arena); if(t2){ t2.classList.add("yes"); t2.classList.remove("no"); } } });
-        }
+        var hard=misses>=2;
+        scoutSay(esc(T("rpAgain"))+(hard?" "+esc(T("plHint")):""), function(){
+          var nr=offer();
+          if(nr){
+            $all(".pl-chip",nr).forEach(function(x){
+              var v=c.chips[+x.getAttribute("data-rr")];
+              if(v===picked){ x.classList.add("no"); x.disabled=true; }
+              if(hard&&v===c.truth){ x.classList.add("yes"); }
+            });
+          }
+        });
       }
     }
-    $all(".pl-chip",arena).forEach(function(ch){
-      ch.addEventListener("click",function(){
-        if(done||ch.classList.contains("no")) return;
-        staged=+ch.getAttribute("data-rr");
-        $all(".pl-chip",arena).forEach(function(x){ if(!x.classList.contains("no")) x.classList.remove("staged"); });
-        ch.classList.add("staged");
-        if(conf) conf.hidden=false;
-      });
-    });
-    if(conf) $all(".pl-conf",conf).forEach(function(b){ b.addEventListener("click",function(){ resolve(b.getAttribute("data-cf")==="1"); }); });
   }
   ask();
 }
@@ -2990,7 +3049,7 @@ function narrativeCalls(sp,i){
     var low=plain.toLowerCase(), ti=low.indexOf(g.term.toLowerCase());
     var line=(ti>=0)?esc(plain.slice(0,ti))+'<span class="pl-slot"></span>'+esc(plain.slice(ti+g.term.length)):esc(plain);
     var truthVerbatim=(ti>=0)?plain.substr(ti,g.term.length):g.term;
-    return {header:T("plPick"), line:line, chips:g.chips, truth:g.term, confirm:plain, ruling:plain,
+    return {header:T("plPick"), kind:"concept", line:line, chips:g.chips, truth:g.term, confirm:plain, ruling:plain,
       onCorrect:function(arena){ var s=$(".pl-slot",arena); if(s){ s.textContent=truthVerbatim; s.classList.add("fill"); } }};
   });
 }
@@ -3009,7 +3068,7 @@ function rolesCalls(sp){
     if(clause.length>96) clause=clause.slice(0,93)+"...";
     var chips=[truth,d1,d2], rot=(seed+k)%3;
     chips=chips.slice(rot).concat(chips.slice(0,rot));
-    return {header:T("plDuty"), line:'<span class="pl-clause">'+esc(clause)+'</span>', chips:chips, truth:truth, ruling:t};
+    return {header:T("plDuty"), kind:"role", line:'<span class="pl-clause">'+esc(clause)+'</span>', chips:chips, truth:truth, ruling:t};
   });
 }
 function procCalls(sp,i){
@@ -3025,7 +3084,7 @@ function procCalls(sp,i){
     while(d2===d1&&hops<others.length){ hops++; d2=others[((seed*11+k+2)+hops)%others.length]; }
     var chips=[truth,d1,d2], rot=(seed+k)%3;
     chips=chips.slice(rot).concat(chips.slice(0,rot));
-    out.push({header:L(sp.proc[ni].nm)+" · "+p[2], chips:chips, truth:truth, ruling:L(sp.proc[ni].what)});
+    out.push({header:L(sp.proc[ni].nm)+" · "+p[2], kind:"step", subject:L(sp.proc[ni].nm), ask:p[2], chips:chips, truth:truth, ruling:L(sp.proc[ni].what)});
   });
   return out;
 }
@@ -3046,10 +3105,10 @@ function wirePlay(sp,i){
   var calls=sp.roles?rolesCalls(sp):narrativeCalls(sp,i);
   if(!calls.length){ arena.remove(); return; }
   PLAY_DONE=false;
-  if(nb&&gate){ nb.disabled=true; nb.title=T("plReadyS"); }
-  arena.innerHTML='<div class="pl-ready"><div class="pl-ready-h" id="plArenaH" tabindex="-1">'+SPARK_SVG+' '+esc(T("plReadyH"))+'</div>'+
-    '<div class="pl-ready-s">'+esc(T("plReadyS"))+'</div>'+
-    '<button class="btn pl-take" id="plReadyB">'+esc(T("plReadyB"))+'</button></div>';
+  if(nb&&gate){ nb.disabled=true; nb.title=T("rpInviteS"); }
+  arena.innerHTML='<div class="pl-ready rp-invite"><div class="pl-ready-h" id="plArenaH" tabindex="-1"><span class="rp-av sm" aria-hidden="true">'+RP_AV+'</span>'+esc(T("rpInviteH"))+'</div>'+
+    '<div class="pl-ready-s">'+esc(T("rpInviteS"))+'</div>'+
+    '<button class="btn pl-take" id="plReadyB">'+esc(T("rpInviteB"))+'</button></div>';
   var rb=$("#plReadyB");
   if(rb) rb.addEventListener("click",function(){
     shutUp();
