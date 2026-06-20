@@ -958,6 +958,7 @@ html[dir="rtl"] .pm2-head .pm2-expand{letter-spacing:.02em}
   <div class="tb-mid"><button class="tb-rail" id="tbDots" type="button"></button></div>
   <button id="tbMap" class="tb-map" style="display:none" data-s="mapBtn">Map</button>
   <button id="tbStyle" class="tb-map" style="display:none"></button>
+  <button id="tbLang" class="tb-map" style="display:none"></button>
   <div class="tb-pts" title="">
     <svg class="tb-ring" viewBox="0 0 32 32" aria-hidden="true">
       <circle class="bg" cx="16" cy="16" r="13"></circle>
@@ -1200,6 +1201,7 @@ function show(id){
   $("#topbar").classList.toggle("show", id==="s-learn"||id==="s-finish"||id==="s-map"||id==="s-lib");
   var tm=$("#tbMap"); if(tm) tm.style.display=(id==="s-learn")?"":"none";
   var ts=$("#tbStyle"); if(ts) ts.style.display=(id==="s-learn")?"":"none";
+  var tl=$("#tbLang"); if(tl){ var sl=(id==="s-learn"||id==="s-finish"||id==="s-map"||id==="s-lib"); tl.style.display=sl?"":"none"; if(sl) updLangChip(); }
   window.scrollTo(0,0);
 }
 
@@ -1389,6 +1391,35 @@ function updStyleChip(){
     show("s-style");
   });
 })();
+/* live language switching: change language anytime in-course, re-render the current screen in the new language */
+function updLangChip(){
+  var b=$("#tbLang"); if(!b) return;
+  var L=LANGS.filter(function(x){return x.code===(S.lang||"en");})[0]||LANGS[0];
+  var compact=false; try{ compact=innerWidth<=640; }catch(e){}
+  var globe='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" aria-hidden="true" style="vertical-align:-2px;margin-inline-end:6px"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>';
+  b.innerHTML=globe+esc(compact?(L.code||"en").toUpperCase():L.name);
+  b.title=T("langChip")+" · "+L.name;
+  b.setAttribute("aria-label", T("langChip")+": "+L.name);
+}
+function langCycle(){
+  var live=LANGS.filter(function(x){return x.live;});
+  if(live.length<2) return;
+  var idx=0; for(var k=0;k<live.length;k++){ if(live[k].code===S.lang){ idx=k; break; } }
+  var next=live[(idx+1)%live.length];
+  S.lang=next.code; save();
+  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T);
+  applyStrings();
+  var cur=document.querySelector(".screen.show"); var id=cur?cur.id:"";
+  if(id==="s-learn") renderStep(S.step);
+  else if(id==="s-map") showMap();
+  else if(id==="s-lib") showLib();
+  else if(id==="s-finish") finishCourse();
+  updLangChip(); updStyleChip();
+  toast(T("langSwitched").replace("{lang}", next.name), 2200);
+}
+(function langSwitchWire(){
+  var b=$("#tbLang"); if(b) b.addEventListener("click", langCycle);
+})();
 
 /* =================================================================
    ENGINE STRINGS (merged into STR)
@@ -1413,7 +1444,7 @@ en:{ checkBadge:"Short exercise, not a test", continueBtn:"Continue", checkOrder
   pathWhyH:"Why this comes next", dcrDoc:"Document", dcrCtrl:"Control", procExpand:"Full screen", procClose:"Close", procExpandAria:"Open the process diagram full screen", procCloseAria:"Close full screen",
   pmWhat:"What", pmWho:"Who leads", pmDocs:"Documents", pmCtrl:"Control",
   pmProgress:"Explored {c} of {t} steps. Open each one to continue.", pmAll:"All steps explored. Continue when ready.", stationsLbl:"stations",
-  mapKicker:"Your journey", mapNextH:"Up next", mapLegendH:"Key", mapHere:"You are here", mapBtn:"Map", mapHint:"Stations unlock in sequence. Your progress is saved automatically. The exercises total exactly 100 points.",
+  mapKicker:"Your journey", mapNextH:"Up next", mapLegendH:"Key", mapHere:"You are here", langChip:"Language", langSwitched:"Switched to {lang}", mapBtn:"Map", mapHint:"Stations unlock in sequence. Your progress is saved automatically. The exercises total exactly 100 points.",
   stDone:"Done", stLocked:"Locked", stReview:"Review", reviewing:"Reviewing", stepsLbl:"steps", doneIn:"Completed in about {n} minutes.", doneIn1:"Completed in about a minute.", doneIn11:"Completed in about {n} minutes.",
   certSaved:"Certificate downloaded.", certOpenTab:"Certificate opened in a new tab. Long-press or right-click to save it.",
   mailSub:"Certificate of completion:", mailOpened:"Your email application is opening with the message ready to send.",
@@ -1569,7 +1600,7 @@ ar:{ checkBadge:"تمرين قصير، وليس اختباراً", continueBtn:"
   pathWhyH:"لماذا هذا تالياً", dcrDoc:"مستند", dcrCtrl:"ضابط", procExpand:"ملء الشاشة", procClose:"إغلاق", procExpandAria:"افتح مخطط العملية بملء الشاشة", procCloseAria:"إغلاق ملء الشاشة",
   pmWhat:"ماذا", pmWho:"من يقود", pmDocs:"المستندات", pmCtrl:"الرقابة",
   pmProgress:"استكشفت {c} من {t} خطوات. افتح كل خطوة للمتابعة.", pmAll:"استكشفت كل الخطوات. تابع عندما تشاء.", stationsLbl:"محطات",
-  mapKicker:"رحلتك", mapNextH:"التالي", mapLegendH:"المفتاح", mapHere:"أنت هنا", mapBtn:"الخريطة", mapHint:"تُفتح المحطات بالترتيب، ويُحفظ تقدمك تلقائياً. ومجموع التمارين 100 نقطة بالضبط.",
+  mapKicker:"رحلتك", mapNextH:"التالي", mapLegendH:"المفتاح", mapHere:"أنت هنا", langChip:"اللغة", langSwitched:"تم التبديل إلى {lang}", mapBtn:"الخريطة", mapHint:"تُفتح المحطات بالترتيب، ويُحفظ تقدمك تلقائياً. ومجموع التمارين 100 نقطة بالضبط.",
   stDone:"تم", stLocked:"مقفلة", stReview:"مراجعة", reviewing:"وضع المراجعة", stepsLbl:"خطوات", doneIn:"أُنجزت في نحو {n} دقائق.", doneIn1:"أُنجزت في نحو دقيقة واحدة.", doneIn11:"أُنجزت في نحو {n} دقيقة.",
   certSaved:"تم تنزيل الشهادة.", certOpenTab:"فُتحت الشهادة في تبويب جديد. اضغط مطولاً أو بزر الفأرة الأيمن لحفظها.",
   mailSub:"شهادة إتمام:", mailOpened:"يفتح تطبيق البريد لديك والرسالة جاهزة للإرسال.",
@@ -3371,7 +3402,7 @@ function finishCourse(){
     '<div class="fin-score"><span id="scoreNum">0</span> <small>'+T("scoreOf")+'</small></div>'+
     '<div class="fin-tier '+tr.cls+'">'+(tr.cls==="gold"?"★ ":"")+tr.lbl+'</div>'+
     '<h2 class="fin-h">'+T("finishH")+' '+esc(S.name.split(" ")[0])+'</h2>'+
-    '<p class="fin-sub">'+(MODULE.finText?L(MODULE.finText):T("finishSub"))+(S.startedAt?' '+fmtDoneIn(Math.max(1,Math.round((Date.now()-S.startedAt)/60000))):'')+(S.style==="play"&&S.play&&S.play.sparks?' '+T("plSparksFin").replace("{n}",String(S.play.sparks)):'')+'</p>'+
+    '<p class="fin-sub">'+(MODULE.finText?L(MODULE.finText):T("finishSub"))+(function(){var m=S.startedAt?Math.round((Date.now()-S.startedAt)/60000):0;return(m>=1&&m<=90)?' '+fmtDoneIn(m):'';})()+(S.style==="play"&&S.play&&S.play.sparks?' '+T("plSparksFin").replace("{n}",String(S.play.sparks)):'')+'</p>'+
     '<div class="fin-cta"><button class="btn" id="dlCert">'+T("downloadCert")+'</button>'+
     '<button class="btn ghost" id="liShare">'+GLYPHS.li+' '+T("liShare")+'</button></div>'+
     '<div class="li-row" id="liRow" style="display:none"><div class="li-howto">'+T("liHowto")+'</div>'+
