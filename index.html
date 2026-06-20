@@ -82,6 +82,20 @@ input,select{font-family:inherit}
 #startBtn:hover{background:var(--red-deep);transform:translateY(-2px);box-shadow:0 10px 30px rgba(227,10,11,.35)}
 .wl-proto{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-family:var(--mono);
   font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);z-index:2}
+/* welcome word rotator: one greeting at a time, cross-fading in the centre */
+.wl-greet{display:block;min-height:1.18em;margin-bottom:18px;font-weight:800;color:#fff;line-height:1.1;
+  letter-spacing:-.01em;font-size:clamp(30px,5.4vw,52px);position:relative}
+.wl-greet .wg-word{display:inline-block;opacity:0;transform:translateY(10px);
+  transition:opacity .5s var(--ease-out),transform .5s var(--ease-out);will-change:opacity,transform}
+.wl-greet .wg-word.in{opacity:1;transform:none}
+.wl-greet .wg-word.out{opacity:0;transform:translateY(-10px)}
+@media (prefers-reduced-motion:reduce){
+  .wl-greet .wg-word{transition:opacity .25s linear;transform:none}
+  .wl-greet .wg-word.in{transform:none}.wl-greet .wg-word.out{transform:none}
+}
+/* gated Start: disabled until a language is chosen */
+#startBtn:disabled{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.22);color:rgba(255,255,255,.5);cursor:not-allowed;transform:none;box-shadow:none}
+#startBtn:disabled:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.22);transform:none;box-shadow:none}
 
 /* ============ TOPBAR ============ */
 #topbar{position:fixed;top:0;left:0;right:0;height:62px;background:rgba(250,247,244,.92);backdrop-filter:blur(12px);
@@ -173,6 +187,84 @@ html[dir="rtl"] .wl-menu,html[dir="rtl"] .wl-opt{text-align:right}
 html[dir="rtl"] .wl-opt .soon-tag,html[dir="rtl"] .wl-opt.sel .gl-check,html[dir="rtl"] #langBtn .ar{margin-left:0;margin-right:auto}
 html[dir="rtl"] .rk-word{text-align:right}
 
+/* ============ WEBSITE SHELL (de-centered page frame) ============ */
+.shell{max-width:1240px;margin-inline:auto;padding:30px clamp(20px,4vw,48px) 80px;width:100%;flex:1}
+.shell-grid{display:grid;gap:clamp(22px,3vw,40px);align-items:start}
+.shell-grid.has-rail{grid-template-columns:minmax(0,1fr) 318px}
+.shell-main{min-width:0}
+.shell-rail{position:sticky;top:84px;display:flex;flex-direction:column;gap:14px;min-width:0}
+html[dir="rtl"] .shell-grid.has-rail{grid-template-columns:318px minmax(0,1fr)}
+@media (max-width:980px){
+  .shell-grid.has-rail{grid-template-columns:1fr}
+  .shell-rail{position:static;top:auto;order:2}
+  .shell-main{order:1}
+}
+/* breadcrumb back to the journey */
+.crumb{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.crumb-back{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--g2);background:#fff;border:1px solid var(--rule);border-radius:10px;padding:7px 13px;box-shadow:var(--shadow);transition:border-color .18s,color .18s}
+.crumb-back:hover{border-color:var(--ink);color:var(--ink)}
+.crumb-back svg{width:14px;height:14px}
+html[dir="rtl"] .crumb-back svg{transform:scaleX(-1)}
+.crumb-here{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--g3)}
+html[dir="rtl"] .crumb-here{letter-spacing:0}
+.crumb-review{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-ink);background:#FBF4DC;border:1px solid var(--gold);border-radius:999px;padding:3px 10px}
+html[dir="rtl"] .crumb-review{letter-spacing:.02em}
+/* rail panels: institutional cards in the side column */
+.rail-panel{background:var(--paper);border:1px solid var(--rule);border-radius:16px;box-shadow:var(--shadow);padding:16px 17px}
+.rail-panel-h{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--g3);margin-bottom:12px}
+html[dir="rtl"] .rail-panel-h{letter-spacing:.02em}
+.rail-panel-h svg{width:14px;height:14px;color:var(--g3);flex:0 0 auto}
+/* lesson progress in the rail */
+.rail-prog-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.rail-prog-lbl{font-size:13px;font-weight:700;color:var(--ink)}
+.rail-prog-n{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--g2);font-variant-numeric:tabular-nums}
+.rail-prog-track{height:5px;background:var(--g6);border-radius:3px;overflow:hidden}
+.rail-prog-track i{display:block;height:100%;width:0;background:var(--green);border-radius:3px;transition:width .7s var(--ease-out)}
+html[dir="rtl"] .rail-prog-track i{margin-inline-start:auto}
+.rail-prog-sub{font-family:var(--mono);font-size:10.5px;color:var(--g3);letter-spacing:.04em;margin-top:9px;line-height:1.5}
+/* sources list in the rail */
+.rail-src{display:flex;flex-direction:column;gap:8px}
+.rail-src-row{display:flex;align-items:flex-start;gap:9px;background:var(--canvas);border:1px solid var(--rule);border-radius:11px;padding:10px 12px;font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.4;text-align:start;transition:border-color .18s,transform .18s}
+.rail-src-row:hover{border-color:var(--red);transform:translateY(-1px)}
+.rail-src-row svg{width:15px;height:15px;flex:0 0 auto;color:var(--g3);margin-top:1px}
+.rail-src-note{font-family:var(--mono);font-size:10px;color:var(--g3);letter-spacing:.03em;line-height:1.5;margin-top:4px}
+/* ---- AI learning companion (native rail panel, not a floating blob) ---- */
+.comp-panel{background:var(--paper);border:1px solid var(--rule);border-radius:16px;box-shadow:var(--shadow);padding:16px 17px;display:flex;flex-direction:column;gap:0}
+.comp-panel .rail-panel-h{margin-bottom:10px}
+.comp-intro{font-size:12.5px;color:var(--g2);line-height:1.55;margin-bottom:12px}
+.comp-fab{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;font-family:var(--sans);font-size:13.5px;font-weight:700;color:var(--ink);background:var(--canvas);border:1.5px solid var(--g5);border-radius:12px;padding:11px 14px;transition:border-color .18s,background .18s,transform .08s}
+.comp-fab:hover{border-color:var(--ink)}
+.comp-fab svg{width:16px;height:16px;color:var(--green)}
+.comp-grounded{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);background:rgba(62,124,90,.10);border-radius:999px;padding:4px 10px;margin-bottom:11px;align-self:flex-start}
+html[dir="rtl"] .comp-grounded{letter-spacing:.02em}
+.comp-grounded svg{width:11px;height:11px}
+.comp-thread{display:flex;flex-direction:column;gap:9px;max-height:262px;overflow-y:auto;margin-bottom:11px;padding-inline-end:2px}
+.comp-bubble{font-size:12.8px;line-height:1.55;border-radius:12px;padding:10px 13px;max-width:94%;animation:rvlIn .3s var(--ease-out) both}
+.comp-bubble.user{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:4px}
+html[dir="rtl"] .comp-bubble.user{border-bottom-right-radius:12px;border-bottom-left-radius:4px}
+.comp-bubble.bot{align-self:flex-start;background:var(--canvas);color:var(--body);border:1px solid var(--rule);border-bottom-left-radius:4px}
+html[dir="rtl"] .comp-bubble.bot{border-bottom-left-radius:12px;border-bottom-right-radius:4px}
+.comp-bubble.refuse,.comp-bubble.offline{align-self:flex-start;background:#FBF4DC;background:color-mix(in srgb, var(--gold) 16%, var(--paper));border:1px solid var(--gold);color:#6b5510;border-bottom-left-radius:4px}
+.comp-bubble.thinking{align-self:flex-start;color:var(--g2);background:var(--canvas);border:1px solid var(--rule);display:inline-flex;align-items:center;gap:7px}
+.comp-dots{display:inline-flex;gap:3px}
+.comp-dots i{width:5px;height:5px;border-radius:50%;background:var(--g3);animation:compDot 1s ease-in-out infinite}
+.comp-dots i:nth-child(2){animation-delay:.15s}.comp-dots i:nth-child(3){animation-delay:.3s}
+@keyframes compDot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.comp-row{display:flex;gap:8px;align-items:flex-end}
+.comp-in{flex:1;min-width:0;font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--canvas);border:1.5px solid var(--g5);border-radius:11px;padding:9px 12px;outline:none;resize:none;line-height:1.45;max-height:88px;transition:border-color .18s}
+.comp-in:focus{border-color:var(--green);background:#fff}
+.comp-send{flex:0 0 auto;width:38px;height:38px;border-radius:11px;background:var(--green);color:#fff;border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;transition:background .18s,transform .08s}
+.comp-send:hover{background:#356c4e}
+.comp-send:disabled{opacity:.5;cursor:not-allowed}
+.comp-send svg{width:16px;height:16px}
+html[dir="rtl"] .comp-send svg{transform:scaleX(-1)}
+.comp-seeds{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px}
+.comp-seed{font-size:11.5px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--g5);border-radius:999px;padding:6px 12px;text-align:start;transition:border-color .18s,transform .08s}
+.comp-seed:hover{border-color:var(--green)}
+.comp-foot{display:flex;justify-content:space-between;align-items:center;margin-top:2px}
+.comp-reset{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--g3);background:none;border:0;padding:2px 4px;text-decoration:underline;text-underline-offset:2px}
+.comp-reset:hover{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.comp-bubble{animation:none}.comp-dots i{animation:none;opacity:.6}}
 /* ============ LEARN ============ */
 #s-learn{padding-top:62px}
 .ln-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:40px 22px 64px;max-width:860px;margin:0 auto;width:100%}
@@ -254,7 +346,8 @@ html[dir="rtl"] .wl-title,html[dir="rtl"] .h1,html[dir="rtl"] .ln-h,html[dir="rt
 .map-st .sdt{font-family:var(--mono);font-size:11.5px;color:var(--g2);letter-spacing:.05em}
 .map-st .act{flex:0 0 auto;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
   border-radius:18px;padding:7px 16px;border:1.5px solid var(--g5);color:var(--g2);background:#fff}
-.map-st.done{border-color:var(--green);opacity:.82;box-shadow:none}
+.map-st.done{border-color:var(--green);opacity:.92;box-shadow:none;cursor:pointer}
+.map-st.done:hover{opacity:1;transform:translateY(-2px);box-shadow:var(--shadow)}
 .map-st.done .bub{background:var(--green);border-color:var(--green);color:#fff}
 .map-st.done .act{border-color:var(--green);color:var(--green)}
 .map-st.cur{border-color:var(--red);box-shadow:0 8px 30px rgba(227,10,11,.14);cursor:pointer}
@@ -300,6 +393,43 @@ html[dir="rtl"] .map-prog-track i{margin-inline-start:auto}
 .suite-tag{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--green);border-radius:5px;padding:2px 6px}
 html[dir="rtl"] .suite-ph-nm{letter-spacing:0}
 @media (max-width:400px){.suite-ph-top{flex-wrap:wrap;row-gap:4px}}
+/* ---- catalog (website-style SOP programme, replaces the vertical suite dump) ---- */
+.cat-sec{width:100%;margin-top:40px}
+.cat-sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.cat-sec-h .kicker{margin-bottom:0}
+.cat-count{font-family:var(--mono);font-size:11.5px;color:var(--g2);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.cat-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.cat-chip{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.06em;color:var(--g2);background:#fff;border:1.5px solid var(--g5);border-radius:999px;padding:8px 15px;transition:border-color .18s,color .18s,background .18s}
+.cat-chip:hover{border-color:var(--g3);color:var(--ink)}
+.cat-chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:14px;width:100%}
+.cat-card{position:relative;display:flex;flex-direction:column;gap:9px;background:var(--paper);border:1px solid var(--rule);border-radius:15px;padding:18px 18px 16px;box-shadow:var(--shadow);text-align:start;transition:transform .35s var(--ease-out),opacity .35s var(--ease-out)}
+.cat-card .cat-ph{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--g3)}
+.cat-card .cat-t{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.34;flex:1}
+.cat-card .cat-meta{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--g3)}
+.cat-card .cat-dot{width:7px;height:7px;border-radius:50%;background:var(--g4);flex:0 0 auto}
+.cat-card.pilot{border-color:var(--green);box-shadow:0 0 0 1px var(--green) inset, var(--shadow)}
+.cat-card.pilot .cat-dot{background:var(--green)}
+.cat-card.pilot .cat-meta{color:var(--green)}
+.cat-card.hide{display:none}
+/* featured live pilot strip */
+.cat-feat{position:relative;display:flex;gap:22px;align-items:center;width:100%;background:var(--paper);border:1.5px solid var(--green);border-radius:20px;padding:24px 26px;box-shadow:var(--shadow-md);text-align:start;transition:transform .22s var(--ease-out),box-shadow .22s var(--ease-out);overflow:hidden}
+.cat-feat::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:5px;background:var(--green)}
+.cat-feat.live{cursor:pointer}
+.cat-feat.live:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.cat-feat .cf-ic{flex:0 0 auto;width:60px;height:60px;border-radius:16px;background:rgba(62,124,90,.10);color:var(--green);display:flex;align-items:center;justify-content:center}
+.cat-feat .cf-ic svg{width:26px;height:26px}
+.cat-feat .cf-in{flex:1;min-width:0}
+.cat-feat .cf-tag{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--green);border-radius:7px;padding:3px 9px;margin-bottom:9px}
+.cat-feat .cf-t{font-size:19px;font-weight:800;color:var(--ink);line-height:1.22;margin-bottom:5px;letter-spacing:-.01em}
+.cat-feat .cf-s{font-size:13.5px;color:var(--g2);line-height:1.5;margin-bottom:11px}
+.cat-feat .cf-meta{font-family:var(--mono);font-size:11px;color:var(--g2);letter-spacing:.05em}
+.cat-feat .cf-bar{height:5px;background:var(--g6);border-radius:3px;margin-top:10px;overflow:hidden;max-width:320px}
+.cat-feat .cf-bar i{display:block;height:100%;background:var(--green);border-radius:3px;transition:width .6s var(--ease-out)}
+.cat-feat .cf-go{flex:0 0 auto;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:18px;padding:9px 18px;border:1.5px solid var(--green);color:#fff;background:var(--green)}
+@media (prefers-reduced-motion:reduce){.cat-card,.cat-feat,.cat-feat .cf-bar i,.cat-feat.live:hover{transition:none}}
+@media (max-width:680px){.cat-feat{flex-direction:column;align-items:flex-start;gap:14px}.cat-feat .cf-go{align-self:stretch;text-align:center}}
+html[dir="rtl"] .cat-sec-h,html[dir="rtl"] .cat-card .cat-ph,html[dir="rtl"] .cat-card .cat-meta,html[dir="rtl"] .cat-feat .cf-tag,html[dir="rtl"] .cat-feat .cf-meta{letter-spacing:0}
 .lib-c .lin{flex:1;min-width:0}
 .lib-c .lit{font-size:17.5px;font-weight:800;color:var(--ink);margin-bottom:4px;line-height:1.25}
 .lib-c .lis{font-size:13.5px;color:var(--g3);line-height:1.45;margin-bottom:9px}
@@ -562,7 +692,7 @@ html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
 /* ============ FINISH CEREMONY ============ */
 .fin-wrap.staging .fin-tier,.fin-wrap.staging .fin-h,.fin-wrap.staging .fin-sub,
 .fin-wrap.staging .fin-cta,.fin-wrap.staging .cert-frame,.fin-wrap.staging .next-h,
-.fin-wrap.staging .res-list,.fin-wrap.staging .next-grid,.fin-wrap.staging .fin-restart{opacity:0;pointer-events:none}
+.fin-wrap.staging .res-list,.fin-wrap.staging .next-grid,.fin-wrap.staging .path-next,.fin-wrap.staging .fin-restart{opacity:0;pointer-events:none}
 .fin-wrap.s1 .fin-tier{opacity:1;pointer-events:auto;animation:stampIn .5s cubic-bezier(.34,1.4,.5,1) both}
 @keyframes stampIn{0%{opacity:0;transform:scale(1.7)}55%{opacity:1;transform:scale(.94) rotate(-1deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
 .fin-wrap.s2 .fin-h,.fin-wrap.s2 .fin-sub{opacity:1;animation:rvlIn .45s both}
@@ -571,8 +701,8 @@ html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
 .fin-wrap.s3 .cert-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.45),transparent 60%);transform:translateX(-120%) skewX(-14deg);animation:certSweep 1.1s .4s var(--ease-out) both;pointer-events:none}
 @keyframes certSweep{to{transform:translateX(120%) skewX(-14deg)}}
 @keyframes certIn{from{opacity:0;transform:translateY(26px) scale(.985)}to{opacity:1;transform:none}}
-.fin-wrap.s4 .fin-cta,.fin-wrap.s4 .next-h,.fin-wrap.s4 .res-list,.fin-wrap.s4 .next-grid,.fin-wrap.s4 .fin-restart{opacity:1;pointer-events:auto;animation:rvlIn .5s both}
-.fin-wrap.s4 .res-list{animation-delay:.07s}.fin-wrap.s4 .next-grid{animation-delay:.14s}.fin-wrap.s4 .fin-restart{animation-delay:.2s}
+.fin-wrap.s4 .fin-cta,.fin-wrap.s4 .next-h,.fin-wrap.s4 .res-list,.fin-wrap.s4 .next-grid,.fin-wrap.s4 .path-next,.fin-wrap.s4 .fin-restart{opacity:1;pointer-events:auto;animation:rvlIn .5s both}
+.fin-wrap.s4 .res-list{animation-delay:.07s}.fin-wrap.s4 .next-grid,.fin-wrap.s4 .path-next{animation-delay:.14s}.fin-wrap.s4 .fin-restart{animation-delay:.2s}
 .fin-tier.gold{position:relative;overflow:hidden}
 .fin-tier.gold::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-18deg);animation:shine 1.1s .55s ease-out both}
 @keyframes shine{to{left:130%}}
@@ -689,6 +819,83 @@ button:focus-visible,.tb-rail:focus-visible{outline:2.5px solid var(--red);outli
   .pm2-lanechip{display:inline-block;font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--g3);border:1px solid var(--g5);border-radius:9px;padding:2px 7px;flex:0 0 auto}
 }
 
+/* ============ P2 CONTENT SECTIONS (de-centered, confident treatments) ============ */
+/* five-stage flow strip */
+.flow{display:flex;align-items:stretch;flex-wrap:wrap;gap:6px;margin:22px 0 6px}
+.flow-stage{flex:1 1 0;min-width:96px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;background:var(--canvas);border:1.5px solid var(--g5);border-radius:14px;padding:16px 10px 14px;transition:border-color .25s,background .25s,box-shadow .25s;animation:rvlIn .45s var(--ease-out) both;animation-delay:calc(var(--fi)*.07s)}
+.flow-stage .flow-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:14px;background:#fff;border:1.5px solid var(--g5);color:var(--g2);transition:.25s}
+.flow-stage .flow-nm{font-size:12.5px;font-weight:700;color:var(--g2);line-height:1.3}
+.flow-stage.on{border-color:var(--red);background:#fff;box-shadow:0 6px 20px rgba(227,10,11,.12)}
+.flow-stage.on .flow-num{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 0 0 4px var(--red-soft)}
+.flow-stage.on .flow-nm{color:var(--ink)}
+.flow-link{flex:0 0 auto;align-self:center;display:flex;align-items:center;color:var(--g4)}
+.flow-link svg{width:18px;height:18px}
+html[dir="rtl"] .flow-link svg{transform:scaleX(-1)}
+@media (max-width:560px){.flow{flex-direction:column}.flow-stage{flex-direction:row;justify-content:flex-start;gap:13px;text-align:start}.flow-stage .flow-nm{text-align:start}.flow-link{transform:rotate(90deg)}html[dir="rtl"] .flow-link{transform:rotate(90deg)}}
+/* three-audits triplet cards */
+.trip{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:22px 0 6px}
+.trip-card{position:relative;background:var(--canvas);border:1.5px solid var(--g5);border-radius:16px;padding:20px 18px 18px;transition:border-color .25s,transform .25s,box-shadow .25s;animation:rvlIn .45s var(--ease-out) both;animation-delay:calc(var(--ti)*.08s)}
+.trip-card:hover{border-color:var(--g3);transform:translateY(-3px);box-shadow:var(--shadow)}
+.trip-card .trip-n{position:absolute;top:14px;inset-inline-end:15px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--g4)}
+.trip-card .trip-h{font-size:15.5px;font-weight:800;color:var(--ink);margin-bottom:8px;padding-inline-end:20px;line-height:1.25}
+.trip-card .trip-b{font-size:13px;color:var(--body);line-height:1.55}
+.trip-card:nth-child(1){border-top:3px solid var(--p4)}
+.trip-card:nth-child(2){border-top:3px solid var(--p2)}
+.trip-card:nth-child(3){border-top:3px solid var(--p3)}
+@media (max-width:680px){.trip{grid-template-columns:1fr}}
+/* roles board */
+.rl-board{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:22px 0 6px}
+.rl-card{position:relative;display:flex;gap:0;background:var(--canvas);border:1.5px solid var(--g5);border-radius:16px;overflow:hidden;transition:border-color .25s,transform .25s,box-shadow .25s;animation:rvlIn .45s var(--ease-out) both;animation-delay:calc(var(--ri)*.07s)}
+.rl-card:hover{border-color:var(--g3);transform:translateY(-2px);box-shadow:var(--shadow)}
+.rl-card .rl-chip{flex:0 0 auto;width:6px;align-self:stretch}
+.rl-card .rl-card-in{padding:17px 19px 18px;min-width:0}
+.rl-card .rl-name{font-size:15.5px;font-weight:800;color:var(--ink);margin-bottom:8px;line-height:1.25}
+.rl-card .rl-desc{font-size:13.5px;color:var(--body);line-height:1.6;margin:0}
+@media (max-width:680px){.rl-board{grid-template-columns:1fr}}
+/* completion stepper */
+.cstep{list-style:none;margin:22px 0 6px;padding:0;position:relative}
+.cstep::before{content:"";position:absolute;inset-inline-start:16px;top:14px;bottom:14px;width:2.5px;background:var(--g5);border-radius:2px}
+.cstep-i{position:relative;display:flex;gap:15px;align-items:flex-start;padding-inline-start:0;margin-bottom:14px;animation:rvlIn .45s var(--ease-out) both;animation-delay:calc(var(--ci)*.08s)}
+.cstep-i:last-child{margin-bottom:0}
+.cstep-mk{flex:0 0 auto;width:33px;height:33px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;box-shadow:0 0 0 4px var(--canvas)}
+.cstep-mk svg{width:16px;height:16px}
+.cstep-tx{flex:1;min-width:0;background:var(--canvas);border:1px solid var(--rule);border-radius:13px;padding:13px 16px}
+.cstep-h{font-size:14.5px;font-weight:800;color:var(--ink);margin-bottom:5px}
+.cstep-b{font-size:13px;color:var(--body);line-height:1.55;margin:0}
+/* document -> control treatment */
+.dcr{display:flex;flex-direction:column;gap:11px;margin:22px 0 6px}
+.dcr-card{display:flex;align-items:stretch;gap:0;background:var(--canvas);border:1px solid var(--rule);border-radius:14px;overflow:hidden;animation:rvlIn .45s var(--ease-out) both;animation-delay:calc(var(--di)*.06s)}
+.dcr-doc,.dcr-ctrl{flex:1;min-width:0;padding:13px 16px;display:flex;flex-direction:column;gap:6px}
+.dcr-doc{background:#fff}
+.dcr-tag{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--p3);border-radius:6px;padding:3px 8px;align-self:flex-start}
+.dcr-tag.ctrl{background:var(--green)}
+.dcr-txt{font-size:13px;color:var(--ink);line-height:1.45;font-weight:600}
+.dcr-ctrl .dcr-txt{font-weight:500;color:var(--body)}
+.dcr-arrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:34px;color:var(--g4);background:var(--canvas)}
+.dcr-arrow svg{width:17px;height:17px}
+html[dir="rtl"] .dcr-arrow svg{transform:scaleX(-1)}
+@media (max-width:560px){.dcr-card{flex-direction:column}.dcr-arrow{width:100%;height:30px;transform:rotate(90deg)}html[dir="rtl"] .dcr-arrow{transform:rotate(90deg)}}
+/* styled source pull-quote */
+.ln-quote{position:relative;margin:18px 0 0;background:var(--canvas);border:1px solid var(--rule);border-inline-start:3px solid var(--red);border-radius:13px;padding:16px 20px 16px 22px}
+.ln-quote .ln-quote-mark{position:absolute;top:2px;inset-inline-start:10px;font-family:Georgia,serif;font-size:42px;line-height:1;color:var(--red-soft);pointer-events:none}
+.ln-quote blockquote{font-size:14.5px;color:var(--body);line-height:1.62;font-style:italic;margin:0;position:relative;z-index:1}
+html[dir="rtl"] .ln-quote{border-inline-start:0;border-inline-end:3px solid var(--red)}
+/* process: wider full-bleed within the main column + full-screen */
+.pm2-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.pm2-expand{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--g2);background:#fff;border:1.5px solid var(--g5);border-radius:10px;padding:7px 13px;transition:border-color .18s,color .18s}
+.pm2-expand:hover{border-color:var(--ink);color:var(--ink)}
+.pm2-expand svg{width:14px;height:14px}
+html[dir="rtl"] .pm2-head .pm2-expand{letter-spacing:.02em}
+.pm2.fs{position:fixed;inset:0;z-index:80;margin:0;background:var(--canvas);padding:20px clamp(16px,4vw,52px);overflow:auto;display:flex;flex-direction:column;animation:fsIn .28s var(--ease-out) both}
+@keyframes fsIn{from{opacity:0}to{opacity:1}}
+.pm2.fs .pm2-head{margin-bottom:14px}
+.pm2.fs .pm2-board{flex:0 0 auto;grid-auto-rows:108px;padding:18px 22px 22px}
+.pm2.fs .pm2-dot{width:38px;height:38px;font-size:15px}
+.pm2.fs .pm2-nm{font-size:12.5px;max-width:120px}
+.pm2.fs .pm2-lane{font-size:11px;max-width:120px}
+.pm2.fs .pm2-detail{flex:0 0 auto}
+.pm2.fs .pm2-sub{font-size:13px}
+@media (prefers-reduced-motion:reduce){.flow-stage,.trip-card,.rl-card,.cstep-i,.dcr-card,.pm2.fs{animation:none}}
 /* ============ GLYPH SIZING (inline SVG icon system) ============ */
 .lic svg{width:24px;height:24px}
 .ni svg{width:18px;height:18px}
@@ -931,22 +1138,23 @@ var CLOUD = ["Welcome","Velkommen","Bienvenue","أهلاً بك","Bienvenido","W
 /* ---------- state ----------
    Top-level step/pts/done/finished/startedAt always describe the CURRENT module.
    S.m holds the parked state of every module; switching modules swaps them in and out. */
-var S = load() || {lang:null, name:"", email:"", mgr:"", style:null, step:0, pts:0, done:{}, finished:false, startedAt:null, cur:0, m:{}};
+var S = load() || {lang:null, name:"", email:"", mgr:"", style:null, step:0, stepMax:0, pts:0, done:{}, finished:false, startedAt:null, cur:0, m:{}};
 if(S.cur===undefined){ S.cur=0; }
 if(S.style==="listen"){ S.style="read"; }
 if(!S.m){ S.m={}; }
 if(!S.play){ S.play={sparks:0, clean:0}; }
+if(S.stepMax===undefined){ S.stepMax=S.step||0; }   /* furthest reached, distinct from the current view */
 function load(){ try{ return JSON.parse(localStorage.getItem("dfa_state")); }catch(e){ return null; } }
 function save(){ try{ localStorage.setItem("dfa_state", JSON.stringify(S)); }catch(e){} }
 function parkModState(){
-  S.m[S.cur]={step:S.step, pts:S.pts, done:JSON.parse(JSON.stringify(S.done||{})), finished:S.finished, startedAt:S.startedAt};
+  S.m[S.cur]={step:S.step, stepMax:S.stepMax, pts:S.pts, done:JSON.parse(JSON.stringify(S.done||{})), finished:S.finished, startedAt:S.startedAt};
 }
 function setModule(i){
   try{ clearTimeout(ADV_T); }catch(e){}
   parkModState();
   S.cur=i;
-  var st=S.m[i]||{step:0, pts:0, done:{}, finished:false, startedAt:null};
-  S.step=st.step; S.pts=st.pts; S.done=JSON.parse(JSON.stringify(st.done||{})); S.finished=st.finished; S.startedAt=st.startedAt;
+  var st=S.m[i]||{step:0, stepMax:0, pts:0, done:{}, finished:false, startedAt:null};
+  S.step=st.step; S.stepMax=(st.stepMax!==undefined?st.stepMax:st.step||0); S.pts=st.pts; S.done=JSON.parse(JSON.stringify(st.done||{})); S.finished=st.finished; S.startedAt=st.startedAt;
   CONF_50=(st.pts>=50);
   MODULE=MODULES[i];
   save();
@@ -982,25 +1190,56 @@ function show(id){
   window.scrollTo(0,0);
 }
 
+/* ---------- welcome word rotator ----------
+   Cycles the greetings one at a time with a smooth cross-fade. Pauses when the
+   welcome screen is not visible or the tab is hidden, so it never burns cycles
+   on a low-RAM laptop. Reduced-motion gets a plain fade (no translate). */
+var GREET_T=null, GREET_I=0;
+function startGreetRotator(){
+  var host=$("#wlGreet"); if(!host) return;
+  try{ clearTimeout(GREET_T); }catch(e){}
+  var words=(typeof CLOUD!=="undefined"&&CLOUD.length)?CLOUD:["Welcome"];
+  var reduce=false; try{ reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
+  function visible(){ var sc=$("#s-welcome"); return sc&&sc.classList.contains("show")&&!document.hidden; }
+  function paint(){
+    if(!$("#wlGreet")) return;            /* screen torn down */
+    if(!visible()){ GREET_T=setTimeout(paint, 700); return; }   /* idle until shown again */
+    var w=words[GREET_I%words.length]; GREET_I++;
+    var span=document.createElement("span");
+    span.className="wg-word"; span.textContent=w;
+    host.innerHTML=""; host.appendChild(span);
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ span.classList.add("in"); }); });
+    var hold=reduce?2600:2400;
+    GREET_T=setTimeout(function(){
+      var cur=host.firstChild;
+      if(cur){ cur.classList.remove("in"); cur.classList.add("out"); }
+      GREET_T=setTimeout(paint, reduce?260:520);
+    }, hold);
+  }
+  paint();
+}
 /* ---------- welcome screen ---------- */
 (function buildWelcome(){
   var stars=$("#wlStars"), html="";
-  if(!stars||!$("#wlCloud")||!$("#langBtn")) return; /* defensive bootstrap: never let a markup rename halt all script */
+  if(!stars||!$("#langBtn")) return; /* defensive bootstrap: never let a markup rename halt all script */
   for(var i=0;i<18;i++){
     var b=(i%4===0)?" b":"";
     html+='<span class="wl-star'+b+'" style="top:'+(3+Math.random()*92)+'%;left:'+(2+Math.random()*96)+'%;animation-delay:'+(Math.random()*4).toFixed(2)+'s;animation-duration:'+(3.6+Math.random()*2.4).toFixed(2)+'s"></span>';
   }
   stars.innerHTML=html;
-  var cloud=$("#wlCloud"), ch="";
-  /* perimeter-only slots: the centre stays clear so the title, subtitle and buttons read cleanly */
-  var slots=[[4,8],[6,30],[3,52],[7,72],[5,90],[16,4],[15,90],[28,3],[28,93],[40,4],[40,90],[52,2],[52,92],[64,5],[64,88],[76,3],[76,92],[86,10],[90,32],[84,55],[88,72],[85,90]];
-  CLOUD.forEach(function(w,i){
-    var pos=slots[i%slots.length];
-    var size=(13+Math.random()*22).toFixed(0);
-    var cls=(i%5===0)?" hi":(i%7===0?" red":"");
-    ch+='<span class="wl-word'+cls+'" style="top:'+pos[0]+'%;left:'+pos[1]+'%;font-size:'+size+'px;--d:'+(20+Math.random()*8).toFixed(1)+'s;--dx:'+((Math.random()*18-9)).toFixed(0)+'px;--dy:'+((Math.random()*14-7)).toFixed(0)+'px">'+w+'</span>';
-  });
-  cloud.innerHTML=ch;
+  /* flowing greeting cloud: all the welcome words stay visible and drift slowly and
+     individually (Ali: flowing slowly in a nice way, not rotating). Reduced-motion: static. */
+  var cloud=$("#wlCloud");
+  if(cloud){
+    var ch="", slots=[[5,7],[7,28],[4,50],[8,70],[6,89],[17,4],[16,90],[28,3],[29,92],[40,5],[41,89],[52,2],[53,91],[64,6],[64,87],[75,4],[76,91],[85,11],[89,33],[83,56],[88,71],[86,89]];
+    CLOUD.forEach(function(w,i){
+      var pos=slots[i%slots.length];
+      var size=(14+Math.random()*20).toFixed(0);
+      var cls=(i%5===0)?" hi":(i%7===0?" red":"");
+      ch+='<span class="wl-word'+cls+'" style="top:'+pos[0]+'%;left:'+pos[1]+'%;font-size:'+size+'px;--d:'+(16+Math.random()*9).toFixed(1)+'s;--dx:'+((Math.random()*22-11)).toFixed(0)+'px;--dy:'+((Math.random()*18-9)).toFixed(0)+'px;animation-delay:'+(-Math.random()*8).toFixed(1)+'s">'+w+'</span>';
+    });
+    cloud.innerHTML=ch;
+  }
 
   var menu=$("#langMenu"), mh="";
   LANGS.forEach(function(L){
@@ -1028,6 +1267,7 @@ function show(id){
       $all(".wl-opt[data-lang]").forEach(function(o){ o.classList.toggle("sel", o===b); $(".gl-check",o).style.display=(o===b)?"":"none"; });
       $all("[data-soon]").forEach(function(s){ s.textContent=T("comingSoon"); });
       applyStrings();
+      var sb=$("#startBtn"); if(sb){ sb.disabled=false; sb.removeAttribute("aria-disabled"); }   /* gate lifts once a language is chosen */
       menu.classList.remove("open");
     });
   });
@@ -1037,6 +1277,17 @@ function show(id){
     show("s-register");
     setTimeout(function(){ $("#inName").focus(); }, 350);
   });
+
+  /* Start is gated on language. If a language was already chosen (resume), reflect it and unlock. */
+  var sb0=$("#startBtn");
+  if(S.lang){
+    var Lsel=LANGS.filter(function(x){return x.code===S.lang;})[0];
+    if(Lsel){ $("#langName").removeAttribute("data-s"); $("#langName").textContent=Lsel.name; }
+    $all(".wl-opt[data-lang]").forEach(function(o){ var on=o.getAttribute("data-lang")===S.lang; o.classList.toggle("sel",on); var gc=$(".gl-check",o); if(gc) gc.style.display=on?"":"none"; });
+    if(sb0){ sb0.disabled=false; }
+  } else if(sb0){
+    sb0.disabled=true; sb0.setAttribute("aria-disabled","true");
+  }
 })();
 
 /* ---------- register ---------- */
@@ -1139,10 +1390,18 @@ en:{ checkBadge:"Short exercise, not a test", continueBtn:"Continue", checkOrder
   skipSetup:"Skip (presenter)",
   libKicker:"Module library", libTitle:"Choose a module", libAll:"All modules", inProg:"In progress",
   suiteKicker:"International Finance SOP programme", libHeadline:"One pilot module, the full suite scoped", libSub:"This pilot teaches one module end to end. Below is the full International Finance SOP suite it is built to extend into.", suiteH:"The full SOP suite, in scope", procsLbl:"procedures", pilotTag:"Pilot, live",
+  catProgramme:"The SOP programme", catProgrammeSub:"Six phases of the International Finance SOP suite. This pilot is live; the rest are scoped for build.", catAll:"All phases", catScoped:"Scoped", catLive:"Live now", catResume:"Resume", catStart:"Open module", catFeatH:"Live pilot module", catPilotIn:"Pilot",
+  crumbJourney:"Journey", railProgH:"Your progress", railOf:"of", railSrcNote:"Prototype: these open in the controlled document library in production.", railAria:"Lesson sources and tools",
+  coH:"Learning companion", coIntro:"Ask about anything on this step. Answers stay within this lesson and its source SOP.", coOpen:"Ask the companion", coPlaceholder:"Ask about this step", coSend:"Send", coClose:"Close", coAsking:"Thinking", coGroundLbl:"Grounded in this lesson", coReset:"Clear",
+  coRefuse:"I can only help with this lesson and the Audit SOP it draws on. For finance policy beyond this module, please ask your finance focal point or the International Controller and Adviser.",
+  coOffline:"The companion is not reachable right now. The lesson and its sources above are complete on their own. Please try again later.",
+  coDisabled:"The companion connects to a service that is not configured in this prototype. The lesson and its sources are complete without it.",
+  coErr:"Something went wrong reaching the companion. Please try again.", coSeed1:"What does this step require?", coSeed2:"Who is responsible here?",
+  pathWhyH:"Why this comes next", dcrDoc:"Document", dcrCtrl:"Control", procExpand:"Full screen", procClose:"Close", procExpandAria:"Open the process diagram full screen", procCloseAria:"Close full screen",
   pmWhat:"What", pmWho:"Who leads", pmDocs:"Documents", pmCtrl:"Control",
   pmProgress:"Explored {c} of {t} steps. Open each one to continue.", pmAll:"All steps explored. Continue when ready.", stationsLbl:"stations",
   mapKicker:"Your journey", mapBtn:"Map", mapHint:"Stations unlock in sequence. Your progress is saved automatically. The exercises total exactly 100 points.",
-  stDone:"Done", stLocked:"Locked", stepsLbl:"steps", doneIn:"Completed in about {n} minutes.", doneIn1:"Completed in about a minute.", doneIn11:"Completed in about {n} minutes.",
+  stDone:"Done", stLocked:"Locked", stReview:"Review", reviewing:"Reviewing", stepsLbl:"steps", doneIn:"Completed in about {n} minutes.", doneIn1:"Completed in about a minute.", doneIn11:"Completed in about {n} minutes.",
   certSaved:"Certificate downloaded.", certOpenTab:"Certificate opened in a new tab. Long-press or right-click to save it.",
   mailSub:"Certificate of completion:", mailOpened:"Your email application is opening with the message ready to send.",
   mailBody:"Hello,\n\n{name} has completed the module “{module}” on the International Finance Learning Platform with a score of {score}/100.\n\nThe certificate image can be downloaded from the platform and attached to this message.\n\nThis message was prepared by the Learning Platform prototype.",
@@ -1287,10 +1546,18 @@ ar:{ checkBadge:"تمرين قصير، وليس اختباراً", continueBtn:"
   skipSetup:"تخطّي (للعارض)",
   libKicker:"مكتبة الوحدات", libTitle:"اختر وحدة", libAll:"كل الوحدات", inProg:"قيد التقدم",
   suiteKicker:"برنامج إجراءات المالية الدولية", libHeadline:"وحدة تجريبية واحدة، والحزمة الكاملة ضمن النطاق", libSub:"تشرح هذه النسخة التجريبية وحدة واحدة بالكامل. وفي الأسفل حزمة إجراءات المالية الدولية الكاملة التي صُمّمت لتمتد إليها.", suiteH:"حزمة الإجراءات الكاملة، ضمن النطاق", procsLbl:"إجراءات", pilotTag:"تجريبي ومتاح",
+  catProgramme:"برنامج الإجراءات", catProgrammeSub:"ست مراحل من حزمة إجراءات المالية الدولية. هذه الوحدة التجريبية متاحة الآن، والبقية ضمن نطاق التطوير.", catAll:"كل المراحل", catScoped:"ضمن النطاق", catLive:"متاحة الآن", catResume:"متابعة", catStart:"افتح الوحدة", catFeatH:"الوحدة التجريبية المتاحة", catPilotIn:"تجريبي",
+  crumbJourney:"الرحلة", railProgH:"تقدّمك", railOf:"من", railSrcNote:"نموذج تجريبي: تُفتح هذه من مكتبة الوثائق المعتمدة في النسخة النهائية.", railAria:"مصادر الدرس وأدواته",
+  coH:"رفيق التعلّم", coIntro:"اسأل عن أي شيء في هذه الخطوة. تبقى الإجابات ضمن هذا الدرس وإجراءات التدقيق المصدر.", coOpen:"اسأل الرفيق", coPlaceholder:"اسأل عن هذه الخطوة", coSend:"إرسال", coClose:"إغلاق", coAsking:"يفكّر", coGroundLbl:"مستند إلى هذا الدرس", coReset:"مسح",
+  coRefuse:"يمكنني المساعدة فقط في هذا الدرس وإجراءات التدقيق التي يستند إليها. وللسياسات المالية خارج هذه الوحدة، اسأل نقطة الارتكاز المالية أو المراقب والمستشار الدولي.",
+  coOffline:"الرفيق غير متاح الآن. الدرس ومصادره أعلاه مكتملة بذاتها. حاول لاحقاً.",
+  coDisabled:"يتصل الرفيق بخدمة غير مُهيأة في هذا النموذج التجريبي. الدرس ومصادره مكتملة من دونه.",
+  coErr:"حدث خطأ أثناء الوصول إلى الرفيق. حاول مجدداً.", coSeed1:"ماذا تتطلب هذه الخطوة؟", coSeed2:"من المسؤول هنا؟",
+  pathWhyH:"لماذا هذا تالياً", dcrDoc:"مستند", dcrCtrl:"ضابط", procExpand:"ملء الشاشة", procClose:"إغلاق", procExpandAria:"افتح مخطط العملية بملء الشاشة", procCloseAria:"إغلاق ملء الشاشة",
   pmWhat:"ماذا", pmWho:"من يقود", pmDocs:"المستندات", pmCtrl:"الرقابة",
   pmProgress:"استكشفت {c} من {t} خطوات. افتح كل خطوة للمتابعة.", pmAll:"استكشفت كل الخطوات. تابع عندما تشاء.", stationsLbl:"محطات",
   mapKicker:"رحلتك", mapBtn:"الخريطة", mapHint:"تُفتح المحطات بالترتيب، ويُحفظ تقدمك تلقائياً. ومجموع التمارين 100 نقطة بالضبط.",
-  stDone:"تم", stLocked:"مقفلة", stepsLbl:"خطوات", doneIn:"أُنجزت في نحو {n} دقائق.", doneIn1:"أُنجزت في نحو دقيقة واحدة.", doneIn11:"أُنجزت في نحو {n} دقيقة.",
+  stDone:"تم", stLocked:"مقفلة", stReview:"مراجعة", reviewing:"وضع المراجعة", stepsLbl:"خطوات", doneIn:"أُنجزت في نحو {n} دقائق.", doneIn1:"أُنجزت في نحو دقيقة واحدة.", doneIn11:"أُنجزت في نحو {n} دقيقة.",
   certSaved:"تم تنزيل الشهادة.", certOpenTab:"فُتحت الشهادة في تبويب جديد. اضغط مطولاً أو بزر الفأرة الأيمن لحفظها.",
   mailSub:"شهادة إتمام:", mailOpened:"يفتح تطبيق البريد لديك والرسالة جاهزة للإرسال.",
   mailBody:"مرحباً،\n\nأتمّ {name} وحدة “{module}” على منصة تعلّم المالية الدولية بنتيجة {score}/100.\n\nيمكن تنزيل صورة الشهادة من المنصة وإرفاقها بهذه الرسالة.\n\nأُعدّت هذه الرسالة بواسطة النموذج التجريبي للمنصة.",
@@ -1364,6 +1631,11 @@ stations:[
    h:{en:"Three audits, one logic", ar:"ثلاثة تدقيقات، منطق واحد"},
    b:{en:"DRC works with three kinds of audit. The <b>local audit</b> covers a partner's expenditures, the funds DRC transferred to the Host National Society. The <b>country office audit</b> is conducted every year: every DRC country office undergoes an external financial and compliance audit of its accounts, covering bank, petty cash and inter-company transactions. The <b>consolidated audit</b> covers all levels: partner, country office, regional office and headquarters. The logic is the same each time: independent review confirms the records. One further point to note early: all DRC proposals must budget for audit expenses, and where audit costs are not eligible, DRC can still decide to audit and cover the cost itself.",
       ar:"يتعامل الصليب الأحمر الدنماركي مع ثلاثة أنواع من التدقيق. <b>التدقيق المحلي</b> يغطي نفقات الشريك، أي الأموال التي حوّلها الصليب الأحمر الدنماركي إلى الجمعية الوطنية المضيفة. و<b>تدقيق المكتب القُطري</b> يجري كل سنة: يخضع كل مكتب قُطري لتدقيق مالي وامتثالي خارجي لحساباته، يشمل حركة البنك والنثرية والحسابات البينية. أما <b>التدقيق الموحّد</b> فيغطي كل شيء وعلى كل المستويات: الشريك والمكتب القُطري والمكتب الإقليمي والمقر الرئيسي. والمنطق واحد في كل مرة: عيون مستقلة تؤكد صحة السجلات. وأمر آخر يستحق أن تعرفه مبكراً: يجب أن تتضمن كل مقترحات المنظمة ميزانية لنفقات التدقيق، وحيث تكون التكاليف غير مؤهلة يظل بإمكان المنظمة أن تقرر التدقيق وتغطية التكلفة بنفسها."},
+   cards3:[
+     {label:{en:"Local audit", ar:"التدقيق المحلي"}, body:{en:"Covers a partner's expenditures, the funds DRC transferred to the Host National Society.", ar:"يغطي نفقات الشريك، أي الأموال التي حوّلها الصليب الأحمر الدنماركي إلى الجمعية الوطنية المضيفة."}},
+     {label:{en:"Country office audit", ar:"تدقيق المكتب القُطري"}, body:{en:"Conducted every year: every DRC country office undergoes an external financial and compliance audit of its accounts, covering bank, petty cash and inter-company transactions.", ar:"يجري كل سنة: يخضع كل مكتب قُطري لتدقيق مالي وامتثالي خارجي لحساباته، يشمل حركة البنك والنثرية والحسابات البينية."}},
+     {label:{en:"Consolidated audit", ar:"التدقيق الموحّد"}, body:{en:"Covers all levels: partner, country office, regional office and headquarters.", ar:"يغطي كل المستويات: الشريك والمكتب القُطري والمكتب الإقليمي والمقر الرئيسي."}}
+   ],
    r:2},
   {t:"check", game:"sort", pts:20,
    h:{en:"True or false?", ar:"صحيح أم خطأ؟"},
@@ -1486,6 +1758,13 @@ stations:[
    h:{en:"Documents, controls, and the risks they address", ar:"المستندات والضوابط والمخاطر التي تعالجها"},
    b:{en:"Every document in the audit exists because a risk exists. The <b>engagement letter</b> sets the scope so the audit cannot drift. The <b>reconciliations</b> against Kompas and the previous audit close the gap where errors can hide. <b>Quality assurance before the audit</b> means the auditors receive the final version, not a draft. When risk is high, the SOP responds accordingly: on a risk-based approach, a <b>pre-audit with internal resources</b> can be decided even though an external audit is already scheduled. Where fieldwork is impossible, the files are moved to a secure location, a neighbouring country office or headquarters for a <b>remote audit</b>. The principle to remember: the SOP does not leave a risk without a control, or a control without a responsible position.",
       ar:"كل مستند في التدقيق موجود لأن خطراً موجود. <b>خطاب التكليف</b> يثبّت النطاق فلا ينحرف التدقيق. و<b>التسويات</b> مع كومباس ومع التدقيق السابق تغلق الفجوة التي تختبئ فيها الأخطاء. و<b>ضمان الجودة قبل التدقيق</b> يعني أن يلتقي المدققون نسختك الأفضل لا مسودتك. وعندما يرتفع الخطر، تتصاعد الإجراءات معه: وفق النهج القائم على المخاطر يمكن تقرير <b>تدقيق مسبق بموارد داخلية</b> حتى مع وجود تدقيق خارجي مجدول أصلاً. وحيث يتعذر العمل الميداني، تنتقل الملفات إلى مكان آمن أو مكتب قُطري مجاور أو إلى المقر الرئيسي لإجراء <b>تدقيق عن بُعد</b>. والنمط الذي يستحق الحفظ: لا تترك الإجراءات خطراً بلا ضابط، ولا ضابطاً بلا مالك."},
+   dcr:[
+     {doc:{en:"Engagement letter", ar:"خطاب التكليف"}, ctrl:{en:"Sets the scope so the audit cannot drift.", ar:"يثبّت النطاق فلا ينحرف التدقيق."}},
+     {doc:{en:"Reconciliations", ar:"التسويات"}, ctrl:{en:"Against Kompas and the previous audit, close the gap where errors can hide.", ar:"مع كومباس ومع التدقيق السابق تغلق الفجوة التي تختبئ فيها الأخطاء."}},
+     {doc:{en:"Quality assurance before the audit", ar:"ضمان الجودة قبل التدقيق"}, ctrl:{en:"The auditors receive the final version, not a draft.", ar:"أن يلتقي المدققون نسختك الأفضل لا مسودتك."}},
+     {doc:{en:"Pre-audit with internal resources", ar:"تدقيق مسبق بموارد داخلية"}, ctrl:{en:"On a risk-based approach, can be decided even though an external audit is already scheduled.", ar:"وفق النهج القائم على المخاطر، يمكن تقريره حتى مع وجود تدقيق خارجي مجدول أصلاً."}},
+     {doc:{en:"Remote audit", ar:"تدقيق عن بُعد"}, ctrl:{en:"Where fieldwork is impossible, the files are moved to a secure location, a neighbouring country office or headquarters.", ar:"حيث يتعذر العمل الميداني، تنتقل الملفات إلى مكان آمن أو مكتب قُطري مجاور أو إلى المقر الرئيسي."}}
+   ],
    r:4,
    q:{en:"If, on a risk-based approach, several risks of a financial nature are likely to materialize with a significant impact, a pre-audit of the project using internal resources may be decided even though an external audit is scheduled as per the donor audit requirements.",
       ar:"إذا كان من المرجح، وفق نهج قائم على المخاطر، أن تتحقق عدة مخاطر ذات طابع مالي بأثر كبير، يجوز تقرير تدقيق مسبق للمشروع بموارد داخلية حتى لو كان تدقيق خارجي مجدولاً وفق متطلبات المانح."},
@@ -1509,6 +1788,12 @@ stations:[
    h:{en:"Three deliverables, one plan, one file", ar:"ثلاثة مخرجات، خطة واحدة، ملف واحد"},
    b:{en:"The audit is complete when four conditions are met. One: the <b>signed report</b> is in hand with its three minimum deliverables, the auditor's opinion, the management letter and the representation letter. Two: the <b>Plan of Action</b> is in place, and every finding in it has a unit, a corrective measure, a deadline, a position responsible for implementation and a position responsible for follow-up. Three: the <b>full package is filed in Atlas</b> by the International Controller and Adviser. Four: the follow-up is active: the Country Manager tracks the findings, the Adviser tests the action points, and the Internal Control and Compliance Section reviews recurrent findings across countries, so that what one audit identifies becomes what the next SOP corrects. An audit that ends in a drawer has no effect. An audit that ends in action is how the system improves.",
       ar:"يكتمل التدقيق عندما تتحقق أربعة أمور. أولاً: <b>التقرير الموقّع</b> في اليد بمخرجاته الدنيا الثلاثة: رأي المدقق وخطاب الإدارة وخطاب الإقرار. ثانياً: <b>خطة العمل</b> قائمة، ولكل ملاحظة فيها وحدة معنية وإجراء تصحيحي ومهلة ومنفّذ ومسؤول متابعة. ثالثاً: <b>الملف الكامل محفوظ في أطلس</b> بيد المراقب والمستشار الدولي. رابعاً: المتابعة حيّة، فالمدير القُطري يتتبع الملاحظات، والمستشار يختبر بنود الخطة، وقسم الرقابة الداخلية والامتثال يراجع الملاحظات المتكررة عبر البلدان ليتحول ما يعلّمه تدقيق واحد إلى ما تُصلحه الإجراءات التالية. التدقيق الذي ينتهي في درج لم يحدث قط. أما الذي ينتهي بعمل فهو النظام يُحسّن نفسه."},
+   steps4:[
+     {h:{en:"Signed report", ar:"التقرير الموقّع"}, b:{en:"In hand with its three minimum deliverables: the auditor's opinion, the management letter and the representation letter.", ar:"في اليد بمخرجاته الدنيا الثلاثة: رأي المدقق وخطاب الإدارة وخطاب الإقرار."}},
+     {h:{en:"Plan of Action", ar:"خطة العمل"}, b:{en:"In place, and every finding in it has a unit, a corrective measure, a deadline, a position responsible for implementation and a position responsible for follow-up.", ar:"قائمة، ولكل ملاحظة فيها وحدة معنية وإجراء تصحيحي ومهلة ومنفّذ ومسؤول متابعة."}},
+     {h:{en:"Full package filed in Atlas", ar:"الملف الكامل محفوظ في أطلس"}, b:{en:"Filed by the International Controller and Adviser.", ar:"بيد المراقب والمستشار الدولي."}},
+     {h:{en:"Follow-up is active", ar:"المتابعة حيّة"}, b:{en:"The Country Manager tracks the findings, the Adviser tests the action points, and the Internal Control and Compliance Section reviews recurrent findings across countries.", ar:"فالمدير القُطري يتتبع الملاحظات، والمستشار يختبر بنود الخطة، وقسم الرقابة الداخلية والامتثال يراجع الملاحظات المتكررة عبر البلدان."}}
+   ],
    r:5},
   {t:"card",
    k:{en:"Module complete", ar:"اكتملت الوحدة"},
@@ -1526,9 +1811,12 @@ resources:[
   {en:"DRC Audit SOPs, DRAFT V02 · Outputs: report, Plan of Action, Atlas", ar:"إجراءات التدقيق، مسودة V02 · المخرجات: التقرير وخطة العمل وأطلس"}
 ],
 next:[
-  {icon:"kompas", nm:{en:"Kompas essentials", ar:"أساسيات كومباس"}, d:{en:"Create, book, approve: your first week in the system", ar:"أنشئ وسجّل واعتمد: أسبوعك الأول في النظام"}},
-  {icon:"fx", nm:{en:"Exchange rates in practice", ar:"أسعار الصرف عملياً"}, d:{en:"InforEuro, transfers and who carries the risk", ar:"إنفويورو والتحويلات ومن يتحمل المخاطر"}},
-  {icon:"scales", nm:{en:"Anti-corruption basics", ar:"أساسيات مكافحة الفساد"}, d:{en:"The duty to report, and how the channel protects you", ar:"واجب الإبلاغ وكيف تحميك القناة"}}
+  {icon:"kompas", nm:{en:"Kompas essentials", ar:"أساسيات كومباس"}, d:{en:"Create, book, approve: your first week in the system", ar:"أنشئ وسجّل واعتمد: أسبوعك الأول في النظام"},
+   why:{en:"The audit reconciles the statements against Kompas, so the system that holds the records is the natural next step.", ar:"يطابق التدقيق البيانات مع كومباس، لذا فإن النظام الذي يحفظ السجلات هو الخطوة التالية الطبيعية."}},
+  {icon:"fx", nm:{en:"Exchange rates in practice", ar:"أسعار الصرف عملياً"}, d:{en:"InforEuro, transfers and who carries the risk", ar:"إنفويورو والتحويلات ومن يتحمل المخاطر"},
+   why:{en:"Once the records sit in Kompas, exchange rates are what move the numbers between currencies and budgets.", ar:"بعد أن تستقر السجلات في كومباس، تكون أسعار الصرف هي ما يحرّك الأرقام بين العملات والميزانيات."}},
+  {icon:"scales", nm:{en:"Anti-corruption basics", ar:"أساسيات مكافحة الفساد"}, d:{en:"The duty to report, and how the channel protects you", ar:"واجب الإبلاغ وكيف تحميك القناة"},
+   why:{en:"With the records and the money understood, the duty to report is the control that protects them both.", ar:"وبعد فهم السجلات والمال، يكون واجب الإبلاغ هو الضابط الذي يحمي كليهما."}}
 ]
 }
 ];
@@ -1676,7 +1964,8 @@ function buildDots(){
     if(m.cur) curIdx=mi;
     var f=el.querySelector('[data-rf="'+mi+'"]');
     if(f){
-      var fr=m.done?1:(m.cur?Math.max(0,Math.min(1,(S.step-m.first)/m.n)):0);
+      var prog=Math.max(S.step||0,S.stepMax||0);
+      var fr=m.done?1:(m.cur?Math.max(0,Math.min(1,(prog-m.first)/m.n)):0);
       f.style.transform="scaleX("+fr.toFixed(3)+")";
     }
   });
@@ -1684,7 +1973,8 @@ function buildDots(){
   if(tv){
     var unit=NODE+SEG+2*GAP;
     var cm=metas[curIdx];
-    var within=S.finished?0:Math.max(0,Math.min(1,(S.step-cm.first)/cm.n));
+    var prog2=Math.max(S.step||0,S.stepMax||0);
+    var within=S.finished?0:Math.max(0,Math.min(1,(prog2-cm.first)/cm.n));
     var x=S.finished?(metas.length-1)*unit:(curIdx*unit+within*unit);
     x=Math.min(x,(metas.length-1)*unit)+NODE/2-4.5;
     var rtl=document.documentElement.dir==="rtl";
@@ -1782,13 +2072,16 @@ function ambHTML(){ return '<div class="amb" aria-hidden="true"><i></i><i></i><i
 
 /* ---------- course map ---------- */
 function stationMeta(){
+  /* progress is driven by stepMax (furthest reached), so reviewing an earlier
+     station never makes later stations look locked again */
+  var prog=Math.max(S.step||0, S.stepMax||0);
   var steps=stepsFlat(), out=[];
   MODULE.stations.forEach(function(st,si){
     var idxs=[]; steps.forEach(function(sp,i){ if(sp._st===si) idxs.push(i); });
     var first=idxs[0], last=idxs[idxs.length-1];
-    var done=S.step>last || S.finished;
-    var cur=!done && S.step>=first;
-    out.push({si:si, st:st, first:first, last:last, n:idxs.length, done:done, cur:cur||(si===0&&S.step===0&&!done)});
+    var done=prog>last || S.finished;
+    var cur=!done && prog>=first;
+    out.push({si:si, st:st, first:first, last:last, n:idxs.length, done:done, cur:cur||(si===0&&prog===0&&!done)});
   });
   /* exactly one current: the first not-done */
   var seen=false;
@@ -1800,23 +2093,27 @@ function modState(i){
   if(i===S.cur) return {step:S.step, pts:S.pts, finished:S.finished};
   return S.m[i]||{step:0, pts:0, finished:false};
 }
+/* website-style catalog: a featured live pilot, phase filter chips, and a compact
+   card grid of the scoped SOP suite. No centered vertical text dump. */
 function showLib(){
   shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T);
-  var icons=[GLYPHS.scales,GLYPHS.cycle];
   var totals=MODULES.map(function(m){ var n=0; m.stations.forEach(function(st){ n+=st.steps.length; }); return n; });
-  var cards=MODULES.map(function(m,i){
+  /* featured live pilot = the live module(s) */
+  var feat=MODULES.map(function(m,i){
     var st=modState(i);
     var pct=st.finished?100:Math.round((st.step/totals[i])*100);
-    var cls=st.finished?"lib-c live done2":"lib-c live";
-    var act=st.finished?"✓ "+T("stDone"):(st.step>0?T("continueBtn"):T("start"));
+    var cls=st.finished?"cat-feat live done":"cat-feat live";
+    var act=st.finished?("✓ "+T("stDone")):(st.step>0?T("catResume"):T("catStart"));
     return '<button class="'+cls+'" data-mod="'+i+'">'+
-      '<span class="lic">'+icons[i%icons.length]+'</span>'+
-      '<span class="lin"><span class="lit">'+L(m.title)+'</span>'+
-      '<span class="lis">'+L(m.subtitle)+'</span>'+
-      '<span class="lim">'+m.stations.length+' '+T("stationsLbl")+' · ~14 '+T("min")+(st.step>0&&!st.finished?' · '+T("inProg"):'')+'</span>'+
-      '<span class="lib-bar"><i style="width:'+pct+'%"></i></span></span>'+
-      '<span class="lia">'+act+'</span></button>';
+      '<span class="cf-ic">'+GLYPHS.scales+'</span>'+
+      '<span class="cf-in"><span class="cf-tag">'+esc(T("catFeatH"))+'</span>'+
+      '<span class="cf-t">'+esc(L(m.title))+'</span>'+
+      '<span class="cf-s">'+esc(L(m.subtitle))+'</span>'+
+      '<span class="cf-meta">'+m.stations.length+' '+T("stationsLbl")+' · ~14 '+T("min")+(st.step>0&&!st.finished?' · '+T("inProg"):'')+'</span>'+
+      '<span class="cf-bar"><i style="width:'+pct+'%"></i></span></span>'+
+      '<span class="cf-go">'+act+'</span></button>';
   }).join("");
+  /* the scoped suite, flattened into one card per SOP, each tagged with its phase */
   var SUITE=[
     {ph:{en:"Inception",ar:"الانطلاق"}, s:["Go / no-go assessment","Costs incurred before approval"]},
     {ph:{en:"Initiation",ar:"التهيئة"}, s:["Project budget preparation & approval","Grant & project agreement drafting","Grant creation & setup in Kompas","Project creation & setup in Kompas","Donor invoicing & payment reconciliation"]},
@@ -1825,21 +2122,34 @@ function showLib(){
     {ph:{en:"Audit",ar:"التدقيق"}, s:["Roles & responsibilities matrix","Audit process management","DANIDA funded project audits","EU INTPA & ECHO project audits","Other donor audit requirements","Competing audit requirements","Audit fees budget coverage","Internal audits & pre-audits"], pilot:"The Audit Journey"},
     {ph:{en:"Other relevant SOPs",ar:"إجراءات أخرى ذات صلة"}, s:["Anti-corruption & fraud deterrence","Risk-based approach to controls","Disaster & crisis finance procedures","Anchor budget","Year-end annual closing"]}
   ];
-  var suiteHtml=SUITE.map(function(p){
-    var n=p.s.length+(p.pilot?1:0);
-    var chips=(p.pilot?('<span class="suite-sop pilot">'+esc(p.pilot)+'<span class="suite-tag">'+T("pilotTag")+'</span></span>'):'')+
-      p.s.map(function(t){ return '<span class="suite-sop">'+esc(t)+'</span>'; }).join("");
-    return '<div class="suite-ph"><div class="suite-ph-top"><span class="suite-ph-nm">'+esc(L(p.ph))+'</span><span class="suite-ph-n">'+n+' '+T("procsLbl")+'</span></div><div class="suite-sops">'+chips+'</div></div>';
-  }).join("");
+  var totalSops=0; SUITE.forEach(function(p){ totalSops+=p.s.length+(p.pilot?1:0); });
+  var chips='<button class="cat-chip on" data-ph="all">'+esc(T("catAll"))+'</button>'+
+    SUITE.map(function(p,pi){ return '<button class="cat-chip" data-ph="'+pi+'">'+esc(L(p.ph))+'</button>'; }).join("");
+  var cardsHtml="";
+  SUITE.forEach(function(p,pi){
+    if(p.pilot){
+      cardsHtml+='<div class="cat-card pilot" data-phc="'+pi+'"><span class="cat-ph">'+esc(L(p.ph))+'</span>'+
+        '<span class="cat-t">'+esc(p.pilot)+'</span>'+
+        '<span class="cat-meta"><span class="cat-dot"></span>'+esc(T("catLive"))+'</span></div>';
+    }
+    p.s.forEach(function(t){
+      cardsHtml+='<div class="cat-card" data-phc="'+pi+'"><span class="cat-ph">'+esc(L(p.ph))+'</span>'+
+        '<span class="cat-t">'+esc(t)+'</span>'+
+        '<span class="cat-meta"><span class="cat-dot"></span>'+esc(T("catScoped"))+'</span></div>';
+    });
+  });
   $("#s-lib").innerHTML=ambHTML()+'<div class="lib-wrap"><div class="lib-head">'+
     '<div class="kicker">'+T("suiteKicker")+'</div>'+
     '<h2 class="map-title">'+T("libHeadline")+'</h2>'+
     '<p class="map-sub">'+T("libSub")+'</p></div>'+
-    '<div class="lib-grid">'+cards+'</div>'+
-    '<div class="suite-sec"><div class="suite-h"><div class="kicker">'+T("suiteH")+'</div></div>'+
-    '<div class="suite-grid">'+suiteHtml+'</div></div></div>';
+    '<div class="lib-grid" style="gap:0">'+feat+'</div>'+
+    '<div class="cat-sec"><div class="cat-sec-h"><div class="kicker">'+T("catProgramme")+'</div>'+
+    '<span class="cat-count">'+totalSops+' '+T("procsLbl")+'</span></div>'+
+    '<p class="map-sub" style="text-align:start;margin:0 0 16px">'+T("catProgrammeSub")+'</p>'+
+    '<div class="cat-filters" role="group">'+chips+'</div>'+
+    '<div class="cat-grid" id="catGrid">'+cardsHtml+'</div></div></div>';
   show("s-lib"); buildDots(); ringTo(S.pts);
-  $all(".lib-c.live").forEach(function(b){
+  $all(".cat-feat.live").forEach(function(b){
     b.addEventListener("click",function(){
       var i=+b.getAttribute("data-mod");
       if(i!==S.cur) setModule(i);
@@ -1847,9 +2157,20 @@ function showLib(){
       startCourse();
     });
   });
+  /* phase filter: toggle .hide on cards (display none); chips animate nothing heavy */
+  $all(".cat-chip").forEach(function(ch){
+    ch.addEventListener("click",function(){
+      var ph=ch.getAttribute("data-ph");
+      $all(".cat-chip").forEach(function(x){ x.classList.toggle("on", x===ch); });
+      $all("#catGrid .cat-card").forEach(function(c){
+        c.classList.toggle("hide", ph!=="all" && c.getAttribute("data-phc")!==ph);
+      });
+    });
+  });
 }
 function showMap(){
   shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T);
+  REVIEWING=false;   /* leaving a lesson clears review mode */
   var metas=stationMeta();
   var mins=[4,3,3,4];
   var doneN=metas.filter(function(m){ return m.done; }).length, totalSt=metas.length;
@@ -1863,9 +2184,10 @@ function showMap(){
     '<div class="map-path"><i class="map-fill" id="mapFill2"></i>'+
     metas.map(function(m){
       var stt=m.done?"done":(m.cur?"cur":"lock");
-      var act=m.done?T("stDone"):(m.cur?(S.step>m.first?T("continueBtn"):T("start")):T("stLocked"));
+      var act=m.done?T("stReview"):(m.cur?(S.step>m.first?T("continueBtn"):T("start")):T("stLocked"));
       var bub=m.done?"✓":(m.si+1);
-      return '<button class="map-st '+stt+'" data-st="'+m.si+'" '+(m.cur?'':'disabled')+'>'+
+      var clickable=m.cur||m.done;   /* done stations are open for review */
+      return '<button class="map-st '+stt+'" data-st="'+m.si+'" data-first="'+m.first+'" data-mode="'+(m.done?"review":"go")+'" '+(clickable?'':'disabled')+'>'+
         '<span class="bub">'+bub+'</span>'+
         '<span class="inf"><span class="snm">'+L(m.st.nm)+'</span>'+
         '<span class="sdt">'+m.n+' '+T("stepsLbl")+' · ~'+(mins[m.si]||3)+' '+T("min")+'</span></span>'+
@@ -1881,8 +2203,12 @@ function showMap(){
     requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(mf) mf.style.height=hPct+"%"; if(pi) pi.style.width=progPct+"%"; }); });
   })();
   var ml=$("#mapLib"); if(ml) ml.addEventListener("click", showLib);
-  $all(".map-st.cur").forEach(function(b){
-    b.addEventListener("click",function(){ renderStep(S.step); });
+  $all(".map-st.cur,.map-st.done").forEach(function(b){
+    b.addEventListener("click",function(){
+      var mode=b.getAttribute("data-mode");
+      if(mode==="review"){ renderStep(+b.getAttribute("data-first"), true); }   /* review: never rewinds progress */
+      else renderStep(S.step);
+    });
   });
 }
 /* station cleared: a brief level-up beat before returning to the map */
@@ -1912,6 +2238,13 @@ function stationClear(si, after){
 }
 function advanceTo(i){
   var steps=stepsFlat();
+  /* reviewing a completed step: walk forward through it without touching progress;
+     when the reviewed station ends, return to the journey. Never re-finish. */
+  if(REVIEWING){
+    var from=steps[i-1];
+    if(i>=steps.length || !steps[i] || (from && steps[i]._st!==from._st)){ showMap(); return; }
+    renderStep(i, true); return;
+  }
   if(i>=steps.length){ finishCourse(); return; }
   var prev=steps[S.step], nxt=steps[i];
   S.step=i; save();
@@ -1925,29 +2258,202 @@ function startCourse(){
   showMap();
 }
 
-function renderStep(i){
+/* =================================================================
+   AI LEARNING COMPANION
+   A grounded, guardrailed helper that lives in the lesson rail. The UI
+   carries all five states (idle / asking / answering / grounded / refusal)
+   and degrades gracefully to a gold "unavailable" bubble when the backend
+   is not reachable, so it never blocks the lesson.
+
+   TODO(orchestrator): set COMPANION_PROXY to the deployed free-model proxy
+   (a Cloudflare Worker holding the key, grounded to the module + station and
+   carrying the refusal guardrails). While it is empty the UI runs and shows
+   the "not configured" gold bubble. Do NOT deploy a worker from here.
+   ================================================================= */
+var COMPANION_PROXY = "";   /* e.g. "https://drc-finance-companion.<sub>.workers.dev" */
+var COMP_TIMEOUT = 12000;   /* short timeout: never hang the lesson */
+function companionPanelHTML(sp,i){
+  return '<div class="comp-panel" id="compPanel">'+
+    '<div class="rail-panel-h">'+GLYPHS.scales+T("coH")+'</div>'+
+    '<div id="compBody">'+
+      '<p class="comp-intro">'+esc(T("coIntro"))+'</p>'+
+      '<button class="comp-fab" id="compOpen" type="button">'+
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'+
+        esc(T("coOpen"))+'</button>'+
+    '</div></div>';
+}
+/* current-step grounding context (kept short; sent to the proxy) */
+function compContext(sp,i){
+  var st=MODULE.stations[sp._st];
+  return {
+    module: (MODULE.title&&MODULE.title.en)||"",
+    station: (st&&st.nm&&st.nm.en)||"",
+    heading: (sp.h&&sp.h.en)||"",
+    body: stripHtml((sp.b&&sp.b.en)||""),
+    source: (sp.src&&sp.src.en)||"",
+    lang: S.lang||"en"
+  };
+}
+/* lightweight client-side guardrail: catch obvious off-topic / jailbreak before
+   any network call. The real defense is the proxy system prompt; this is a fast,
+   over-cautious first pass that returns a gold refusal. */
+function compOffTopic(q){
+  var t=" "+(q||"").toLowerCase()+" ";
+  var bad=["ignore previous","ignore all previous","system prompt","jailbreak","act as","pretend to be","you are now","disregard","medical advice","legal advice","diagnos","lawsuit","prescription","invest in","stock tip","write code","kill","suicide"];
+  for(var k=0;k<bad.length;k++){ if(t.indexOf(bad[k])>=0) return true; }
+  return false;
+}
+var COMP_BUSY=false;
+function compAddBubble(thread, cls, text){
+  var b=document.createElement("div");
+  b.className="comp-bubble "+cls;
+  b.textContent=text;                 /* escape: never innerHTML model output */
+  thread.appendChild(b);
+  thread.scrollTop=thread.scrollHeight;
+  return b;
+}
+/* POST to the proxy; resolve {ok, text} or {ok:false, reason}. Short timeout,
+   graceful failure. No key is ever held client-side. */
+function callCompanion(q, ctx){
+  return new Promise(function(resolve){
+    if(!COMPANION_PROXY){ resolve({ok:false, reason:"disabled"}); return; }
+    var done=false;
+    var ctrl=("AbortController" in window)?new AbortController():null;
+    var to=setTimeout(function(){ if(done) return; done=true; if(ctrl){ try{ctrl.abort();}catch(e){}} resolve({ok:false, reason:"offline"}); }, COMP_TIMEOUT);
+    var opt={method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({question:q, context:ctx})};
+    if(ctrl) opt.signal=ctrl.signal;
+    fetch(COMPANION_PROXY, opt).then(function(r){
+      if(!r.ok) throw new Error("bad status");
+      return r.json();
+    }).then(function(d){
+      if(done) return; done=true; clearTimeout(to);
+      if(d && d.refuse){ resolve({ok:true, refuse:true, text:String(d.answer||"")}); return; }
+      var ans=(d && (d.answer||d.text||d.reply))? String(d.answer||d.text||d.reply):"";
+      if(!ans){ resolve({ok:false, reason:"offline"}); return; }
+      resolve({ok:true, text:ans});
+    }).catch(function(){
+      if(done) return; done=true; clearTimeout(to);
+      resolve({ok:false, reason:"offline"});
+    });
+  });
+}
+function wireCompanion(sp,i){
+  var open=$("#compOpen");
+  if(!open) return;
+  open.addEventListener("click", function(){ openCompanion(sp,i); });
+}
+function openCompanion(sp,i){
+  var body=$("#compBody"); if(!body) return;
+  body.innerHTML=
+    '<div class="comp-grounded"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'+esc(T("coGroundLbl"))+'</div>'+
+    '<div class="comp-thread" id="compThread" role="log" aria-live="polite"></div>'+
+    '<div class="comp-seeds" id="compSeeds">'+
+      '<button class="comp-seed" type="button">'+esc(T("coSeed1"))+'</button>'+
+      '<button class="comp-seed" type="button">'+esc(T("coSeed2"))+'</button>'+
+    '</div>'+
+    '<div class="comp-row"><textarea class="comp-in" id="compIn" rows="1" maxlength="500" placeholder="'+esc(T("coPlaceholder"))+'" aria-label="'+esc(T("coPlaceholder"))+'"></textarea>'+
+    '<button class="comp-send" id="compSend" type="button" aria-label="'+esc(T("coSend"))+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></button></div>'+
+    '<div class="comp-foot"><span></span><button class="comp-reset" id="compReset" type="button">'+esc(T("coReset"))+'</button></div>';
+  var thread=$("#compThread"), inp=$("#compIn"), send=$("#compSend");
+  compAddBubble(thread,"bot",T("coIntro"));
+  try{ inp.focus(); }catch(e){}
+  function auto(){ inp.style.height="auto"; inp.style.height=Math.min(88,inp.scrollHeight)+"px"; }
+  inp.addEventListener("input", auto);
+  function ask(q){
+    q=(q||"").trim();
+    if(!q || COMP_BUSY) return;
+    compAddBubble(thread,"user",q);
+    inp.value=""; auto();
+    var seeds=$("#compSeeds"); if(seeds) seeds.style.display="none";
+    /* fast local guardrail */
+    if(compOffTopic(q)){ compAddBubble(thread,"refuse",T("coRefuse")); return; }
+    COMP_BUSY=true; send.disabled=true;
+    var th=document.createElement("div");
+    th.className="comp-bubble thinking"; th.innerHTML=esc(T("coAsking"))+' <span class="comp-dots" aria-hidden="true"><i></i><i></i><i></i></span>';
+    thread.appendChild(th); thread.scrollTop=thread.scrollHeight;
+    callCompanion(q, compContext(sp,i)).then(function(res){
+      if(th.parentNode) th.parentNode.removeChild(th);
+      COMP_BUSY=false; send.disabled=false;
+      if(res.ok && res.refuse){ compAddBubble(thread,"refuse", res.text||T("coRefuse")); return; }
+      if(res.ok){ compAddBubble(thread,"bot", res.text); return; }
+      if(res.reason==="disabled"){ compAddBubble(thread,"offline", T("coDisabled")); return; }
+      compAddBubble(thread,"offline", T("coOffline"));
+    });
+  }
+  send.addEventListener("click", function(){ ask(inp.value); });
+  inp.addEventListener("keydown", function(e){ if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); ask(inp.value); } });
+  $all("#compSeeds .comp-seed").forEach(function(b){ b.addEventListener("click", function(){ ask(b.textContent); }); });
+  var rs=$("#compReset"); if(rs) rs.addEventListener("click", function(){ openCompanion(sp,i); });
+}
+/* the lesson rail: progress, source documents, and the AI companion launcher.
+   Sources live here now, not at the bottom of the card. */
+function railHTML(sp,i){
+  var steps=stepsFlat(), total=steps.length;
+  var pos=i+1, pct=Math.round(pos/total*100);
+  var h='';
+  /* lesson progress */
+  h+='<div class="rail-panel"><div class="rail-panel-h">'+GLYPHS.cycle+T("railProgH")+'</div>'+
+     '<div class="rail-prog-row"><span class="rail-prog-lbl">'+L(MODULE.stations[sp._st].nm)+'</span>'+
+     '<span class="rail-prog-n">'+pos+' / '+total+'</span></div>'+
+     '<div class="rail-prog-track"><i id="railProgI"></i></div>'+
+     '<div class="rail-prog-sub">'+T("station")+' '+(sp._st+1)+' '+T("railOf")+' '+MODULE.stations.length+'</div></div>';
+  /* source documents */
+  var srcRows='';
+  if(sp.src) srcRows+='<button class="rail-src-row" data-railsrc>'+GLYPHS.doc+'<span>'+esc(L(sp.src))+'</span></button>';
+  if(sp.r && MODULE.resources && MODULE.resources[sp.r-1]){
+    srcRows+='<button class="rail-src-row" data-railsrc>'+GLYPHS.link+'<span>'+esc(L(MODULE.resources[sp.r-1]))+'</span></button>';
+  }
+  if(srcRows){
+    h+='<div class="rail-panel"><div class="rail-panel-h">'+GLYPHS.doc+T("resourcesH")+'</div>'+
+       '<div class="rail-src">'+srcRows+'</div>'+
+       '<div class="rail-src-note">'+T("railSrcNote")+'</div></div>';
+  }
+  /* AI companion launcher slot (panel content built by wireCompanion) */
+  h+=companionPanelHTML(sp,i);
+  return h;
+}
+function renderStep(i, review){
   shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T);
   PLAY_DONE=true;
   var steps=stepsFlat();
   if(i>=steps.length){ finishCourse(); return; }
   show("s-learn");
-  S.step=i; save(); buildDots(); updStyleChip();
+  /* review opens a completed step WITHOUT rewinding progress: stepMax stays,
+     S.step (the current view) moves only forward in normal flow */
+  REVIEWING = !!review && (i < (S.stepMax||0));
+  if(!REVIEWING){ S.step=i; }
+  S.stepMax=Math.max(S.stepMax||0, S.step||0, i);
+  save(); buildDots(); updStyleChip();
   var sp=steps[i];
   var st=MODULE.stations[sp._st];
-  var stationTag='<div class="station-tag"><span class="dot"></span>'+T("station")+' '+(sp._st+1)+' · '+L(st.nm)+'</div>';
+  var crumb='<div class="crumb"><button class="crumb-back" id="crumbBack" type="button">'+
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>'+T("crumbJourney")+'</button>'+
+    '<span class="crumb-here">'+T("station")+' '+(sp._st+1)+' · '+esc(L(st.nm))+'</span>'+
+    (REVIEWING?'<span class="crumb-review">'+esc(T("reviewing"))+'</span>':'')+'</div>';
   var inner="";
   if(sp.t==="card") inner=(S.style==="play"?playCardHTML(sp,i):cardHTML(sp));
   else inner=checkHTML(sp,i);
-  $("#s-learn").innerHTML='<div class="ln-wrap">'+stationTag+'<div class="ln-card" id="lnCard">'+inner+'</div></div>';
+  $("#s-learn").innerHTML='<div class="shell"><div class="shell-grid has-rail">'+
+    '<div class="shell-main">'+crumb+'<div class="ln-card" id="lnCard">'+inner+'</div></div>'+
+    '<aside class="shell-rail" aria-label="'+esc(T("railAria"))+'">'+railHTML(sp,i)+'</aside>'+
+    '</div></div>';
+  requestAnimationFrame(function(){ var rp=$("#railProgI"); if(rp) rp.style.width=Math.round((Math.max(S.stepMax||0,i)+1)/steps.length*100)+"%"; });
+  var cb=$("#crumbBack"); if(cb) cb.addEventListener("click", showMap);
+  $all("[data-railsrc]").forEach(function(b){ b.addEventListener("click",function(){ toast(T("refToast"),3200); }); });
   wireStep(sp,i);
+  wireCompanion(sp,i);
 }
+var REVIEWING=false;
 
 /* the baton view: the procedure drawn as handoffs between the hands that carry it */
 function procHTML(sp){
   var laneOrder=["co","hns","aud"];
   var laneLbl={co:T("laneCO"), hns:T("laneHNS"), aud:T("laneAUD")};
   var h='<div class="pm2" id="pmRoot">';
-  h+='<div class="pm2-sub">'+T("pmBaton")+'</div>';
+  h+='<div class="pm2-head"><div class="pm2-sub" style="margin-bottom:0">'+T("pmBaton")+'</div>'+
+     '<button class="pm2-expand" id="pmExpand" type="button" aria-label="'+esc(T("procExpandAria"))+'">'+
+     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>'+
+     '<span data-pmexlabel>'+T("procExpand")+'</span></button></div>';
   h+='<div class="pm2-board" id="pm2Board">';
   laneOrder.forEach(function(lk,li){
     h+='<div class="pm2-lane" style="--lr:'+(li+1)+'">'+laneLbl[lk]+'</div>';
@@ -1961,6 +2467,73 @@ function procHTML(sp){
   h+='<svg class="pm2-svg" id="pm2Svg" aria-hidden="true"><polyline id="pm2Base" fill="none"/><polyline id="pm2Fill" fill="none"/></svg>';
   h+='</div><div class="pm2-detail" id="pm2Detail" hidden></div><div class="pm-count" id="pmCount"></div></div>';
   return h;
+}
+
+/* =================================================================
+   CONTENT SECTION RENDERERS (shared by read / play / watch paths)
+   Each takes the verbatim step object and returns styled HTML. Content is
+   never altered; only the presentation is.
+   ================================================================= */
+/* the verbatim source quote, as a deliberate pull-quote callout */
+function secQuote(sp){
+  return '<figure class="ln-quote"><span class="ln-quote-mark" aria-hidden="true">&#8220;</span>'+
+    '<blockquote>'+L(sp.q)+'</blockquote></figure>';
+}
+/* the five-stage flow, as a confident stage strip (Prepare > ... > Act) */
+function secCycle(sp){
+  if(!MODULE.cycle||!MODULE.cycle.length) return "";
+  var n=MODULE.cycle.length;
+  return '<div class="flow" role="list">'+MODULE.cycle.map(function(c,ci){
+    var on=ci===sp.vOn;
+    return '<div class="flow-stage'+(on?" on":"")+'" role="listitem" style="--fi:'+ci+'">'+
+      '<span class="flow-num">'+c.n+'</span><span class="flow-nm">'+L(c.nm)+'</span></div>'+
+      (ci<n-1?'<span class="flow-link" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>':'');
+  }).join("")+'</div>';
+}
+function secGrid(sp){
+  if(!MODULE.principles||!MODULE.principles.length) return "";
+  return '<div class="pgrid">'+MODULE.principles.map(function(p,pi){
+    return '<div class="ptile" style="animation-delay:'+(pi*70)+'ms"><span class="pn">0'+(pi+1)+'</span>'+L(p)+'</div>';
+  }).join("")+'</div>';
+}
+/* roles board: a colored position chip per role, generous spacing, the verbatim
+   description always visible. Replaces the cramped accordion. */
+function secRoles(sp){
+  return '<div class="rl-board">'+sp.roles.map(function(r,ri){
+    return '<article class="rl-card" style="--rc:'+r.c+';--ri:'+ri+'">'+
+      '<span class="rl-chip" style="background:'+r.c+'"></span>'+
+      '<div class="rl-card-in"><h3 class="rl-name">'+L(r.nm)+'</h3>'+
+      '<p class="rl-desc">'+L(r.d)+'</p></div></article>';
+  }).join("")+'</div>';
+}
+/* three-audits: present the verbatim type labels + descriptions as three cards.
+   Optional sp.cards3 holds {label, body} lifted word-for-word from sp.b. */
+function secCards3(sp){
+  if(!sp.cards3) return "";
+  return '<div class="trip">'+sp.cards3.map(function(c,ci){
+    return '<article class="trip-card" style="--ti:'+ci+'"><span class="trip-n">'+(ci+1)+'</span>'+
+      '<h3 class="trip-h">'+L(c.label)+'</h3><p class="trip-b">'+L(c.body)+'</p></article>';
+  }).join("")+'</div>';
+}
+/* completion conditions: a revealed stepper. Optional sp.steps4 holds
+   {h, b} lifted word-for-word from sp.b. */
+function secSteps4(sp){
+  if(!sp.steps4) return "";
+  return '<ol class="cstep">'+sp.steps4.map(function(c,ci){
+    return '<li class="cstep-i" style="--ci:'+ci+'"><span class="cstep-mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>'+
+      '<div class="cstep-tx"><h3 class="cstep-h">'+L(c.h)+'</h3><p class="cstep-b">'+L(c.b)+'</p></div></li>';
+  }).join("")+'</ol>';
+}
+/* documents -> control -> risk triplets (Station 4). Optional sp.dcr holds
+   {doc, ctrl} lifted word-for-word from sp.b. */
+function secDocCtrl(sp){
+  if(!sp.dcr) return "";
+  return '<div class="dcr">'+sp.dcr.map(function(c,ci){
+    return '<article class="dcr-card" style="--di:'+ci+'">'+
+      '<div class="dcr-doc"><span class="dcr-tag">'+T("dcrDoc")+'</span><span class="dcr-txt">'+L(c.doc)+'</span></div>'+
+      '<span class="dcr-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>'+
+      '<div class="dcr-ctrl"><span class="dcr-tag ctrl">'+T("dcrCtrl")+'</span><span class="dcr-txt">'+L(c.ctrl)+'</span></div></article>';
+  }).join("")+'</div>';
 }
 
 function cardHTML(sp){
@@ -1985,27 +2558,15 @@ function cardHTML(sp){
   var sents=splitSentences(bodyHtml);
   var bodySp=(sents.length>1)?sents.map(function(s,si){ return '<span class="snt'+(si===0?" snt-lead":"")+'" data-snt="'+si+'">'+s+'</span>'; }).join(" "):bodyHtml;
   h+='<div class="ln-kicker">'+L(sp.k)+'</div><h2 class="ln-h">'+L(sp.h)+'</h2><div class="ln-body">'+bodySp+'</div><div class="rd-prog" id="rdProg" hidden aria-hidden="true"><i id="rdProgFill"></i></div>';
-  if(sp.visual==="cycle"){
-    h+='<div class="cyc">'+MODULE.cycle.map(function(c,ci){
-      return '<div class="cyc-n'+(ci===sp.vOn?" on":"")+'"><div class="cyc-b">'+c.n+'</div><div class="cyc-nm">'+L(c.nm)+'</div></div>'+(ci<MODULE.cycle.length-1?'<div class="cyc-a">→</div>':'');
-    }).join("")+'</div>';
-  }
-  if(sp.visual==="grid"){
-    h+='<div class="pgrid">'+MODULE.principles.map(function(p,pi){
-      return '<div class="ptile" style="animation-delay:'+(pi*70)+'ms"><span class="pn">0'+(pi+1)+'</span>'+L(p)+'</div>';
-    }).join("")+'</div>';
-  }
-  if(sp.roles){
-    h+='<div class="rl-list">'+sp.roles.map(function(r,ri){
-      return '<div class="rl" style="--rc:'+r.c+'"><button class="rl-h" data-rl="'+ri+'">'+L(r.nm)+'<span class="chev">&#9662;</span></button><div class="rl-b"><p>'+L(r.d)+'</p></div></div>';
-    }).join("")+'</div>';
-  }
-  if(sp.proc){
-    h+=procHTML(sp);
-  }
-  if(sp.q) h+='<div class="ln-quote">'+L(sp.q)+'</div>';
-  if(sp.src) h+='<div class="ln-src">'+L(sp.src)+'</div>';
-  if(sp.r) h+='<div><button class="ref-link" data-reflink>'+GLYPHS.link+' '+T("refLabel")+': '+esc((MODULE.resources&&MODULE.resources[sp.r-1])?L(MODULE.resources[sp.r-1]):(T("resource")+" "+sp.r))+'</button></div>';
+  if(sp.visual==="cycle") h+=secCycle(sp);
+  if(sp.visual==="grid") h+=secGrid(sp);
+  if(sp.cards3) h+=secCards3(sp);
+  if(sp.dcr) h+=secDocCtrl(sp);
+  if(sp.steps4) h+=secSteps4(sp);
+  if(sp.roles) h+=secRoles(sp);
+  if(sp.proc) h+=procHTML(sp);
+  if(sp.q) h+=secQuote(sp);
+  /* source + reference now live in the lesson rail, not at the card bottom */
   h+='<div class="ln-foot">'+
      '<button class="tts-btn" id="ttsBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg><span data-tlabel>'+T("listen")+'</span></button>'+
      '<button class="rate-btn" id="rateBtn" type="button" aria-label="'+T("rateAria").replace("{r}","1")+'"><span data-rate>1x</span></button>'+
@@ -2096,27 +2657,15 @@ function playCardHTML(sp,i){
     '<h2 class="ln-h">'+L(sp.h)+'</h2><div class="ln-body">'+bodySp+'</div>'+
     '<div class="rd-prog" id="rdProg" hidden aria-hidden="true"><i id="rdProgFill"></i></div>'+
     '<div id="plSay" class="vh" aria-live="polite"></div>';
-  if(sp.visual==="cycle"){
-    h+='<div class="cyc">'+MODULE.cycle.map(function(c,ci){
-      return '<div class="cyc-n'+(ci===sp.vOn?" on":"")+'"><div class="cyc-b">'+c.n+'</div><div class="cyc-nm">'+L(c.nm)+'</div></div>'+(ci<MODULE.cycle.length-1?'<div class="cyc-a">→</div>':'');
-    }).join("")+'</div>';
-  }
-  if(sp.visual==="grid"){
-    h+='<div class="pgrid">'+MODULE.principles.map(function(p,pi){
-      return '<div class="ptile" style="animation-delay:'+(pi*70)+'ms"><span class="pn">0'+(pi+1)+'</span>'+L(p)+'</div>';
-    }).join("")+'</div>';
-  }
-  if(sp.roles){
-    h+='<div class="rl-list">'+sp.roles.map(function(r,ri){
-      return '<div class="rl" style="--rc:'+r.c+'"><button class="rl-h" data-rl="'+ri+'">'+L(r.nm)+'<span class="chev">&#9662;</span></button><div class="rl-b"><p>'+L(r.d)+'</p></div></div>';
-    }).join("")+'</div>';
-  }
-  if(sp.proc){
-    h+=procHTML(sp);
-  }
-  if(sp.q) h+='<div class="pl-eyebrow">'+T("plFromSource")+'</div><div class="ln-quote">'+L(sp.q)+'</div>';
-  if(sp.src) h+='<div class="ln-src">'+L(sp.src)+'</div>';
-  if(sp.r) h+='<div><button class="ref-link" data-reflink>'+GLYPHS.link+' '+T("refLabel")+': '+esc((MODULE.resources&&MODULE.resources[sp.r-1])?L(MODULE.resources[sp.r-1]):(T("resource")+" "+sp.r))+'</button></div>';
+  if(sp.visual==="cycle") h+=secCycle(sp);
+  if(sp.visual==="grid") h+=secGrid(sp);
+  if(sp.cards3) h+=secCards3(sp);
+  if(sp.dcr) h+=secDocCtrl(sp);
+  if(sp.steps4) h+=secSteps4(sp);
+  if(sp.roles) h+=secRoles(sp);
+  if(sp.proc) h+=procHTML(sp);
+  if(sp.q) h+=secQuote(sp);
+  /* source + reference now live in the lesson rail, not at the card bottom */
   h+='<section class="pl-arena" id="plArena" role="group" aria-labelledby="plArenaH"></section>';
   h+='<div class="ln-foot">'+
      '<button class="tts-btn" id="ttsBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg><span data-tlabel>'+T("listen")+'</span></button>'+
@@ -2341,15 +2890,7 @@ function wireStep(sp,i){
   /* the reading surface is identical in every style; play only adds the Arena at the end */
   var rl=$("[data-reflink]");
   if(rl) rl.addEventListener("click", function(){ toast(T("refToast"),3200); });
-  if(sp.roles){
-    $all(".rl-h").forEach(function(b){
-      b.addEventListener("click",function(){
-        var me=b.parentNode, was=me.classList.contains("open");
-        $all(".rl.open").forEach(function(o){ if(o!==me) o.classList.remove("open"); });
-        me.classList.toggle("open", !was);
-      });
-    });
-  }
+  /* roles board is always expanded now, no accordion wiring needed */
   if(sp.t==="card"&&S.style==="play") wirePlay(sp,i);
   if(sp.proc) wireProc(sp,i);
   if(sp.t==="card"&&S.style==="watch") wireWatch(sp,i);
@@ -2426,6 +2967,28 @@ function wireProc(sp,i){
       upd();
     });
   });
+  /* full-screen toggle: expand the swimlane to the whole viewport, re-measure the path */
+  var ex=$("#pmExpand"), root=$("#pmRoot");
+  function setExpand(on){
+    if(!root||!ex) return;
+    root.classList.toggle("fs", on);
+    document.body.style.overflow = on?"hidden":"";
+    var lab=$("[data-pmexlabel]",ex); if(lab) lab.textContent = on?T("procClose"):T("procExpand");
+    ex.setAttribute("aria-label", on?T("procCloseAria"):T("procExpandAria"));
+    ex.setAttribute("aria-expanded", on?"true":"false");
+    /* re-measure after the layout settles */
+    requestAnimationFrame(function(){ requestAnimationFrame(drawPath); });
+    setTimeout(drawPath,140); setTimeout(drawPath,360);
+    if(on){ try{ ex.focus(); }catch(e){} }
+  }
+  function escFs(e){ if(e.key==="Escape" && root && root.classList.contains("fs")){ setExpand(false); } }
+  if(ex){
+    ex.addEventListener("click", function(){ setExpand(!(root&&root.classList.contains("fs"))); });
+    document.addEventListener("keydown", escFs);
+    /* clean the listener when this card is torn down (next renderStep replaces #pmRoot) */
+    if(window._pmEsc) document.removeEventListener("keydown", window._pmEsc);
+    window._pmEsc=escFs;
+  }
   /* rAF for the visible case, timer fallback for occluded tabs where rAF freezes */
   requestAnimationFrame(function(){ requestAnimationFrame(drawPath); });
   setTimeout(drawPath,120);
@@ -2748,22 +3311,31 @@ function finishCourse(){
   buildDots();
   var tr=tier();
   var noMo=false; try{ noMo=window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
-  /* recommended next: the OTHER real module first (clickable), then the locked vision cards */
+  /* recommended next: a numbered learning pathway. Other real modules first
+     (clickable), then the forward SOPs, each with a one-line "why next". */
   var icons2=[GLYPHS.scales,GLYPHS.cycle];
-  var nx="";
+  var pathItems=[];
   MODULES.forEach(function(m,i){
     if(i===S.cur) return;
     var st=modState(i);
     var lbl=st.finished?("✓ "+T("stDone")):(st.step>0?T("inProg"):T("start"));
-    nx+='<button class="next-c" data-nextmod="'+i+'" style="cursor:pointer;border-color:var(--red)"><span class="ni">'+icons2[i%icons2.length]+'</span><div class="nn">'+L(m.title)+'</div><div class="nd">'+L(m.subtitle)+'</div>'+
-      '<div class="nd" style="margin-top:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--red)">'+lbl+'</div></button>';
+    pathItems.push({mod:i, icon:icons2[i%icons2.length], nm:L(m.title), why:L(m.subtitle), tag:lbl, live:true});
   });
-  nx+=MODULE.next.filter(function(n){
+  MODULE.next.filter(function(n){
     var stem=(n.nm.en||"").toLowerCase().split(":")[0].trim();
     return !MODULES.some(function(m){ return m.title.en.toLowerCase().indexOf(stem)===0; });
-  }).slice(0,2).map(function(n){
-    return '<div class="next-c"><span class="lk">'+GLYPHS.lock+'</span><span class="ni">'+(GLYPHS[n.icon]||n.icon)+'</span><div class="nn">'+L(n.nm)+'</div><div class="nd">'+L(n.d)+'</div>'+
-      '<div class="nd" style="margin-top:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">'+T("lockedSoon")+'</div></div>';
+  }).slice(0,3).forEach(function(n){
+    pathItems.push({icon:(GLYPHS[n.icon]||n.icon), nm:L(n.nm), why:(n.why?L(n.why):L(n.d)), tag:T("lockedSoon"), live:false});
+  });
+  var nx=pathItems.map(function(p,pi){
+    var attr=p.live?(' data-nextmod="'+p.mod+'" type="button"'):'';
+    var tagCss=p.live?'color:var(--green)':'color:var(--g3)';
+    return '<'+(p.live?'button':'div')+' class="path-step'+(p.live?' live':'')+'"'+attr+'>'+
+      '<span class="path-n">'+(pi+1)+'</span>'+
+      '<span class="path-ic">'+(p.live?'':'<span class="path-lk">'+GLYPHS.lock+'</span>')+p.icon+'</span>'+
+      '<span class="path-in"><span class="path-nm">'+esc(p.nm)+'</span>'+
+      '<span class="path-why"><span class="path-why-h">'+esc(T("pathWhyH"))+'</span> '+esc(p.why)+'</span>'+
+      '<span class="path-tag" style="'+tagCss+'">'+esc(p.tag)+'</span></span></'+(p.live?'button':'div')+'>';
   }).join("");
   var recapHtml="";
   var insightHtml="";
@@ -2783,7 +3355,7 @@ function finishCourse(){
     '<div class="cert-frame"><canvas id="certCv" width="1500" height="1060"></canvas></div>'+
     insightHtml+recapHtml+
     '<div class="next-h">'+T("resourcesH")+'</div><div class="res-list">'+(MODULE.resources||[]).map(function(rr,ri){ return '<button class="res-row" data-res>'+GLYPHS.doc+' <span style="flex:1">'+esc(L(rr))+'</span></button>'; }).join("")+'</div>'+
-    '<div class="next-h">'+T("nextUp")+'</div><div class="next-grid">'+nx+'</div>'+
+    '<div class="next-h">'+T("nextUp")+'</div><div class="path-next">'+nx+'</div>'+
     '<button class="fin-restart" id="reset0">'+T("restart")+'</button></div>';
   show("s-finish");
   /* count-up, then the ceremony stages in: tier stamps, certificate slides onto the desk */
