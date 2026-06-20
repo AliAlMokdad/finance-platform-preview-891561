@@ -994,6 +994,24 @@ html[dir="rtl"] .pm2-head .pm2-expand{letter-spacing:.02em}
   #topbar::after{animation:none;opacity:0}
   .rail-prog-track i::after,.map-prog-track i::after,.lib-bar i::after,.cf-bar i::after{animation:none;display:none}
 }
+/* ===== vibe touches (2026-06-20): red cursor glow, red scrollbar, intro wipe ===== */
+#curGlow{position:fixed;left:0;top:0;width:24px;height:24px;border-radius:50%;pointer-events:none;z-index:240;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(227,10,11,.42),rgba(227,10,11,0) 66%);opacity:0;transition:opacity .3s ease;will-change:transform}
+@media (hover:none),(pointer:coarse){#curGlow{display:none!important}}
+html{scrollbar-width:thin;scrollbar-color:#E30A0B transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#E30A0B;border-radius:6px}
+::-webkit-scrollbar-thumb:hover{background:#c20809}
+#introWipe{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;background:var(--canvas,#FAF7F4);pointer-events:none}
+#introWipe::before{content:"";position:absolute;width:min(60vmin,340px);height:min(60vmin,340px);border-radius:50%;background:radial-gradient(circle,rgba(227,10,11,.16),rgba(227,10,11,0) 70%)}
+#introWipe img{width:108px;height:auto;position:relative;border-radius:14px;filter:drop-shadow(0 10px 30px rgba(0,0,0,.12))}
+#introWipe.go{animation:introOv 1.15s ease both}
+#introWipe.go img{animation:introLogo 1.15s cubic-bezier(.2,.7,.2,1) both}
+#introWipe.go::before{animation:introGlow 1.15s ease both}
+@keyframes introOv{0%,72%{opacity:1}100%{opacity:0}}
+@keyframes introLogo{0%{opacity:0;transform:scale(.82) translateY(10px)}26%{opacity:1;transform:scale(1) translateY(0)}66%{opacity:1;transform:scale(1.05) translateY(0)}100%{opacity:0;transform:scale(1.14) translateY(-14px)}}
+@keyframes introGlow{0%{opacity:0;transform:scale(.7)}30%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.25)}}
+@media (prefers-reduced-motion:reduce){#curGlow,#introWipe{display:none!important}}
 </style>
 </head>
 <body>
@@ -3691,6 +3709,33 @@ function rRect(x,a,b,w,h,r){ x.beginPath(); x.moveTo(a+r,b); x.arcTo(a+w,b,a+w,b
 })();
 
 applyStrings();
+
+/* ===== vibe touches: red cursor glow + Red Cross intro wipe (additive, gated, never blocks flow) ===== */
+(function(){
+  try{
+    var coarse=matchMedia('(hover:none),(pointer:coarse)').matches;
+    var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!coarse && !reduce){
+      var g=document.createElement('div'); g.id='curGlow'; document.body.appendChild(g);
+      var cx=0,cy=0,raf=0,shown=false;
+      window.addEventListener('mousemove',function(e){ cx=e.clientX; cy=e.clientY; if(!shown){ shown=true; g.style.opacity='1'; } if(!raf){ raf=requestAnimationFrame(function(){ raf=0; g.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%)'; }); } },{passive:true});
+      document.addEventListener('mouseleave',function(){ g.style.opacity='0'; shown=false; });
+    }
+    window.playIntro=function(){
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var ov=document.getElementById('introWipe');
+      if(!ov){ ov=document.createElement('div'); ov.id='introWipe'; var im=document.createElement('img'); im.alt=''; im.setAttribute('aria-hidden','true'); try{ im.src=RK_LOGO; }catch(e){} ov.appendChild(im); document.body.appendChild(ov); }
+      ov.classList.remove('go'); void ov.offsetWidth; ov.style.display='flex'; ov.classList.add('go');
+      var fin=function(){ ov.classList.remove('go'); ov.style.display='none'; };
+      var t=setTimeout(fin,1300);
+      ov.addEventListener('animationend',function h(e){ if(e.target===ov){ clearTimeout(t); fin(); ov.removeEventListener('animationend',h); } });
+    };
+    document.addEventListener('click',function(e){
+      var b=(e.target&&e.target.closest)?e.target.closest('#styleGo'):null;
+      if(b && !b.disabled && !window.STYLE_RET){ window.playIntro(); }
+    },true);
+  }catch(e){}
+})();
 
 </script>
 </body>
