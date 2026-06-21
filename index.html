@@ -2708,6 +2708,7 @@ function railHTML(sp,i){
 }
 function renderStep(i, review){
   shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); document.body.style.overflow="";
+  if(window._pmEsc){ document.removeEventListener("keydown", window._pmEsc); window._pmEsc=null; }
   PLAY_DONE=true;
   var steps=stepsFlat();
   if(i>=steps.length){ finishCourse(); return; }
