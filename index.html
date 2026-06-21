@@ -781,7 +781,6 @@ html[dir="rtl"] .ord-it .updown{margin-left:0;margin-right:auto}
 .amb i:nth-child(3){width:260px;height:260px;top:42%;inset-inline-end:8%;background:radial-gradient(circle,var(--g6),transparent 70%)}
 @keyframes ambDrift{from{transform:translate3d(0,0,0)}to{transform:translate3d(34px,-26px,0)}}
 .map-wrap,.lib-wrap,.fin-wrap{position:relative;z-index:1}
-.shell{position:relative;z-index:1}
 /* floating sparkle field: small twinkling dots drifting in the empty space on the app screens */
 .spark-field{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
 .spark-field i{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(201,162,39,.6);box-shadow:0 0 7px 1px rgba(201,162,39,.4);opacity:0;animation:spkTw 5.5s ease-in-out infinite,spkDrift 26s ease-in-out infinite alternate}
@@ -1643,7 +1642,7 @@ function applyLang(code){
 var STR2={
 en:{ checkBadge:"Short exercise, not a test", continueBtn:"Continue", checkOrder:"Check my answer",
   sortYes:"True", sortNo:"False", nice:"Correct.", almost:"Not quite. Review and try again.",
-  goodSave:"Note this point.", moveUp:"Move up", moveDown:"Move down", station:"Station", listen:"Listen", stop:"Stop", mgrShare:"Share with your manager", mgrSubject:"Completed: {course}", mgrBody:"Hi,\\n\\nThis is to let you know that I have completed {course} in the Danish Red Cross International Finance learning platform.\\n\\nDate: {date}\\nRecord reference: {ref}\\n\\nMy certificate of completion is attached.\\n\\nBest regards,\\n{name}", mgrToast:"Certificate downloaded. Attach it to the email that just opened.", certRef:"Record ref",
+  goodSave:"Note this point.", moveUp:"Move up", moveDown:"Move down", station:"Station", listen:"Listen", stop:"Stop", mgrShare:"Share with your manager", mgrSubject:"Completed: {course}", mgrBody:"Hi,\\n\\nThis is to let you know that I have completed {course} in the Danish Red Cross International Finance learning platform.\\n\\nDate: {date}\\nRecord reference: {ref}\\n\\nMy certificate of completion is attached. You can also verify this record with the reference above.\\n\\nBest regards,\\n{name}", mgrToast:"Certificate downloaded. Attach it to the email that just opened.", certRef:"Record ref",
   ttsNoVoice:"No voice for this language is installed on this device yet.",
   refLabel:"Reference", resource:"Resource", resourcesH:"Source documents",
   refToast:"Prototype: in production this opens the source document in the controlled document library.",
@@ -1807,7 +1806,7 @@ fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:
   liPost:"J'ai terminé le module « {module} » sur l'International Finance Learning Platform de la Croix-Rouge danoise.\n\nUne bonne gestion financière n'est pas de la paperasse. C'est la promesse que l'argent donné pour des personnes en crise devient un impact réel. Fier de continuer à apprendre comment cette promesse est tenue.\n\n#FinanceHumanitaire #CroixRouge #Apprentissage" },
 ar:{ checkBadge:"تمرين قصير، وليس اختباراً", continueBtn:"متابعة", checkOrder:"تحقق من إجابتي",
   sortYes:"صحيح", sortNo:"خطأ", nice:"إجابة صحيحة.", almost:"ليس تماماً. راجع وحاول مجدداً.",
-  goodSave:"نقطة جديرة بالملاحظة.", moveUp:"تحريك لأعلى", moveDown:"تحريك لأسفل", station:"محطة", listen:"استمع", stop:"إيقاف", mgrShare:"مشاركتها مع مديرك", mgrSubject:"إتمام: {course}", mgrBody:"مرحباً،\\n\\nأودّ إعلامكم بأنني أكملت {course} في منصة تعلّم المالية الدولية للصليب الأحمر الدنماركي.\\n\\nالتاريخ: {date}\\nمرجع السجل: {ref}\\n\\nمرفق شهادة الإتمام.\\n\\nمع خالص التقدير،\\n{name}", mgrToast:"تم تنزيل الشهادة. أرفقها بالبريد الذي فُتح للتو.", certRef:"مرجع السجل",
+  goodSave:"نقطة جديرة بالملاحظة.", moveUp:"تحريك لأعلى", moveDown:"تحريك لأسفل", station:"محطة", listen:"استمع", stop:"إيقاف", mgrShare:"مشاركتها مع مديرك", mgrSubject:"إتمام: {course}", mgrBody:"مرحباً،\\n\\nأودّ إعلامكم بأنني أكملت {course} في منصة تعلّم المالية الدولية للصليب الأحمر الدنماركي.\\n\\nالتاريخ: {date}\\nمرجع السجل: {ref}\\n\\nشهادة الإتمام مرفقة، ويمكن أيضاً التحقق من هذا السجل بالمرجع المذكور أعلاه.\\n\\nمع خالص التقدير،\\n{name}", mgrToast:"تم تنزيل الشهادة. أرفقها بالبريد الذي فُتح للتو.", certRef:"مرجع السجل",
   ttsNoVoice:"لا يوجد صوت مثبّت لهذه اللغة على هذا الجهاز بعد.",
   refLabel:"المرجع", resource:"مرجع", resourcesH:"المستندات المصدر",
   refToast:"نموذج تجريبي: في النسخة النهائية يُفتح المستند المصدر من مكتبة الوثائق المعتمدة.",
@@ -2720,6 +2719,7 @@ function railHTML(sp,i){
 function renderStep(i, review){
   shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); document.body.style.overflow="";
   if(window._pmEsc){ document.removeEventListener("keydown", window._pmEsc); window._pmEsc=null; }
+  (function(){ var tb=document.getElementById("topbar"); if(tb) tb.style.visibility=""; })();   /* defensive: always restore the topbar on any lesson render */
   PLAY_DONE=true;
   var steps=stepsFlat();
   if(i>=steps.length){ finishCourse(); return; }
@@ -2826,7 +2826,7 @@ function secCards3(sp){
 function secSteps4(sp){
   if(!sp.steps4) return "";
   return '<ol class="cstep">'+sp.steps4.map(function(c,ci){
-    return '<li class="cstep-i" style="--ci:'+ci+'"><span class="cstep-n" aria-hidden="true">0'+(ci+1)+'</span><span class="cstep-mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>'+
+    return '<li class="cstep-i" style="--ci:'+ci+'"><span class="cstep-n" aria-hidden="true">'+(ci+1<10?'0':'')+(ci+1)+'</span><span class="cstep-mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>'+
       '<div class="cstep-tx"><h3 class="cstep-h">'+L(c.h)+'</h3><p class="cstep-b">'+L(c.b)+'</p></div></li>';
   }).join("")+'</ol>';
 }
@@ -3727,6 +3727,7 @@ function finishCourse(){
   }
   /* wire buttons FIRST so a drawing error can never disable them */
   $("#dlCert").addEventListener("click",function(){
+    if(window._certBusy) return; window._certBusy=true; setTimeout(function(){ window._certBusy=false; },1400);   /* guard double-tap */
     var cv=$("#certCv");
     function fallbackTab(){
       try{
@@ -3751,10 +3752,11 @@ function finishCourse(){
   });
   var mgr=$("#mgrShare");
   if(mgr) mgr.addEventListener("click",function(){
+    if(window._mgrBusy) return; window._mgrBusy=true; setTimeout(function(){ window._mgrBusy=false; },1400);   /* guard double-tap on a projector */
     try{ $("#dlCert").click(); }catch(e){}   /* download the certificate so it can be attached */
     var _d=new Date(); function _p(n){return(n<10?"0":"")+n;} var _ds=_d.getFullYear()+"-"+_p(_d.getMonth()+1)+"-"+_p(_d.getDate());
-    var subject=T("mgrSubject").replace("{course}",L(MODULE.title));
-    var body=T("mgrBody").replace("{course}",L(MODULE.title)).replace("{date}",_ds).replace("{ref}",recordRef()).replace("{name}",S.name||"");
+    var subject=T("mgrSubject").split("{course}").join(L(MODULE.title));
+    var body=T("mgrBody").split("{course}").join(L(MODULE.title)).split("{date}").join(_ds).split("{ref}").join(recordRef()).split("{name}").join(S.name||"");
     body=body.split(String.fromCharCode(92)+"n").join(String.fromCharCode(10));   /* convert the literal newline tokens in the template to real line breaks */
     var href="mailto:?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
     toast(T("mgrToast"),4200);
