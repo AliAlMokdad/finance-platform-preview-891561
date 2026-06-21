@@ -149,7 +149,7 @@ html[dir="rtl"] .rail-fill{transform-origin:right}
 .fld .errmsg{display:none;font-size:12.5px;color:var(--red);margin-top:6px;font-weight:600}
 .fld.err .errmsg{display:block}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--red-deep);color:#fff;
-  border:1.5px solid var(--red-deep);font-size:16px;font-weight:700;border-radius:13px;padding:14px 30px;transition:.2s}
+  border:1.5px solid var(--red-deep);font-size:16px;font-weight:700;border-radius:13px;padding:14px 30px;transition:background .2s,border-color .2s,transform .24s var(--ease-out),box-shadow .3s var(--ease-out)}
 .btn:hover{background:#960606;transform:translateY(-1px);box-shadow:0 8px 24px rgba(227,10,11,.26)}
 .btn.ghost{background:#fff;color:var(--ink);border-color:var(--g5)}
 .btn.ghost:hover{border-color:var(--ink);background:#fff;box-shadow:none}
@@ -285,8 +285,8 @@ html[dir="rtl"] .comp-send svg{transform:scaleX(-1)}
   letter-spacing:.16em;text-transform:uppercase;color:var(--g2);background:#fff;border:1px solid var(--rule);
   border-radius:22px;padding:7px 17px;margin-bottom:20px;box-shadow:var(--shadow)}
 .station-tag .dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
-.ln-card{background:var(--paper);border:1px solid var(--rule);border-radius:22px;box-shadow:var(--shadow-md);
-  padding:48px 54px;width:100%}
+.ln-card{background:radial-gradient(132% 92% at 50% -8%,#FFFFFF,#FCFAF6 64%);border:1px solid var(--rule);border-radius:22px;box-shadow:var(--shadow-md);
+  padding:48px 54px;width:100%;animation:cardIn .42s var(--ease-out) both}
 @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
 .ln-kicker{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
 .ln-h{font-size:clamp(23px,3.2vw,30px);font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.15;margin-bottom:14px}
@@ -354,7 +354,7 @@ html[dir="rtl"] .wl-title,html[dir="rtl"] .h1,html[dir="rtl"] .ln-h,html[dir="rt
 .map-path{position:relative;width:100%;display:flex;flex-direction:column;gap:16px}
 .map-path::before{content:"";position:absolute;top:28px;bottom:28px;inset-inline-start:49.25px;width:2.5px;background:var(--g5);border-radius:2px;z-index:0}
 .map-st{position:relative;display:flex;gap:20px;align-items:center;background:var(--paper);border:1.5px solid var(--rule);
-  border-radius:20px;padding:24px 28px;box-shadow:var(--shadow);transition:.22s;z-index:1;width:100%;text-align:start}
+  border-radius:20px;padding:24px 28px;box-shadow:var(--shadow);transition:transform .26s var(--ease-out),box-shadow .26s var(--ease-out),border-color .2s;z-index:1;width:100%;text-align:start}
 .map-st .bub{flex:0 0 auto;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;
   font-family:var(--mono);font-weight:700;font-size:18px;border:2px solid var(--g5);background:var(--canvas);color:var(--g3);transition:.25s}
 .map-st .inf{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
@@ -402,7 +402,7 @@ html[dir="rtl"] .map-next-go{letter-spacing:.04em}
 .lib-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:40px 22px 64px;max-width:760px;margin:0 auto;width:100%}
 .lib-head{text-align:start;margin-bottom:30px;max-width:760px}
 .lib-grid{display:flex;flex-direction:column;gap:16px;width:100%}
-.lib-c{position:relative;display:flex;gap:20px;align-items:center;background:var(--paper);border:1.5px solid var(--rule);border-radius:20px;padding:24px 26px;box-shadow:var(--shadow);transition:.22s;text-align:start;width:100%}
+.lib-c{position:relative;display:flex;gap:20px;align-items:center;background:var(--paper);border:1.5px solid var(--rule);border-radius:20px;padding:24px 26px;box-shadow:var(--shadow);transition:transform .26s var(--ease-out),box-shadow .26s var(--ease-out),border-color .2s;text-align:start;width:100%}
 .lib-c.live{cursor:pointer}
 .lib-c.live:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--g4)}
 .lib-c .lic{flex:0 0 auto;width:58px;height:58px;border-radius:16px;background:var(--red-soft);color:var(--red);display:flex;align-items:center;justify-content:center;font-size:24px}
