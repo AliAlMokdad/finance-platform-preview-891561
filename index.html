@@ -439,6 +439,27 @@ html[dir="rtl"] .suite-ph-nm{letter-spacing:0}
 .cat-card.pilot .cat-meta{color:var(--green)}
 .cat-card.hide{display:none}
 .cat-card:not(.pilot):hover{border-color:var(--g4)}
+/* phase accordion: per-phase collapsible SOP list */
+.cat-acc-wrap{display:flex;flex-direction:column;gap:12px}
+.cat-acc{border:1px solid var(--rule);border-radius:16px;background:var(--paper);box-shadow:var(--shadow);overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.cat-acc.has-live{border-color:var(--green);box-shadow:0 0 0 1px var(--green) inset,var(--shadow)}
+.cat-acc-head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 18px;background:none;border:0;cursor:pointer;text-align:start;font:inherit;color:inherit;transition:background .18s}
+.cat-acc-head:hover{background:var(--g6)}
+.cat-acc-head:focus-visible{outline:2px solid var(--ink);outline-offset:-3px}
+.cat-acc-ph{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+.cat-acc-meta{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--g2);flex:0 0 auto}
+.cat-acc-live{color:#fff;background:var(--green);border-radius:8px;padding:3px 8px}
+.cat-acc-count{min-width:18px;text-align:center;color:var(--g3)}
+.cat-acc-chev{display:flex;width:16px;height:16px;color:var(--g3);transition:transform .3s var(--ease-out)}
+.cat-acc-chev svg{width:16px;height:16px}
+.cat-acc.open .cat-acc-chev{transform:rotate(180deg)}
+.cat-acc-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s var(--ease-out)}
+.cat-acc.open .cat-acc-body{grid-template-rows:1fr}
+.cat-acc-body>.cat-acc-grid{overflow:hidden;min-height:0}
+.cat-acc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:2px 16px 16px}
+.cat-acc:not(.open) .cat-acc-grid{padding-bottom:0;padding-top:0}
+@media (prefers-reduced-motion:reduce){.cat-acc-body,.cat-acc-chev{transition:none}}
+@media (max-width:640px){.cat-acc-grid{grid-template-columns:1fr}}
 /* featured live pilot strip */
 .cat-feat{position:relative;display:flex;gap:22px;align-items:center;width:100%;background:var(--paper);border:1.5px solid var(--green);border-radius:20px;padding:24px 26px;box-shadow:var(--shadow-md);text-align:start;transition:transform .22s var(--ease-out),box-shadow .22s var(--ease-out);overflow:hidden}
 .cat-feat::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:5px;background:var(--green)}
@@ -835,7 +856,13 @@ button:focus-visible,.tb-rail:focus-visible{outline:2.5px solid var(--red);outli
 .rp-typing i:nth-child(3){animation-delay:.32s}
 .rp-replies{margin-top:2px}
 .rp-evid{margin-top:2px}
-.rp-invite .pl-ready-h{gap:10px}
+.rp-invite .pl-ready-h{gap:10px;flex-wrap:wrap}
+.ai-badge{display:inline-flex;align-items:center;gap:4px;margin-inline-start:9px;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;color:#fff;background:linear-gradient(120deg,#6366f1,#8b5cf6,#6366f1);background-size:200% 100%;border-radius:999px;padding:3px 9px 3px 7px;box-shadow:0 2px 9px rgba(99,102,241,.35);animation:aiShimmer 3.6s linear infinite}
+.ai-badge svg{width:11px;height:11px}
+@keyframes aiShimmer{to{background-position:-200% 0}}
+.rp-invite{position:relative;overflow:hidden}
+.rp-invite::before{content:"";position:absolute;inset:0;background:radial-gradient(130% 90% at 100% 0,rgba(99,102,241,.10),transparent 55%);pointer-events:none}
+@media (prefers-reduced-motion:reduce){.ai-badge{animation:none}}
 @keyframes rpIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes rpDot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
 @media (prefers-reduced-motion:reduce){.rp-msg{animation:none}.rp-typing i{animation:none}}
@@ -960,6 +987,7 @@ html[dir="rtl"] .pm2-head .pm2-expand{letter-spacing:.02em}
 .pm2.fs .pm2-lane{font-size:11px;max-width:120px}
 .pm2.fs .pm2-detail{flex:0 0 auto}
 .pm2.fs .pm2-sub{font-size:13px}
+.pm2.fs .pm2-head{position:sticky;top:0;z-index:6;background:var(--canvas);padding-block:6px 8px}
 @media (prefers-reduced-motion:reduce){.flow-stage,.trip-card,.rl-card,.cstep-i,.dcr-card,.pm2.fs{animation:none}}
 /* ============ GLYPH SIZING (inline SVG icon system) ============ */
 .lic svg{width:24px;height:24px}
@@ -1652,7 +1680,7 @@ en:{ checkBadge:"Short exercise, not a test", continueBtn:"Continue", checkOrder
   plWho:"Who is responsible for this step?", plDoc:"Which document belongs to this step?", plCtrl:"Which control applies to this step?",
   plDuty:"Whose responsibility is this?", plLock:"Confirm what you have learned: three short questions on the step you just explored.",
   rpName:"Scout", rpRole:"your practice partner",
-  rpInviteH:"Practise it with Scout", rpInviteS:"Scout takes on a role from this step. Apply what you just read. The card stays open above for reference.", rpInviteB:"Step in",
+  rpInviteH:"Practise it by scenarios", rpInviteS:"Step into a realistic scenario from this step. Scout, your AI practice partner, plays a role and adapts to your replies. The card stays open above for reference.", rpInviteB:"Step in",
   rpTyping:"Scout is typing", rpYourTurn:"Your reply",
   rpSceneConcept:"I am covering this file and I want the wording exact. Help me complete this line:",
   rpSceneRole:"Someone has to take this on and I am not sure who owns it. Whose duty is it?",
@@ -1816,7 +1844,7 @@ ar:{ checkBadge:"تمرين قصير، وليس اختباراً", continueBtn:"
   plWho:"من المسؤول عن هذه الخطوة؟", plDoc:"أي مستند يخص هذه الخطوة؟", plCtrl:"أي ضابط ينطبق على هذه الخطوة؟",
   plDuty:"مسؤولية من هذه؟", plLock:"أكّد ما تعلمته: ثلاثة أسئلة قصيرة عن الخطوة التي استكشفتها للتو.",
   rpName:"Scout", rpRole:"شريك تدريبك",
-  rpInviteH:"تدرّب عليها مع Scout", rpInviteS:"يتقمّص Scout دوراً من هذه الخطوة. طبّق ما قرأته للتو. تبقى البطاقة مفتوحة أعلاه للرجوع إليها.", rpInviteB:"ابدأ التدريب",
+  rpInviteH:"تدرّب عليها عبر سيناريوهات", rpInviteS:"ادخل في سيناريو واقعي من هذه الخطوة. يؤدّي Scout، شريك تدريبك المعتمد على الذكاء الاصطناعي، دوراً ويتجاوب مع ردودك. تبقى البطاقة مفتوحة أعلاه للرجوع إليها.", rpInviteB:"ابدأ التدريب",
   rpTyping:"يكتب Scout", rpYourTurn:"ردّك",
   rpSceneConcept:"أنا أغطّي هذا الملف وأريد الصياغة دقيقة. ساعدني في إكمال هذه الجملة:",
   rpSceneRole:"على أحدهم تولّي هذه المهمة ولستُ متأكداً لمن تعود. مسؤولية من هذه؟",
@@ -2368,21 +2396,18 @@ function showLib(){
     {ph:{en:"Other relevant SOPs",ar:"إجراءات أخرى ذات صلة"}, s:[{en:"Anti-corruption & fraud deterrence",ar:"مكافحة الفساد وردع الاحتيال"},{en:"Risk-based approach to controls",ar:"نهج قائم على المخاطر في الضوابط"},{en:"Disaster & crisis finance procedures",ar:"إجراءات تمويل الكوارث والأزمات"},{en:"Anchor budget",ar:"الميزانية المرجعية"},{en:"Year-end annual closing",ar:"الإغلاق السنوي في نهاية العام"}]}
   ];
   var totalSops=0; SUITE.forEach(function(p){ totalSops+=p.s.length+(p.pilot?1:0); });
-  var chips='<button class="cat-chip on" data-ph="all">'+esc(T("catAll"))+'</button>'+
-    SUITE.map(function(p,pi){ return '<button class="cat-chip" data-ph="'+pi+'">'+esc(L(p.ph))+'</button>'; }).join("");
-  var cardsHtml="";
-  SUITE.forEach(function(p,pi){
-    if(p.pilot){
-      cardsHtml+='<div class="cat-card pilot" data-phc="'+pi+'" title="'+esc(L(p.pilot))+'"><span class="cat-ph">'+esc(L(p.ph))+'</span>'+
-        '<span class="cat-t">'+esc(L(p.pilot))+'</span>'+
-        '<span class="cat-meta"><span class="cat-dot"></span>'+esc(T("catLive"))+'</span></div>';
-    }
-    p.s.forEach(function(t){
-      cardsHtml+='<div class="cat-card" data-phc="'+pi+'" title="'+esc(L(t))+'"><span class="cat-ph">'+esc(L(p.ph))+'</span>'+
-        '<span class="cat-t">'+esc(L(t))+'</span>'+
-        '<span class="cat-meta"><span class="cat-dot"></span>'+esc(T("catScoped"))+'</span></div>';
-    });
-  });
+  var accHtml=SUITE.map(function(p,pi){
+    var isLive=!!p.pilot, nIn=p.s.length+(isLive?1:0);
+    var inner=(isLive?'<div class="cat-card pilot" data-phc="'+pi+'" title="'+esc(L(p.pilot))+'"><span class="cat-t">'+esc(L(p.pilot))+'</span><span class="cat-meta"><span class="cat-dot"></span>'+esc(T("catLive"))+'</span></div>':'')+
+      p.s.map(function(t){ return '<div class="cat-card" data-phc="'+pi+'" title="'+esc(L(t))+'"><span class="cat-t">'+esc(L(t))+'</span><span class="cat-meta"><span class="cat-dot"></span>'+esc(T("catScoped"))+'</span></div>'; }).join("");
+    return '<section class="cat-acc'+(isLive?' has-live open':'')+'" data-phc="'+pi+'">'+
+      '<button class="cat-acc-head" type="button" aria-expanded="'+(isLive?'true':'false')+'">'+
+        '<span class="cat-acc-ph">'+esc(L(p.ph))+'</span>'+
+        '<span class="cat-acc-meta">'+(isLive?'<span class="cat-acc-live">'+esc(T("catLive"))+'</span>':'')+'<span class="cat-acc-count">'+nIn+'</span>'+
+        '<span class="cat-acc-chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></span>'+
+      '</button>'+
+      '<div class="cat-acc-body"><div class="cat-acc-grid">'+inner+'</div></div></section>';
+  }).join("");
   $("#s-lib").innerHTML=ambHTML()+'<div class="shell"><div class="lib-head">'+
     '<div class="kicker">'+T("suiteKicker")+'</div>'+
     '<h2 class="map-title">'+T("libHeadline")+'</h2>'+
@@ -2391,8 +2416,7 @@ function showLib(){
     '<div class="cat-sec"><div class="cat-sec-h"><div class="kicker">'+T("catProgramme")+'</div>'+
     '<span class="cat-count">'+totalSops+' '+T("procsLbl")+'</span></div>'+
     '<p class="map-sub" style="text-align:start;margin:0 0 16px">'+T("catProgrammeSub")+'</p>'+
-    '<div class="cat-filters" role="group">'+chips+'</div>'+
-    '<div class="cat-grid" id="catGrid">'+cardsHtml+'</div></div></div>';
+    '<div class="cat-acc-wrap" id="catGrid">'+accHtml+'</div></div></div>';
   show("s-lib"); buildDots(); ringTo(S.pts);
   $all(".cat-feat.live").forEach(function(b){
     b.addEventListener("click",function(){
@@ -2402,14 +2426,12 @@ function showLib(){
       startCourse();
     });
   });
-  /* phase filter: toggle .hide on cards (display none); chips animate nothing heavy */
-  $all(".cat-chip").forEach(function(ch){
-    ch.addEventListener("click",function(){
-      var ph=ch.getAttribute("data-ph");
-      $all(".cat-chip").forEach(function(x){ x.classList.toggle("on", x===ch); });
-      $all("#catGrid .cat-card").forEach(function(c){
-        c.classList.toggle("hide", ph!=="all" && c.getAttribute("data-phc")!==ph);
-      });
+  /* phase accordion: each phase header expands/collapses its SOPs */
+  $all(".cat-acc-head").forEach(function(hd){
+    hd.addEventListener("click",function(){
+      var sec=hd.closest(".cat-acc"); if(!sec) return;
+      var open=sec.classList.toggle("open");
+      hd.setAttribute("aria-expanded", open?"true":"false");
     });
   });
   /* card clicks: the pilot card opens the live module; scoped cards explain they are not yet available */
@@ -3126,7 +3148,7 @@ function wirePlay(sp,i){
   if(!calls.length){ arena.remove(); return; }
   PLAY_DONE=false;
   if(nb&&gate){ nb.disabled=true; nb.title=T("rpInviteS"); }
-  arena.innerHTML='<div class="pl-ready rp-invite"><div class="pl-ready-h" id="plArenaH" tabindex="-1"><span class="rp-av sm" aria-hidden="true">'+RP_AV+'</span>'+esc(T("rpInviteH"))+'</div>'+
+  arena.innerHTML='<div class="pl-ready rp-invite"><div class="pl-ready-h" id="plArenaH" tabindex="-1"><span class="rp-av sm" aria-hidden="true">'+RP_AV+'</span>'+esc(T("rpInviteH"))+'<span class="ai-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l1.8 4.4 4.7 1.8-4.7 1.8L12 15l-1.8-4.5L5.5 8.7l4.7-1.8z"/></svg>AI</span></div>'+
     '<div class="pl-ready-s">'+esc(T("rpInviteS"))+'</div>'+
     '<button class="btn pl-take" id="plReadyB">'+esc(T("rpInviteB"))+'</button></div>';
   var rb=$("#plReadyB");
@@ -3258,6 +3280,7 @@ function wireProc(sp,i){
     if(!root||!ex) return;
     root.classList.toggle("fs", on);
     document.body.style.overflow = on?"hidden":"";
+    var tbar=document.getElementById("topbar"); if(tbar) tbar.style.visibility = on?"hidden":"";  /* topbar (z40) otherwise paints over the overlay and hides Close */
     if(on){ root.setAttribute("role","dialog"); root.setAttribute("aria-modal","true"); root.setAttribute("aria-label", T("procExpand")); } else { root.removeAttribute("role"); root.removeAttribute("aria-modal"); root.removeAttribute("aria-label"); }
     var lab=$("[data-pmexlabel]",ex); if(lab) lab.textContent = on?T("procClose"):T("procExpand");
     ex.setAttribute("aria-label", on?T("procCloseAria"):T("procExpandAria"));
