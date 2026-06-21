@@ -616,6 +616,8 @@ html[dir="rtl"] .cyc-a{transform:scaleX(-1)}
 .sort-b.yes:hover{background:var(--green);color:#fff}
 .sort-b.no{background:#fff;border-color:var(--red);color:var(--red)}
 .sort-b.no:hover{background:var(--red);color:#fff}
+.sort-b.answered-right{background:var(--green)!important;border-color:var(--green)!important;color:#fff!important}
+.sort-b.answered-wrong{background:var(--red)!important;border-color:var(--red)!important;color:#fff!important}
 .sort-fb{text-align:center;font-size:15px;font-weight:700;min-height:48px;margin-top:12px;color:var(--g2);line-height:1.5;transition:opacity .2s}
 .sort-fb.good{color:var(--green)}
 .sort-fb.bad{color:var(--red-deep)}
@@ -1604,7 +1606,7 @@ en:{ checkBadge:"Short exercise, not a test", continueBtn:"Continue", checkOrder
   skipSetup:"Skip (presenter)",
   libKicker:"Module library", libTitle:"Choose a module", libAll:"All modules", inProg:"In progress",
   suiteKicker:"International Finance SOP programme", libHeadline:"One pilot module, the full suite scoped", libSub:"This pilot teaches one module end to end. Below is the full International Finance SOP suite it is built to extend into.", suiteH:"The full SOP suite, in scope", procsLbl:"procedures", pilotTag:"Pilot, live",
-  catProgramme:"The SOP programme", catProgrammeSub:"Six phases of the International Finance SOP suite. This pilot is live; the rest are scoped for build.", catAll:"All phases", catScoped:"Scoped", catLive:"Live now", catResume:"Resume", catStart:"Open module", catFeatH:"Live pilot module", catPilotIn:"Pilot",
+  catProgramme:"The SOP programme", catProgrammeSub:"Six phases of the International Finance SOP suite. This pilot is live; the rest are scoped for build.", catAll:"All phases", catScoped:"Scoped", catLive:"Live now", catResume:"Resume", catStart:"Open module", catFeatH:"Live pilot module", catPilotIn:"Pilot", catScopedMsg:"Scoped for the build. Not yet available in this prototype.",
   crumbJourney:"Journey", railProgH:"Your progress", railOf:"of", railSrcNote:"Prototype: these open in the controlled document library in production.", railAria:"Lesson sources and tools",
   coH:"Learning companion", coIntro:"Ask anything about this step. In the production version the assistant answers from the SOP, grounded to where you are, running on Danish Red Cross infrastructure. Nothing you type leaves your browser.", coOpen:"Ask the companion", coPlaceholder:"Ask about this step", coSend:"Send", coClose:"Close", coAsking:"Thinking", coGroundLbl:"Grounded in this lesson", coReset:"Clear",
   coRefuse:"I can only help with this lesson and the Audit SOP it draws on. For finance policy beyond this module, please ask your finance focal point or the International Controller and Adviser.",
@@ -1768,7 +1770,7 @@ ar:{ checkBadge:"تمرين قصير، وليس اختباراً", continueBtn:"
   skipSetup:"تخطّي (للعارض)",
   libKicker:"مكتبة الوحدات", libTitle:"اختر وحدة", libAll:"كل الوحدات", inProg:"قيد التقدم",
   suiteKicker:"برنامج إجراءات المالية الدولية", libHeadline:"وحدة تجريبية واحدة، والحزمة الكاملة ضمن النطاق", libSub:"تشرح هذه النسخة التجريبية وحدة واحدة بالكامل. وفي الأسفل حزمة إجراءات المالية الدولية الكاملة التي صُمّمت لتمتد إليها.", suiteH:"حزمة الإجراءات الكاملة، ضمن النطاق", procsLbl:"إجراءات", pilotTag:"تجريبي ومتاح",
-  catProgramme:"برنامج الإجراءات", catProgrammeSub:"ست مراحل من حزمة إجراءات المالية الدولية. هذه الوحدة التجريبية متاحة الآن، والبقية ضمن نطاق التطوير.", catAll:"كل المراحل", catScoped:"ضمن النطاق", catLive:"متاحة الآن", catResume:"متابعة", catStart:"افتح الوحدة", catFeatH:"الوحدة التجريبية المتاحة", catPilotIn:"تجريبي",
+  catProgramme:"برنامج الإجراءات", catProgrammeSub:"ست مراحل من حزمة إجراءات المالية الدولية. هذه الوحدة التجريبية متاحة الآن، والبقية ضمن نطاق التطوير.", catAll:"كل المراحل", catScoped:"ضمن النطاق", catLive:"متاحة الآن", catResume:"متابعة", catStart:"افتح الوحدة", catFeatH:"الوحدة التجريبية المتاحة", catPilotIn:"تجريبي", catScopedMsg:"ضمن نطاق التطوير. غير متاح بعد في هذه النسخة التجريبية.",
   crumbJourney:"الرحلة", railProgH:"تقدّمك", railOf:"من", railSrcNote:"نموذج تجريبي: تُفتح هذه من مكتبة الوثائق المعتمدة في النسخة النهائية.", railAria:"مصادر الدرس وأدواته",
   coH:"رفيق التعلّم", coIntro:"اسأل عن أي شيء في هذه الخطوة. في النسخة الكاملة يجيب المساعد من واقع الإجراء ومستنداً إلى موضعك الحالي، ويعمل ضمن أنظمة الصليب الأحمر الدنماركي. ولا يغادر ما تكتبه متصفّحك.", coOpen:"اسأل الرفيق", coPlaceholder:"اسأل عن هذه الخطوة", coSend:"إرسال", coClose:"إغلاق", coAsking:"يفكّر", coGroundLbl:"مستند إلى هذا الدرس", coReset:"مسح",
   coRefuse:"يمكنني المساعدة فقط في هذا الدرس وإجراءات التدقيق التي يستند إليها. وللسياسات المالية خارج هذه الوحدة، اسأل نقطة الارتكاز المالية أو المراقب والمستشار الدولي.",
@@ -1872,11 +1874,11 @@ stations:[
    b:{en:"Five short statements about how audits work at DRC. Decide whether each is true or false.", ar:"خمسة قرارات سريعة عن طريقة عمل التدقيق هنا."},
    items:[
      {v:true, s:{en:"Every DRC country office goes through an external financial and compliance audit of its accounts, every year.", ar:"يخضع كل مكتب قُطري للصليب الأحمر الدنماركي لتدقيق مالي وامتثالي خارجي لحساباته كل سنة."},
-      fb:{en:"Correct. Yearly, covering bank, petty cash and inter-company transactions.", ar:"سنوياً، ويشمل البنك والنثرية والحسابات البينية."}},
+      fb:{en:"Yearly, covering bank, petty cash and inter-company transactions.", ar:"سنوياً، ويشمل البنك والنثرية والحسابات البينية."}},
      {v:false, s:{en:"Audit costs only matter if the donor pays for them.", ar:"تكاليف التدقيق لا تهم إلا إذا دفعها المانح."},
       fb:{en:"All DRC proposals must budget for audit expenses. If the costs are not eligible, DRC can still decide to audit and cover the cost itself.", ar:"يجب أن تتضمن كل مقترحات الصليب الأحمر الدنماركي ميزانية لنفقات التدقيق. وإن لم تكن التكاليف مؤهلة، يظل بإمكان المنظمة أن تقرر التدقيق وتغطية التكلفة بنفسها."}},
      {v:true, s:{en:"The local audit covers the partner's expenditures, and the consolidated audit covers all levels including headquarters.", ar:"يغطي التدقيق المحلي نفقات الشريك، بينما يغطي التدقيق الموحّد كل المستويات بما فيها المقر الرئيسي."},
-      fb:{en:"Correct. That is the distinction between the two.", ar:"هذا هو الخط الفاصل بين الاثنين."}},
+      fb:{en:"That is the distinction between the two.", ar:"هذا هو الخط الفاصل بين الاثنين."}},
      {v:false, s:{en:"If an on-site audit is impossible, the audit is simply cancelled.", ar:"إذا تعذّر التدقيق الميداني، يُلغى التدقيق ببساطة."},
       fb:{en:"There is a fallback: the files can be moved to a secure location, a neighbouring country office, or headquarters for a remote audit.", ar:"هناك بديل: يمكن نقل الملفات إلى مكان آمن أو مكتب قُطري مجاور أو إلى المقر الرئيسي لإجراء تدقيق عن بُعد."}},
      {v:true, s:{en:"Audits are part of DRC's governance and accountability, not a sign that something went wrong.", ar:"التدقيق جزء من حوكمة المنظمة ومساءلتها، وليس إشارة إلى أن شيئاً ما حدث خطأً."},
@@ -2358,12 +2360,12 @@ function showLib(){
   }).join("");
   /* the scoped suite, flattened into one card per SOP, each tagged with its phase */
   var SUITE=[
-    {ph:{en:"Inception",ar:"الانطلاق"}, s:["Go / no-go assessment","Costs incurred before approval"]},
-    {ph:{en:"Initiation",ar:"التهيئة"}, s:["Project budget preparation & approval","Grant & project agreement drafting","Grant creation & setup in Kompas","Project creation & setup in Kompas","Donor invoicing & payment reconciliation"]},
-    {ph:{en:"Implementation",ar:"التنفيذ"}, s:["Project accounting & cost allocations","Sub-partner financial management","Project financial monitoring","Procurement & payment on behalf of projects","Project exchange rates management","Project asset management","Project filing & archiving","Own-funds management & controlling","Ineligible costs","Donor financial reporting"]},
-    {ph:{en:"Completion",ar:"الإغلاق"}, s:["Final consolidated financial reporting","Administrative & financial closing","Project final audit","Donor final invoicing","Final bookings & grant closing in Kompas"]},
-    {ph:{en:"Audit",ar:"التدقيق"}, s:["Roles & responsibilities matrix","Audit process management","DANIDA funded project audits","EU INTPA & ECHO project audits","Other donor audit requirements","Competing audit requirements","Audit fees budget coverage","Internal audits & pre-audits"], pilot:"The Audit Journey"},
-    {ph:{en:"Other relevant SOPs",ar:"إجراءات أخرى ذات صلة"}, s:["Anti-corruption & fraud deterrence","Risk-based approach to controls","Disaster & crisis finance procedures","Anchor budget","Year-end annual closing"]}
+    {ph:{en:"Inception",ar:"الانطلاق"}, s:[{en:"Go / no-go assessment",ar:"تقييم المضي أو عدم المضي"},{en:"Costs incurred before approval",ar:"التكاليف المتكبَّدة قبل الموافقة"}]},
+    {ph:{en:"Initiation",ar:"التهيئة"}, s:[{en:"Project budget preparation & approval",ar:"إعداد ميزانية المشروع واعتمادها"},{en:"Grant & project agreement drafting",ar:"صياغة اتفاقية المنحة والمشروع"},{en:"Grant creation & setup in Kompas",ar:"إنشاء المنحة وإعدادها في كومباس"},{en:"Project creation & setup in Kompas",ar:"إنشاء المشروع وإعداده في كومباس"},{en:"Donor invoicing & payment reconciliation",ar:"فوترة المانحين وتسوية المدفوعات"}]},
+    {ph:{en:"Implementation",ar:"التنفيذ"}, s:[{en:"Project accounting & cost allocations",ar:"محاسبة المشروع وتوزيع التكاليف"},{en:"Sub-partner financial management",ar:"الإدارة المالية للشركاء الفرعيين"},{en:"Project financial monitoring",ar:"المتابعة المالية للمشروع"},{en:"Procurement & payment on behalf of projects",ar:"المشتريات والدفع نيابةً عن المشاريع"},{en:"Project exchange rates management",ar:"إدارة أسعار الصرف في المشروع"},{en:"Project asset management",ar:"إدارة أصول المشروع"},{en:"Project filing & archiving",ar:"حفظ ملفات المشروع وأرشفتها"},{en:"Own-funds management & controlling",ar:"إدارة الأموال الذاتية والرقابة عليها"},{en:"Ineligible costs",ar:"التكاليف غير المؤهَّلة"},{en:"Donor financial reporting",ar:"إعداد التقارير المالية للمانحين"}]},
+    {ph:{en:"Completion",ar:"الإغلاق"}, s:[{en:"Final consolidated financial reporting",ar:"إعداد التقارير المالية الموحَّدة الختامية"},{en:"Administrative & financial closing",ar:"الإغلاق الإداري والمالي"},{en:"Project final audit",ar:"التدقيق النهائي للمشروع"},{en:"Donor final invoicing",ar:"الفوترة الختامية للمانحين"},{en:"Final bookings & grant closing in Kompas",ar:"القيود الختامية وإغلاق المنحة في كومباس"}]},
+    {ph:{en:"Audit",ar:"التدقيق"}, s:[{en:"Roles & responsibilities matrix",ar:"مصفوفة الأدوار والمسؤوليات"},{en:"Audit process management",ar:"إدارة عملية التدقيق"},{en:"DANIDA funded project audits",ar:"تدقيق المشاريع المموَّلة من دانيدا"},{en:"EU INTPA & ECHO project audits",ar:"تدقيق مشاريع الاتحاد الأوروبي (INTPA وECHO)"},{en:"Other donor audit requirements",ar:"متطلبات التدقيق لدى المانحين الآخرين"},{en:"Competing audit requirements",ar:"متطلبات التدقيق المتعارضة"},{en:"Audit fees budget coverage",ar:"تغطية ميزانية أتعاب التدقيق"},{en:"Internal audits & pre-audits",ar:"التدقيق الداخلي والتدقيق التمهيدي"}], pilot:{en:"The Audit Journey",ar:"رحلة التدقيق"}},
+    {ph:{en:"Other relevant SOPs",ar:"إجراءات أخرى ذات صلة"}, s:[{en:"Anti-corruption & fraud deterrence",ar:"مكافحة الفساد وردع الاحتيال"},{en:"Risk-based approach to controls",ar:"نهج قائم على المخاطر في الضوابط"},{en:"Disaster & crisis finance procedures",ar:"إجراءات تمويل الكوارث والأزمات"},{en:"Anchor budget",ar:"الميزانية المرجعية"},{en:"Year-end annual closing",ar:"الإغلاق السنوي في نهاية العام"}]}
   ];
   var totalSops=0; SUITE.forEach(function(p){ totalSops+=p.s.length+(p.pilot?1:0); });
   var chips='<button class="cat-chip on" data-ph="all">'+esc(T("catAll"))+'</button>'+
@@ -2371,13 +2373,13 @@ function showLib(){
   var cardsHtml="";
   SUITE.forEach(function(p,pi){
     if(p.pilot){
-      cardsHtml+='<div class="cat-card pilot" data-phc="'+pi+'" title="'+esc(p.pilot)+'"><span class="cat-ph">'+esc(L(p.ph))+'</span>'+
-        '<span class="cat-t">'+esc(p.pilot)+'</span>'+
+      cardsHtml+='<div class="cat-card pilot" data-phc="'+pi+'" title="'+esc(L(p.pilot))+'"><span class="cat-ph">'+esc(L(p.ph))+'</span>'+
+        '<span class="cat-t">'+esc(L(p.pilot))+'</span>'+
         '<span class="cat-meta"><span class="cat-dot"></span>'+esc(T("catLive"))+'</span></div>';
     }
     p.s.forEach(function(t){
-      cardsHtml+='<div class="cat-card" data-phc="'+pi+'" title="'+esc(t)+'"><span class="cat-ph">'+esc(L(p.ph))+'</span>'+
-        '<span class="cat-t">'+esc(t)+'</span>'+
+      cardsHtml+='<div class="cat-card" data-phc="'+pi+'" title="'+esc(L(t))+'"><span class="cat-ph">'+esc(L(p.ph))+'</span>'+
+        '<span class="cat-t">'+esc(L(t))+'</span>'+
         '<span class="cat-meta"><span class="cat-dot"></span>'+esc(T("catScoped"))+'</span></div>';
     });
   });
@@ -2408,6 +2410,14 @@ function showLib(){
       $all("#catGrid .cat-card").forEach(function(c){
         c.classList.toggle("hide", ph!=="all" && c.getAttribute("data-phc")!==ph);
       });
+    });
+  });
+  /* card clicks: the pilot card opens the live module; scoped cards explain they are not yet available */
+  $all("#catGrid .cat-card").forEach(function(c){
+    c.style.cursor="pointer";
+    c.addEventListener("click",function(){
+      if(c.classList.contains("pilot")){ var f=$(".cat-feat.live"); if(f) f.click(); }
+      else { toast(T("catScopedMsg"), 2600); }
     });
   });
 }
@@ -3422,6 +3432,7 @@ function wireCheck(sp,i){
         return;
       }
       $("#sYes").disabled=false; $("#sNo").disabled=false;
+      ["sYes","sNo"].forEach(function(bid){ var b=$("#"+bid); if(b){ b.classList.remove("answered-right","answered-wrong"); b.blur(); } });
       stage.innerHTML='<div class="sort-card" id="sCard">'+L(sp.items[idx].s)+'</div>';
       fb.textContent=""; fb.className="sort-fb";
     }
@@ -3430,6 +3441,7 @@ function wireCheck(sp,i){
       $("#sYes").disabled=true; $("#sNo").disabled=true;
       var it=sp.items[idx], card=$("#sCard"), pip=prog.children[idx];
       var right=(saysTrue===it.v);
+      var clicked=saysTrue?$("#sYes"):$("#sNo"); if(clicked) clicked.classList.add(right?"answered-right":"answered-wrong");
       if(right){ score+=per; pip.classList.add("hit"); fb.textContent="✓ "+T("nice")+" "+L(it.fb||""); fb.className="sort-fb good"; card.classList.add(saysTrue?"gone-r":"gone-l"); }
       else { pip.classList.add("miss"); score+=Math.max(2,Math.floor(per*0.55)); fb.textContent="✗ "+T("goodSave")+" "+L(it.fb||""); fb.className="sort-fb bad"; card.classList.add(saysTrue?"gone-r":"gone-l"); }
       idx++;
