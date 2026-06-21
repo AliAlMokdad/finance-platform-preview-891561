@@ -165,7 +165,7 @@ html[dir="rtl"] .rail-fill{transform-origin:right}
 .style-c.sel{border-color:var(--red);background:#fff;box-shadow:0 0 0 4px var(--red-soft)}
 .style-c .ic{width:52px;height:52px;margin:0 auto 12px;border-radius:14px;background:var(--g6);display:flex;align-items:center;justify-content:center;color:var(--g2)}
 .style-c .ic svg{width:26px;height:26px}
-.style-c .nm{font-weight:800;color:var(--ink);font-size:15.5px;margin-bottom:5px}
+.style-c .nm{font-weight:800;color:var(--ink);font-size:15.5px;margin-bottom:5px;min-height:2.6em;display:flex;align-items:center;justify-content:center;text-align:center}
 .style-c .ds{font-size:12.5px;color:var(--g2);line-height:1.45}
 .style-c .badge{position:absolute;top:10px;inset-inline-end:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
   text-transform:uppercase;background:var(--g6);color:var(--g2);border-radius:12px;padding:3px 9px}
@@ -249,6 +249,8 @@ html[dir="rtl"] .rail-prog-track i{margin-inline-start:auto}
 .comp-grounded{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);background:rgba(62,124,90,.10);border-radius:999px;padding:4px 10px;margin-bottom:11px;align-self:flex-start}
 html[dir="rtl"] .comp-grounded{letter-spacing:.02em}
 .comp-grounded svg{width:11px;height:11px}
+.comp-grounded.off{color:#6b5510;background:color-mix(in srgb,var(--gold) 18%,var(--paper))}
+.btn.nb-gated{opacity:.58}
 .comp-thread{display:flex;flex-direction:column;gap:9px;max-height:262px;overflow-y:auto;margin-bottom:11px;padding-inline-end:2px}
 .comp-bubble{font-size:12.8px;line-height:1.55;border-radius:12px;padding:10px 13px;max-width:94%;animation:rvlIn .3s var(--ease-out) both}
 .comp-bubble.user{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:4px}
@@ -556,15 +558,15 @@ html[dir="rtl"] .cat-sec-h,html[dir="rtl"] .cat-card .cat-ph,html[dir="rtl"] .ca
 .mgr-line input{flex:1;font-size:15px;color:var(--ink);background:var(--canvas);border:1.5px solid var(--g5);border-radius:11px;padding:11px 14px;outline:none}
 .mgr-line input:focus{border-color:var(--red);background:#fff}
 /* living cards: inner elements cascade in */
-.ln-card>*{animation:rvlIn .5s cubic-bezier(.2,.7,.2,1) both}
-.ln-card>*:nth-child(1){animation-delay:.02s}
-.ln-card>*:nth-child(2){animation-delay:.09s}
-.ln-card>*:nth-child(3){animation-delay:.16s}
-.ln-card>*:nth-child(4){animation-delay:.24s}
-.ln-card>*:nth-child(5){animation-delay:.32s}
-.ln-card>*:nth-child(6){animation-delay:.40s}
-.ln-card>*:nth-child(7){animation-delay:.48s}
-.ln-card>*:nth-child(8){animation-delay:.55s}
+.ln-card>*{animation:rvlIn .34s cubic-bezier(.2,.7,.2,1) both}
+.ln-card>*:nth-child(1){animation-delay:.01s}
+.ln-card>*:nth-child(2){animation-delay:.05s}
+.ln-card>*:nth-child(3){animation-delay:.09s}
+.ln-card>*:nth-child(4){animation-delay:.12s}
+.ln-card>*:nth-child(5){animation-delay:.15s}
+.ln-card>*:nth-child(6){animation-delay:.18s}
+.ln-card>*:nth-child(7){animation-delay:.21s}
+.ln-card>*:nth-child(8){animation-delay:.24s}
 @keyframes rvlIn{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:none}}
 .cyc-n{animation:rvlIn .45s cubic-bezier(.2,.7,.2,1) both}
 .cyc-n:nth-child(1){animation-delay:.05s}.cyc-n:nth-child(3){animation-delay:.14s}.cyc-n:nth-child(5){animation-delay:.23s}.cyc-n:nth-child(7){animation-delay:.32s}.cyc-n:nth-child(9){animation-delay:.41s}
@@ -633,10 +635,8 @@ html[dir="rtl"] .cyc-a{transform:scaleX(-1)}
 .sort-btns{display:flex;gap:14px;justify-content:center;margin-top:14px}
 .sort-b{flex:1;max-width:200px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:15.5px;font-weight:700;
   border-radius:13px;padding:14px 18px;transition:.18s;border:1.5px solid}
-.sort-b.yes{background:#fff;border-color:var(--green);color:var(--green)}
-.sort-b.yes:hover{background:var(--green);color:#fff}
-.sort-b.no{background:#fff;border-color:var(--red);color:var(--red)}
-.sort-b.no:hover{background:var(--red);color:#fff}
+.sort-b.yes,.sort-b.no{background:#fff;border-color:var(--g4);color:var(--ink)}
+.sort-b.yes:hover,.sort-b.no:hover{background:var(--g6);border-color:var(--ink)}
 .sort-b.answered-right{background:var(--green)!important;border-color:var(--green)!important;color:#fff!important}
 .sort-b.answered-wrong{background:var(--red)!important;border-color:var(--red)!important;color:#fff!important}
 .sort-fb{text-align:center;font-size:15px;font-weight:700;min-height:48px;margin-top:12px;color:var(--g2);line-height:1.5;transition:opacity .2s}
@@ -1493,6 +1493,9 @@ $("#regNext").addEventListener("click", function(){
   var sg=$("#styleGo"); if(sg){ sg.textContent=T("begin"); sg.disabled=!S.style; }
   show("s-style");
 });
+/* clear the error state live as the field becomes valid (don't leave a stale red border) */
+$("#inName").addEventListener("input", function(){ if(this.value.trim()){ $("#f-name").classList.remove("err"); this.setAttribute("aria-invalid","false"); } });
+$("#inEmail").addEventListener("input", function(){ if(emailOk(this.value)){ $("#f-email").classList.remove("err"); this.setAttribute("aria-invalid","false"); } });
 
 /* ---------- presenter admin mode: skip is offered on the checks only ---------- */
 function isAdmin(){ var n=($("#inName")?($("#inName").value||S.name||""):(S.name||"")).trim().toLowerCase().replace(/\s+/g," "); return n==="ali al mokdad"||n==="ali"; }
@@ -1551,7 +1554,7 @@ function updStyleChip(){
   var b=$("#tbStyle"); if(!b) return;
   var key=S.style==="play"?"stylePlay":(S.style==="watch"?"styleWatch":"styleRead");
   var word=T(key).split(" ")[0];
-  var compact=false; try{ compact=innerWidth<=640; }catch(e){}
+  var compact=false; try{ compact=innerWidth<=820; }catch(e){}
   b.textContent=compact?word:(T("styleChip")+" · "+word);
   b.title=T("styleChip")+" · "+T(key);
 }
@@ -1569,7 +1572,7 @@ function updStyleChip(){
 function updLangChip(){
   var b=$("#tbLang"); if(!b) return;
   var L=LANGS.filter(function(x){return x.code===(S.lang||"en");})[0]||LANGS[0];
-  var compact=false; try{ compact=innerWidth<=640; }catch(e){}
+  var compact=false; try{ compact=innerWidth<=820; }catch(e){}
   var globe='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" aria-hidden="true" style="vertical-align:-2px;margin-inline-end:6px"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>';
   b.innerHTML=globe+esc(compact?(L.code||"en").toUpperCase():L.name);
   b.title=T("langChip")+" · "+L.name;
@@ -1636,7 +1639,7 @@ en:{ checkBadge:"Short exercise, not a test", continueBtn:"Continue", checkOrder
   suiteKicker:"International Finance SOP programme", libHeadline:"One pilot module, the full suite scoped", libSub:"This pilot teaches one module end to end. Below is the full International Finance SOP suite it is built to extend into.", suiteH:"The full SOP suite, in scope", procsLbl:"procedures", pilotTag:"Pilot, live",
   catProgramme:"The SOP programme", catProgrammeSub:"Six phases of the International Finance SOP suite. This pilot is live; the rest are scoped for build.", catAll:"All phases", catScoped:"Scoped", catLive:"Live now", catResume:"Resume", catStart:"Open module", catFeatH:"Live pilot module", catPilotIn:"Pilot", catScopedMsg:"Scoped for the build. Not yet available in this prototype.",
   crumbJourney:"Journey", railProgH:"Your progress", railOf:"of", railSrcNote:"Prototype: these open in the controlled document library in production.", railAria:"Lesson sources and tools",
-  coH:"Learning companion", coIntro:"Ask anything about this step. In the production version the assistant answers from the SOP, grounded to where you are, running on Danish Red Cross infrastructure. Nothing you type leaves your browser.", coOpen:"Ask the companion", coPlaceholder:"Ask about this step", coSend:"Send", coClose:"Close", coAsking:"Thinking", coGroundLbl:"Grounded in this lesson", coReset:"Clear",
+  coH:"Learning companion", coIntro:"Ask anything about this step. In the production version the assistant answers from the SOP, grounded to where you are, running on Danish Red Cross infrastructure. Nothing you type leaves your browser.", coOpen:"Ask the companion", coPlaceholder:"Ask about this step", coSend:"Send", coClose:"Close", coAsking:"Thinking", coGroundLbl:"Grounded in this lesson", coReset:"Clear", coPreviewLbl:"Preview · assistant offline", gateHint:"Finish the practice to unlock Continue",
   coRefuse:"I can only help with this lesson and the Audit SOP it draws on. For finance policy beyond this module, please ask your finance focal point or the International Controller and Adviser.",
   coOffline:"The companion is not reachable right now. The lesson and its sources above are complete on their own. Please try again later.",
   coDisabled:"This offline preview keeps the assistant switched off, so nothing you type is sent anywhere. In production it answers here, grounded to this step and its source SOP, on Danish Red Cross infrastructure.",
@@ -1800,7 +1803,7 @@ ar:{ checkBadge:"تمرين قصير، وليس اختباراً", continueBtn:"
   suiteKicker:"برنامج إجراءات المالية الدولية", libHeadline:"وحدة تجريبية واحدة، والحزمة الكاملة ضمن النطاق", libSub:"تشرح هذه النسخة التجريبية وحدة واحدة بالكامل. وفي الأسفل حزمة إجراءات المالية الدولية الكاملة التي صُمّمت لتمتد إليها.", suiteH:"حزمة الإجراءات الكاملة، ضمن النطاق", procsLbl:"إجراءات", pilotTag:"تجريبي ومتاح",
   catProgramme:"برنامج الإجراءات", catProgrammeSub:"ست مراحل من حزمة إجراءات المالية الدولية. هذه الوحدة التجريبية متاحة الآن، والبقية ضمن نطاق التطوير.", catAll:"كل المراحل", catScoped:"ضمن النطاق", catLive:"متاحة الآن", catResume:"متابعة", catStart:"افتح الوحدة", catFeatH:"الوحدة التجريبية المتاحة", catPilotIn:"تجريبي", catScopedMsg:"ضمن نطاق التطوير. غير متاح بعد في هذه النسخة التجريبية.",
   crumbJourney:"الرحلة", railProgH:"تقدّمك", railOf:"من", railSrcNote:"نموذج تجريبي: تُفتح هذه من مكتبة الوثائق المعتمدة في النسخة النهائية.", railAria:"مصادر الدرس وأدواته",
-  coH:"رفيق التعلّم", coIntro:"اسأل عن أي شيء في هذه الخطوة. في النسخة الكاملة يجيب المساعد من واقع الإجراء ومستنداً إلى موضعك الحالي، ويعمل ضمن أنظمة الصليب الأحمر الدنماركي. ولا يغادر ما تكتبه متصفّحك.", coOpen:"اسأل الرفيق", coPlaceholder:"اسأل عن هذه الخطوة", coSend:"إرسال", coClose:"إغلاق", coAsking:"يفكّر", coGroundLbl:"مستند إلى هذا الدرس", coReset:"مسح",
+  coH:"رفيق التعلّم", coIntro:"اسأل عن أي شيء في هذه الخطوة. في النسخة الكاملة يجيب المساعد من واقع الإجراء ومستنداً إلى موضعك الحالي، ويعمل ضمن أنظمة الصليب الأحمر الدنماركي. ولا يغادر ما تكتبه متصفّحك.", coOpen:"اسأل الرفيق", coPlaceholder:"اسأل عن هذه الخطوة", coSend:"إرسال", coClose:"إغلاق", coAsking:"يفكّر", coGroundLbl:"مستند إلى هذا الدرس", coReset:"مسح", coPreviewLbl:"نسخة تجريبية · المساعد غير متصل", gateHint:"أكمل التدريب لإتاحة المتابعة",
   coRefuse:"يمكنني المساعدة فقط في هذا الدرس وإجراءات التدقيق التي يستند إليها. وللسياسات المالية خارج هذه الوحدة، اسأل نقطة الارتكاز المالية أو المراقب والمستشار الدولي.",
   coOffline:"الرفيق غير متاح الآن. الدرس ومصادره أعلاه مكتملة بذاتها. حاول لاحقاً.",
   coDisabled:"في هذه المعاينة غير المتصلة يبقى المساعد متوقفاً، فلا يُرسَل ما تكتبه إلى أي جهة. أمّا في النسخة الإنتاجية فيجيب هنا، مستنداً إلى هذه الخطوة وإلى الإجراء المصدر، ضمن أنظمة الصليب الأحمر الدنماركي.",
@@ -2199,7 +2202,7 @@ var RAIL_KEY="";
 function buildDots(){
   var el=$("#tbDots"); if(!el) return;
   var metas=stationMeta();
-  var compact=false; try{ compact=innerWidth<=640; }catch(e){}
+  var compact=false; try{ compact=innerWidth<=820; }catch(e){}
   var NODE=compact?13:18, SEG=compact?16:34, GAP=compact?3:5;
   var key=S.cur+"_"+(S.lang||"en")+"_"+metas.length+"_"+(compact?1:0);
   if(RAIL_KEY!==key){
@@ -2632,7 +2635,9 @@ function wireCompanion(sp,i){
 function openCompanion(sp,i){
   var body=$("#compBody"); if(!body) return;
   body.innerHTML=
-    '<div class="comp-grounded"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'+esc(T("coGroundLbl"))+'</div>'+
+    (COMPANION_PROXY
+      ? '<div class="comp-grounded"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'+esc(T("coGroundLbl"))+'</div>'
+      : '<div class="comp-grounded off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>'+esc(T("coPreviewLbl"))+'</div>')+
     '<div class="comp-thread" id="compThread" role="log" aria-live="polite"></div>'+
     '<div class="comp-seeds" id="compSeeds">'+
       '<button class="comp-seed" type="button">'+esc(T("coSeed1"))+'</button>'+
@@ -3012,7 +3017,7 @@ function runRound(calls){
   function fin(){
     PLAY_DONE=true;
     var made=calls.length, clean=(cardMisses===0);
-    var nb=$("#nextBtn"); if(nb){ nb.disabled=false; nb.removeAttribute("title"); }
+    var nb=$("#nextBtn"); if(nb){ nb.disabled=false; nb.removeAttribute("title"); nb.classList.remove("nb-gated"); }
     scoutSay(esc(T("rpClose")), function(){
       var v=document.createElement("div"); v.className="pl-verdict rp-verd";
       v.innerHTML=esc("✓")+' <span>'+esc(T("plVerdict").replace("{n}",String(made)))+'</span>'+
@@ -3147,7 +3152,8 @@ function wirePlay(sp,i){
   var calls=sp.roles?rolesCalls(sp):narrativeCalls(sp,i);
   if(!calls.length){ arena.remove(); return; }
   PLAY_DONE=false;
-  if(nb&&gate){ nb.disabled=true; nb.title=T("rpInviteS"); }
+  if(nb&&gate){ nb.classList.add("nb-gated"); nb.title=T("rpInviteS");
+    nb.addEventListener("click", function(ev){ if(!PLAY_DONE){ ev.stopImmediatePropagation(); ev.preventDefault(); toast(T("gateHint"),2400); } else { nb.classList.remove("nb-gated"); } }, true); }
   arena.innerHTML='<div class="pl-ready rp-invite"><div class="pl-ready-h" id="plArenaH" tabindex="-1"><span class="rp-av sm" aria-hidden="true">'+RP_AV+'</span>'+esc(T("rpInviteH"))+'<span class="ai-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l1.8 4.4 4.7 1.8-4.7 1.8L12 15l-1.8-4.5L5.5 8.7l4.7-1.8z"/></svg>AI</span></div>'+
     '<div class="pl-ready-s">'+esc(T("rpInviteS"))+'</div>'+
     '<button class="btn pl-take" id="plReadyB">'+esc(T("rpInviteB"))+'</button></div>';
