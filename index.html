@@ -1009,6 +1009,10 @@ html[dir="rtl"] .pm2-head .pm2-expand{letter-spacing:.02em}
 .pm2.fs .pm2-detail{flex:0 0 auto}
 .pm2.fs .pm2-sub{font-size:13px}
 .pm2.fs .pm2-head{position:sticky;top:0;z-index:6;background:var(--canvas);padding-block:6px 8px}
+/* full-screen swimlane: hide the lesson rail (progress, source documents, companion) so nothing
+   paints beside or over the overlay. the rail is a sticky sibling inside the shell's own stacking
+   context, so the fixed overlay cannot reliably cover it; hiding it is the robust fix. */
+body.pm-fs .shell-rail{visibility:hidden}
 @media (prefers-reduced-motion:reduce){.flow-stage,.trip-card,.rl-card,.cstep-i,.dcr-card,.pm2.fs{animation:none}}
 /* ============ GLYPH SIZING (inline SVG icon system) ============ */
 .lic svg{width:24px;height:24px}
@@ -2726,7 +2730,7 @@ function railHTML(sp,i){
   return h;
 }
 function renderStep(i, review){
-  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); document.body.style.overflow="";
+  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); document.body.style.overflow=""; document.body.classList.remove("pm-fs");
   if(window._pmEsc){ document.removeEventListener("keydown", window._pmEsc); window._pmEsc=null; }
   (function(){ var tb=document.getElementById("topbar"); if(tb) tb.style.visibility=""; })();   /* defensive: always restore the topbar on any lesson render */
   PLAY_DONE=true;
@@ -3310,6 +3314,7 @@ function wireProc(sp,i){
     if(!root||!ex) return;
     root.classList.toggle("fs", on);
     document.body.style.overflow = on?"hidden":"";
+    document.body.classList.toggle("pm-fs", on);  /* hide the side rail while full-screen */
     var tbar=document.getElementById("topbar"); if(tbar) tbar.style.visibility = on?"hidden":"";  /* topbar (z40) otherwise paints over the overlay and hides Close */
     if(on){ root.setAttribute("role","dialog"); root.setAttribute("aria-modal","true"); root.setAttribute("aria-label", T("procExpand")); } else { root.removeAttribute("role"); root.removeAttribute("aria-modal"); root.removeAttribute("aria-label"); }
     var lab=$("[data-pmexlabel]",ex); if(lab) lab.textContent = on?T("procClose"):T("procExpand");
