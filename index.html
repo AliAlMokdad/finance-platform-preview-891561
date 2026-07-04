@@ -65,7 +65,11 @@ input,select{font-family:inherit}
 .wl-mark{display:inline-flex;align-items:center;background:#fff;border-radius:16px;
   padding:18px 28px;box-shadow:0 14px 50px rgba(227,10,11,.22);margin-bottom:30px}
 .rk-img{width:240px;height:auto;display:block}
-.wl-eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-on-dark);margin-bottom:14px}
+.wl-eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-on-dark);margin-bottom:4px;position:relative;display:inline-block;padding-bottom:10px}
+/* a gold hairline is ruled beneath the imprint as the page settles: the ledger is lit */
+.wl-eyebrow::after{content:"";position:absolute;left:50%;bottom:0;height:1px;width:140px;background:linear-gradient(90deg,transparent,var(--gold-on-dark),transparent);transform:translateX(-50%) scaleX(0);animation:wlRule .9s var(--ease) .6s both}
+@keyframes wlRule{to{transform:translateX(-50%) scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.wl-eyebrow::after{animation:none;transform:translateX(-50%) scaleX(1)}}
 .wl-title{font-size:clamp(38px,6.2vw,62px);font-weight:var(--w-display);color:#fff;line-height:var(--lh-tight);letter-spacing:var(--tk-display);margin-bottom:14px}
 .wl-sub{font-size:18px;color:rgba(255,255,255,.62);max-width:520px;margin:0 auto 34px;line-height:1.55}
 .wl-pick{display:flex;gap:14px;justify-content:center;align-items:stretch;flex-wrap:wrap}
@@ -377,6 +381,9 @@ html[dir="rtl"] .wl-title,html[dir="rtl"] .h1,html[dir="rtl"] .ln-h,html[dir="rt
 /* arabic typography */
 html[dir="rtl"] body{font-family:'IBM Plex Sans Arabic','Cairo','Inter',-apple-system,'Segoe UI',Tahoma,sans-serif}
 html[dir="rtl"] .wl-title,html[dir="rtl"] .h1,html[dir="rtl"] .ln-h,html[dir="rtl"] .fin-h,html[dir="rtl"] .kicker,html[dir="rtl"] .wl-eyebrow,html[dir="rtl"] .ln-kicker,html[dir="rtl"] .station-tag,html[dir="rtl"] .tb-sub,html[dir="rtl"] .tb-lbl,html[dir="rtl"] .pl-eyebrow,html[dir="rtl"] .map-foot,html[dir="rtl"] .map-prog-lbl,html[dir="rtl"] .sc-h,html[dir="rtl"] .next-h,html[dir="rtl"] .map-st .act,html[dir="rtl"] .map-st .sdt{letter-spacing:0}
+html[dir="rtl"] .wl-proto,html[dir="rtl"] .cat-count,html[dir="rtl"] .cat-acc-meta,html[dir="rtl"] .cat-acc-live,html[dir="rtl"] .cat-feat .cf-go,html[dir="rtl"] .pm-row b.tag,html[dir="rtl"] .pm-count,html[dir="rtl"] .ck-badge,html[dir="rtl"] .rec-h,html[dir="rtl"] .rec-row dt,html[dir="rtl"] .fin-insight-h,html[dir="rtl"] .pl-confide-q,html[dir="rtl"] .pl-ruling b.lead,html[dir="rtl"] .pl-standing,html[dir="rtl"] .vs-eyebrow,html[dir="rtl"] .vs-cap,html[dir="rtl"] .crumb-review,html[dir="rtl"] .style-c .badge,html[dir="rtl"] .wl-opt .soon-tag,html[dir="rtl"] .proto-note,html[dir="rtl"] .ck-skip{letter-spacing:0}
+/* Arabic glyphs inside mono-labelled chrome fall back to the body face, not the browser's default monospace Arabic */
+html[dir="rtl"]{--mono:'JetBrains Mono','IBM Plex Sans Arabic','Cairo',Consolas,monospace}
 /* ============ COURSE MAP ============ */
 #s-map{padding-top:62px}
 .map-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:40px 22px 64px;max-width:680px;margin:0 auto;width:100%}
@@ -1713,7 +1720,7 @@ da:{ checkBadge:"Lille spil, ikke en test", continueBtn:"Fortsæt", checkOrder:"
   mailSub:"Kursusbevis:", mailOpened:"Din mail åbner med beskeden klar til afsendelse.",
   mailBody:"Hej,\n\n{name} har gennemført modulet “{module}” på International Finance Learning Platform med {score}/100 point.\n\nKursusbeviset kan hentes fra platformen og vedhæftes denne besked.\n\nBeskeden er klargjort af platformens prototype.",
   watchCap:"Se dette trin som en guidet gennemgang", watchPlay:"Afspil", watchReplay:"Afspil igen",
-  watchPause:"Pause", watchRestart:"Start forfra", watchProgAria:"Gennemgangens fremdrift", watchRate:"Afspilningshastighed", rateAria:"Afspilningshastighed {r}x. Tryk for at ændre.",
+  watchPause:"Pause", watchRestart:"Start forfra", watchProgAria:"Gennemgangens fremdrift", watchRate:"Afspilningshastighed", rateAria:"Afspilningshastighed {r}x. Tryk for at ændre.", focusMode:"Fokustilstand",
   resumeMsg:"Velkommen tilbage. Vi gemte din plads.",
   finishH:"Du klarede det,", finishSub:"Du fulgte pengene gennem et helt projekt. Det er fundamentet, alt andet bygger på.",
   scoreOf:"af 100", tierGold:"Gennemført med udmærkelse", tierSilver:"Gennemført med ros", tierDone:"Gennemført",
@@ -1762,7 +1769,7 @@ fr:{ checkBadge:"Petit jeu, pas un examen", continueBtn:"Continuer", checkOrder:
   mailSub:"Certificat d'achèvement :", mailOpened:"Votre messagerie s'ouvre avec le message prêt à envoyer.",
   mailBody:"Bonjour,\n\n{name} a terminé le module « {module} » sur l'International Finance Learning Platform avec un score de {score}/100.\n\nLe certificat peut être téléchargé depuis la plateforme et joint à ce message.\n\nMessage préparé par le prototype de la plateforme.",
   watchCap:"Regardez cette étape en présentation guidée", watchPlay:"Lire", watchReplay:"Revoir",
-  watchPause:"Pause", watchRestart:"Recommencer", watchProgAria:"Progression de la présentation", watchRate:"Vitesse de lecture", rateAria:"Vitesse de lecture {r}x. Appuyez pour changer.",
+  watchPause:"Pause", watchRestart:"Recommencer", watchProgAria:"Progression de la présentation", watchRate:"Vitesse de lecture", rateAria:"Vitesse de lecture {r}x. Appuyez pour changer.", focusMode:"Mode concentration",
   resumeMsg:"Bon retour. Votre place est gardée.",
   finishH:"Vous y êtes,", finishSub:"Vous avez suivi l'argent à travers tout un projet. C'est la base de tout le reste.",
   scoreOf:"sur 100", tierGold:"Terminé avec distinction", tierSilver:"Terminé avec mérite", tierDone:"Terminé",
@@ -1803,7 +1810,7 @@ ar:{ checkBadge:"تمرين قصير، وليس اختباراً", continueBtn:"
   refToast:"نموذج تجريبي: في النسخة النهائية يُفتح المستند المصدر من مكتبة الوثائق المعتمدة.",
   skipSetup:"تخطّي (للعارض)",
   libKicker:"مكتبة الوحدات", libTitle:"اختر وحدة", libAll:"كل الوحدات", inProg:"قيد التقدم",
-  suiteKicker:"المالية الدولية", libHeadline:"ابدأ بالوحدة التجريبية المتاحة", libSub:"تشرح هذه الوحدة إجراء التدقيق بالكامل، من التعيين حتى اتخاذ الإجراء. وتليها وحدات أخرى في المالية الدولية بالأسلوب الموجَّه نفسه.", suiteH:"حزمة الإجراءات الكاملة، ضمن النطاق", procsLbl:"إجراءات", pilotTag:"تجريبي ومتاح",
+  suiteKicker:"المالية الدولية", libHeadline:"ابدأ بالوحدة التجريبية المتاحة", libSub:"تشرح هذه الوحدة إجراء التدقيق بالكامل، من التعيين حتى اتخاذ الإجراء. وتليها وحدات أخرى في المالية الدولية بالأسلوب الموجَّه نفسه.", suiteH:"حزمة الإجراءات الكاملة، ضمن النطاق", procsLbl:"إجراءً", pilotTag:"تجريبي ومتاح",
   catProgramme:"برنامج الإجراءات", catProgrammeSub:"ست مراحل من حزمة إجراءات المالية الدولية. هذه الوحدة التجريبية متاحة الآن، والبقية ضمن نطاق التطوير.", catAll:"كل المراحل", catScoped:"ضمن النطاق", catLive:"متاحة الآن", catResume:"متابعة", catStart:"افتح الوحدة", catFeatH:"الوحدة التجريبية المتاحة", catPilotIn:"تجريبي", catScopedMsg:"ضمن نطاق التطوير. غير متاح بعد في هذه النسخة التجريبية.",
   crumbJourney:"الرحلة", railProgH:"تقدّمك", railOf:"من", railSrcNote:"نموذج تجريبي: تُفتح هذه من مكتبة الوثائق المعتمدة في النسخة النهائية.", railAria:"مصادر الدرس وأدواته",
   coH:"رفيق التعلّم", coIntro:"اسأل عن أي شيء في هذه الخطوة. في النسخة الكاملة يجيب المساعد من واقع الإجراء ومستنداً إلى موضعك الحالي، ويعمل ضمن أنظمة الصليب الأحمر الدنماركي. ولا يغادر ما تكتبه متصفّحك.", coOpen:"اسأل الرفيق", coPlaceholder:"اسأل عن هذه الخطوة", coSend:"إرسال", coClose:"إغلاق", coAsking:"يفكّر", coGroundLbl:"مستند إلى هذا الدرس", coReset:"مسح", coPreviewLbl:"نسخة تجريبية · المساعد غير متصل", gateHint:"أكمل التدريب لإتاحة المتابعة",
@@ -2318,12 +2325,21 @@ function ding(kind){
   try{
     if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)();
     var t0=AC.currentTime;
+    /* felt-hammer timbre: fundamental + quiet octave + a whisper of the twelfth, through a low-pass.
+       Reads as a small marimba note rather than a raw beep. */
     function tone(f,t,d,g){
-      var o=AC.createOscillator(), gn=AC.createGain();
-      o.type="sine"; o.frequency.value=f;
-      gn.gain.setValueAtTime(0.0001,t); gn.gain.exponentialRampToValueAtTime(g||0.05,t+0.015);
+      g=g||0.045;
+      var gn=AC.createGain(), fl=AC.createBiquadFilter();
+      fl.type="lowpass"; fl.frequency.setValueAtTime(Math.min(7000,f*5),t); fl.Q.value=0.6;
+      gn.gain.setValueAtTime(0.0001,t);
+      gn.gain.exponentialRampToValueAtTime(g,t+0.018);
       gn.gain.exponentialRampToValueAtTime(0.0001,t+d);
-      o.connect(gn); gn.connect(AC.destination); o.start(t); o.stop(t+d+0.05);
+      fl.connect(gn); gn.connect(AC.destination);
+      [[f,1],[f*2,0.28],[f*2.997,0.10]].forEach(function(p){
+        var o=AC.createOscillator(), og=AC.createGain();
+        o.type="sine"; o.frequency.value=p[0]; og.gain.value=p[1];
+        o.connect(og); og.connect(fl); o.start(t); o.stop(t+d+0.05);
+      });
     }
     if(kind==="ok"){ tone(880,t0,0.16); tone(1318,t0+0.09,0.22); }
     if(kind==="station"){ tone(660,t0,0.18); tone(880,t0+0.1,0.18); tone(1175,t0+0.2,0.3,0.06); }
@@ -2388,7 +2404,7 @@ function showLib(){
     {ph:{en:"Implementation",ar:"التنفيذ"}, s:[{en:"Project accounting & cost allocations",ar:"محاسبة المشروع وتوزيع التكاليف"},{en:"Sub-partner financial management",ar:"الإدارة المالية للشركاء الفرعيين"},{en:"Project financial monitoring",ar:"المتابعة المالية للمشروع"},{en:"Procurement & payment on behalf of projects",ar:"المشتريات والدفع نيابةً عن المشاريع"},{en:"Project exchange rates management",ar:"إدارة أسعار الصرف في المشروع"},{en:"Project asset management",ar:"إدارة أصول المشروع"},{en:"Project filing & archiving",ar:"حفظ ملفات المشروع وأرشفتها"},{en:"Own-funds management & controlling",ar:"إدارة الأموال الذاتية والرقابة عليها"},{en:"Ineligible costs",ar:"التكاليف غير المؤهَّلة"},{en:"Donor financial reporting",ar:"إعداد التقارير المالية للمانحين"}]},
     {ph:{en:"Completion",ar:"الإغلاق"}, s:[{en:"Final consolidated financial reporting",ar:"إعداد التقارير المالية الموحَّدة الختامية"},{en:"Administrative & financial closing",ar:"الإغلاق الإداري والمالي"},{en:"Project final audit",ar:"التدقيق النهائي للمشروع"},{en:"Donor final invoicing",ar:"الفوترة الختامية للمانحين"},{en:"Final bookings & grant closing in Kompas",ar:"القيود الختامية وإغلاق المنحة في كومباس"}]},
     {ph:{en:"Audit",ar:"التدقيق"}, s:[{en:"Roles & responsibilities matrix",ar:"مصفوفة الأدوار والمسؤوليات"},{en:"Audit process management",ar:"إدارة عملية التدقيق"},{en:"DANIDA funded project audits",ar:"تدقيق المشاريع المموَّلة من دانيدا"},{en:"EU INTPA & ECHO project audits",ar:"تدقيق مشاريع الاتحاد الأوروبي (INTPA وECHO)"},{en:"Other donor audit requirements",ar:"متطلبات التدقيق لدى المانحين الآخرين"},{en:"Competing audit requirements",ar:"متطلبات التدقيق المتعارضة"},{en:"Audit fees budget coverage",ar:"تغطية ميزانية أتعاب التدقيق"},{en:"Internal audits & pre-audits",ar:"التدقيق الداخلي والتدقيق التمهيدي"}], pilot:{en:"The Audit Journey",ar:"رحلة التدقيق"}},
-    {ph:{en:"Other relevant SOPs",ar:"إجراءات أخرى ذات صلة"}, s:[{en:"Anti-corruption & fraud deterrence",ar:"مكافحة الفساد وردع الاحتيال"},{en:"Risk-based approach to controls",ar:"نهج قائم على المخاطر في الضوابط"},{en:"Disaster & crisis finance procedures",ar:"إجراءات تمويل الكوارث والأزمات"},{en:"Anchor budget",ar:"الميزانية المرجعية"},{en:"Year-end annual closing",ar:"الإغلاق السنوي في نهاية العام"}]}
+    {ph:{en:"Other relevant SOPs",ar:"إجراءات أخرى ذات صلة"}, s:[{en:"Anti-corruption & fraud deterrence",ar:"مكافحة الفساد وردع الاحتيال"},{en:"Risk-based approach to controls",ar:"نهج قائم على المخاطر في الضوابط"},{en:"Disaster & crisis finance procedures",ar:"إجراءات تمويل الكوارث والأزمات"},{en:"Anchor budget",ar:"الميزانية المرجعية"},{en:"Year-end annual closing",ar:"إغلاق نهاية السنة"}]}
   ];
   var totalSops=0; SUITE.forEach(function(p){ totalSops+=p.s.length+(p.pilot?1:0); });
   var accHtml=SUITE.map(function(p,pi){
@@ -2736,6 +2752,7 @@ function renderStep(i, review){
     '<div class="shell-main">'+crumb+'<div class="ln-card" id="lnCard">'+inner+'</div></div>'+
     '<aside class="shell-rail" aria-label="'+esc(T("railAria"))+'">'+railHTML(sp,i)+'</aside>'+
     '</div></div>';
+  var lsc=$("#s-learn"); if(lsc) lsc.scrollTop=0;   /* each screen is its own scroll container: every card opens at its head */
   requestAnimationFrame(function(){ var rp=$("#railProgI"); if(rp) rp.style.width=Math.round((Math.max(S.stepMax||0,i)+1)/steps.length*100)+"%"; });
   var cb=$("#crumbBack"); if(cb) cb.addEventListener("click", showMap);
   $all("[data-railsrc]").forEach(function(b){ b.addEventListener("click",function(){ toast(T("refToast"),3200); }); });
@@ -3232,7 +3249,7 @@ function wireProc(sp,i){
     sp.proc.forEach(function(_,k){ seen[k]=1; });
     $all(".pm2-n").forEach(function(n){ n.classList.add("seen"); });
   }
-  var pathLen=0;
+  var pathLen=0, drawnOnce=false;
   function drawPath(){
     var svg=$("#pm2Svg"), base=$("#pm2Base"), fill=$("#pm2Fill"), board=$("#pm2Board");
     if(!svg||!base||!fill||!board) return;
@@ -3246,8 +3263,26 @@ function wireProc(sp,i){
     });
     base.setAttribute("points",pts.join(" "));
     fill.setAttribute("points",pts.join(" "));
+    var firstMeasure=(pathLen===0);
     try{ pathLen=fill.getTotalLength(); }catch(e){ pathLen=0; }
-    if(pathLen){ fill.style.strokeDasharray=String(pathLen); updFill(); }
+    if(pathLen){
+      /* first paint: park the fill hidden WITHOUT animating, so no green streak flashes and retracts */
+      if(firstMeasure){ fill.style.transition="none"; fill.style.strokeDasharray=String(pathLen); updFill(); fill.getBoundingClientRect(); fill.style.transition=""; }
+      else { fill.style.strokeDasharray=String(pathLen); updFill(); }
+    }
+    /* the process threads itself across the lanes, once, on first sight (fresh visits only) */
+    if(!drawnOnce && !already && pathLen && smoothOK()){
+      drawnOnce=true;
+      base.style.strokeDasharray=String(pathLen);
+      base.style.strokeDashoffset=String(pathLen);
+      base.getBoundingClientRect();
+      base.style.transition="stroke-dashoffset 1.1s var(--ease) .15s";
+      base.style.strokeDashoffset="0";
+      setTimeout(function(){ if(base.isConnected){ base.style.transition=""; base.style.strokeDasharray=""; base.style.strokeDashoffset=""; } },1600);
+    } else if(drawnOnce && base.style.strokeDasharray){
+      /* re-measure while the draw-in inline styles linger (quick full-screen or resize): clear them so the path never renders gapped */
+      base.style.transition=""; base.style.strokeDasharray=""; base.style.strokeDashoffset="";
+    }
   }
   function updFill(){
     var fill=$("#pm2Fill");
@@ -3382,7 +3417,7 @@ function wireWatch(sp,stepIdx){
     playing=true; paused=false;
     stage.classList.add("playing"); stage.classList.remove("paused");
     if(transport) transport.hidden=false;
-    if(isCyc&&cycWrap) cycWrap.classList.add("on");
+    if(isCyc&&cycWrap){ cycWrap.hidden=false; cycWrap.classList.add("on"); }
     if(toggle) toggle.setAttribute("aria-label",T("watchPause"));
     bi=(typeof fromBi==="number")?fromBi-1:-1;
     step();
@@ -3415,13 +3450,15 @@ function wireWatch(sp,stepIdx){
 /* =================================================================
    CHECKS
    ================================================================= */
+/* Arabic number agreement for the points noun: 2 dual, 3-10 plural, 11+ singular accusative */
+function ptsLbl(n){ if((S.lang||"en")!=="ar") return T("points"); return n===2?"نقطتان":(n>=3&&n<=10)?"نقاط":"نقطة"; }
 function ckHead(sp){
-  return '<div class="ck-head"><span class="ck-badge">'+T("checkBadge")+'</span><span class="ck-pts">+'+sp.pts+' '+T("points")+'</span></div>'+
+  return '<div class="ck-head"><span class="ck-badge">'+T("checkBadge")+'</span><span class="ck-pts">+'+sp.pts+' '+ptsLbl(sp.pts)+'</span></div>'+
          '<h1 class="ln-h">'+L(sp.h)+'</h1><div class="ln-body" style="margin-bottom:4px">'+L(sp.b||"")+'</div>';
 }
 function checkHTML(sp,i){
   if(S.done["c"+i]!==undefined){ /* already earned: show as done card */
-    return ckHead(sp)+'<div class="door-fb show" style="margin-top:18px">✓ +'+S.done["c"+i]+' '+T("points")+'</div>'+
+    return ckHead(sp)+'<div class="door-fb show" style="margin-top:18px">✓ +'+S.done["c"+i]+' '+ptsLbl(S.done["c"+i])+'</div>'+
       '<div class="ln-foot"><span class="spacer"></span><button class="btn" id="nextBtn">'+T("continueBtn")+'</button></div>';
   }
   var h=ckHead(sp);
@@ -3454,15 +3491,16 @@ function ckDone(sp,i,earned,anchor){
   var card=$("#lnCard");
   if(!card){ ADV_T=setTimeout(function(){ advanceTo(i+1); }, 1250); return; }
   if($("#ckDoneFoot")) return;
+  var of=card.querySelector(".ln-foot"); if(of) of.style.display="none";   /* retire the game's own footer (e.g. the spent Check my answer bar) */
   var d=document.createElement("div");
   d.className="ln-foot"; d.id="ckDoneFoot";
-  d.innerHTML='<span class="door-fb show" style="margin:0" role="status">✓ +'+earned+' '+T("points")+'</span><span class="spacer"></span><button class="btn" id="ckNext">'+T("continueBtn")+'</button>';
+  d.innerHTML='<span class="door-fb show" style="margin:0" role="status">✓ +'+earned+' '+ptsLbl(earned)+'</span><span class="spacer"></span><button class="btn" id="ckNext">'+T("continueBtn")+'</button>';
   card.appendChild(d);
   var nb=$("#ckNext"); if(nb){ nb.addEventListener("click",function(){ advanceTo(i+1); }); try{ nb.focus(); }catch(e){} }
 }
 
 function wireCheck(sp,i){
-  if(S.done["c"+i]!==undefined){ var nb=$("#nextBtn"); if(nb) nb.addEventListener("click",function(){ advanceTo(i+1); }); return; }
+  if(S.done["c"+i]!==undefined){ return; }   /* done-card Continue is already wired once by wireStep; a second listener double-fired advanceTo */
 
   /* presenter skip: see the game, skip playing it */
   var ks=$("#ckSkip");
@@ -3825,6 +3863,7 @@ function finishCourse(){
   $("#reset0").addEventListener("click",function(){
     if(!confirm(T("restart")+"?")) return;
     S.step=0; S.stepMax=0; S.pts=0; S.done={}; S.finished=false; S.startedAt=null;
+    S.play={sparks:0, clean:0};   /* a fresh run starts with fresh judgment tallies and no stale revisit trail */
     S.m[S.cur]={step:0, stepMax:0, pts:0, done:{}, finished:false, startedAt:null};
     CONF_50=false; save();
     startCourse();
