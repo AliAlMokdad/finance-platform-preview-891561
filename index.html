@@ -1072,7 +1072,7 @@ html[dir="rtl"] .pm2-head .pm2-expand{letter-spacing:.02em}
 .pm2.fs .pm2-lane{font-size:11px;max-width:120px}
 .pm2.fs .pm2-detail{flex:0 0 auto}
 .pm2.fs .pm2-sub{font-size:13px}
-.pm2.fs .pm2-head{position:sticky;top:0;z-index:6;background:var(--canvas);padding-block:6px 8px}
+.pm2.fs .pm2-head{position:sticky;top:0;z-index:6;background:var(--canvas);padding-block:6px 8px;padding-inline-end:130px}   /* reserve the fixed Close button's zone so the tour controls never sit under it */
 /* full-screen swimlane: hide the lesson rail (progress, source documents, companion) so nothing
    paints beside or over the overlay. the rail is a sticky sibling inside the shell's own stacking
    context, so the fixed overlay cannot reliably cover it; hiding it is the robust fix. */
@@ -1608,7 +1608,7 @@ function updStyleChip(){
   var b=$("#tbStyle"); if(!b) return;
   b.addEventListener("click", function(){
     STYLE_RET=true;
-    shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T);
+    shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T); if(window._tourKeys){ document.removeEventListener("keydown", window._tourKeys, true); window._tourKeys=null; }
     $all(".style-c").forEach(function(c){ c.classList.toggle("sel", c.getAttribute("data-style")===S.style); });
     var sg=$("#styleGo"); if(sg){ sg.disabled=false; sg.textContent=T("continueBtn"); }
     show("s-style");
@@ -1627,7 +1627,7 @@ function updLangChip(){
 function applyLang(code){
   var L=LANGS.filter(function(x){return x.code===code&&x.live;})[0]; if(!L||code===S.lang) return;
   S.lang=code; save();
-  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T);
+  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T); if(window._tourKeys){ document.removeEventListener("keydown", window._tourKeys, true); window._tourKeys=null; }
   applyStrings();
   var cur=document.querySelector(".screen.show"); var id=cur?cur.id:"";
   if(id==="s-learn") renderStep(S.step);
@@ -2404,7 +2404,7 @@ function modState(i){
    card grid of the scoped SOP suite. No centered vertical text dump. */
 var ST_MINS=[4,3,3,4,3];   /* per-station minute estimates: single source for the map cards and the library total */
 function showLib(){
-  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T);
+  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T); if(window._tourKeys){ document.removeEventListener("keydown", window._tourKeys, true); window._tourKeys=null; }
   var totals=MODULES.map(function(m){ var n=0; m.stations.forEach(function(st){ n+=st.steps.length; }); return n; });
   /* featured live pilot = the live module(s) */
   var feat=MODULES.map(function(m,i){
@@ -2478,7 +2478,7 @@ function showLib(){
   });
 }
 function showMap(focusNext){
-  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T);
+  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T); if(window._tourKeys){ document.removeEventListener("keydown", window._tourKeys, true); window._tourKeys=null; }
   REVIEWING=false;   /* leaving a lesson clears review mode */
   var metas=stationMeta();
   var mins=ST_MINS;
@@ -2748,7 +2748,7 @@ function railHTML(sp,i){
   return h;
 }
 function renderStep(i, review){
-  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T); document.body.style.overflow=""; document.body.classList.remove("pm-fs");
+  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T); if(window._tourKeys){ document.removeEventListener("keydown", window._tourKeys, true); window._tourKeys=null; } document.body.style.overflow=""; document.body.classList.remove("pm-fs");
   if(window._pmEsc){ document.removeEventListener("keydown", window._pmEsc); window._pmEsc=null; }
   (function(){ var tb=document.getElementById("topbar"); if(tb) tb.style.visibility=""; })();   /* defensive: always restore the topbar on any lesson render */
   PLAY_DONE=true;
@@ -3386,12 +3386,13 @@ function wireProc(sp,i){
     TOUR.i=k;
     openStep(k);
     tourLane(k);
-    if(k<total-1) ding("tick");         /* the final step gets the award chime from upd() instead */
+    if(k<total-1) ding("tick");                       /* the fresh-run final step gets the award chime from upd() */
+    else if(S.done["c"+i]!==undefined) ding("ok");    /* revisit runs still close with a sound */
     tourPaint();
+    if(k>=total-1){ endTour(); return; }   /* journey complete on EVERY path (auto, paused, stepped): lift the dim, release the keys */
     if(!TOUR.paused){
-      if(k>=total-1){ endTour(); return; }   /* journey complete: lift the dim, keep the lit board */
       clearTimeout(TOUR_T);
-      TOUR_T=setTimeout(function(){ tourTo(k+1, gen); }, 2400);
+      TOUR_T=setTimeout(function(){ tourTo(k+1, gen); }, k===0?3200:2400);   /* the first card earns a longer read */
     }
   }
   function endTour(){
@@ -3408,7 +3409,15 @@ function wireProc(sp,i){
       if(e.key==="Escape"){ e.stopPropagation(); endTour(); }
       return;                           /* let the tour buttons keep their native Space/Enter */
     }
-    if(e.key==="Escape"){ e.stopPropagation(); e.preventDefault(); endTour(); return; }
+    var tg=e.target;
+    if(tg && (tg.tagName==="TEXTAREA"||tg.tagName==="INPUT"||tg.isContentEditable)){
+      if(e.key==="Escape"){ e.stopPropagation(); endTour(); }
+      return;                           /* typing is never hijacked; Esc still ends the tour */
+    }
+    if(e.key==="Escape"){
+      if(document.querySelector(".tb-lang-menu.open")) return;   /* an open menu closes first, on its own handler */
+      e.stopPropagation(); e.preventDefault(); endTour(); return;
+    }
     if(e.key===" "){ e.preventDefault(); e.stopPropagation(); if(tPlay) tPlay.click(); return; }
     var rtl=document.documentElement.getAttribute("dir")==="rtl";
     if(e.key===(rtl?"ArrowLeft":"ArrowRight")){ e.preventDefault(); if(tNext&&!tNext.disabled) tNext.click(); }
@@ -3465,7 +3474,7 @@ function wireProc(sp,i){
   function escFs(e){
     if(!root || !root.classList.contains("fs")) return;
     if(e.key==="Escape"){ setExpand(false); return; }
-    if(e.key==="Tab"){ var f=root.querySelectorAll("button:not([disabled])"); if(!f.length) return; var first=f[0], last=f[f.length-1]; if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); } else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); } }
+    if(e.key==="Tab"){ var f=root.querySelectorAll("button:not([disabled]):not([hidden])"); if(!f.length) return; var first=f[0], last=f[f.length-1]; if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); } else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); } }
   }
   if(ex){
     ex.addEventListener("click", function(){ setExpand(!(root&&root.classList.contains("fs"))); });
@@ -3811,7 +3820,7 @@ function tier(){
   return {cls:"done", lbl:T("tierDone")};
 }
 function finishCourse(){
-  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T);
+  shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T); if(window._tourKeys){ document.removeEventListener("keydown", window._tourKeys, true); window._tourKeys=null; }
   S.finished=true; save();
   buildDots();
   var tr=tier();
@@ -4082,7 +4091,7 @@ function rRect(x,a,b,w,h,r){ x.beginPath(); x.moveTo(a+r,b); x.arcTo(a+w,b,a+w,b
   if(!b) return;
   b.style.cursor="pointer";
   b.title="Back to the start";
-  b.addEventListener("click", function(){ shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T); show("s-welcome"); });
+  b.addEventListener("click", function(){ shutUp(); clearTimeout(VID_T); clearTimeout(ADV_T); clearTimeout(TOUR_T); if(window._tourKeys){ document.removeEventListener("keydown", window._tourKeys, true); window._tourKeys=null; } show("s-welcome"); });
 })();
 (function parallax(){
   try{ if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; }catch(e){}
