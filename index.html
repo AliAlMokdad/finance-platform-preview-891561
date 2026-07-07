@@ -771,22 +771,25 @@ html[dir="rtl"] .fin-revisit{letter-spacing:0}
 .cert-frame{background:radial-gradient(120% 90% at 50% 0,#fff,var(--inset) 92%);border:1px solid var(--rule);border-radius:16px;box-shadow:var(--shadow-lg);padding:14px;max-width:640px;width:100%;margin-bottom:36px;position:relative;overflow:hidden}
 .cert-frame canvas{width:100%;height:auto;border-radius:8px;display:block;box-shadow:0 1px 0 rgba(255,255,255,.8),var(--shadow-md)}
 .cert-frame::before{content:"";position:absolute;inset:9px;border:1px solid var(--gold);border-radius:10px;opacity:.4;pointer-events:none;z-index:1}
-/* the issuing ceremony: paper veils over the canvas wipe away behind a gold nib, the seal presses, then the light passes.
-   The canvas beneath is fully drawn from frame one, so download and share stay authoritative. */
+/* the issuing ceremony: the REAL certificate prints in behind a gold nib via a single clip wipe,
+   so every pixel shown is the sharp canvas (no paper patches, no seams), then the seal presses.
+   clip-path is visual only, so the full canvas stays authoritative for download and share. */
 .cert-stage{position:relative;display:block}
-.cert-scribe{position:absolute;inset:0;pointer-events:none;z-index:2;border-radius:8px;overflow:hidden}
-.cert-write{position:absolute;background:#FBF8F4;transform-origin:100% 50%}
-html[dir="rtl"] .cert-write{transform-origin:0% 50%}
-.cert-write::before{content:"";position:absolute;inset-block:4%;inset-inline-start:-2px;width:3px;border-radius:2px;background:linear-gradient(180deg,transparent,rgba(201,162,39,.95),transparent);box-shadow:0 0 9px 1px rgba(201,162,39,.4)}
-.fin-wrap.s3 .cert-write{animation:certWipe var(--wd,.5s) var(--ease) var(--wdel,0s) both}
-@keyframes certWipe{to{transform:scaleX(0)}}
-.cert-seal-veil{position:absolute;background:#FBF8F4}
-.fin-wrap.s3 .cert-seal-veil{animation:sealLift .06s linear var(--wdel,3.45s) both}
-@keyframes sealLift{to{opacity:0}}
-.cert-seal-ghost{position:absolute;border:2px solid var(--gold);border-radius:50%;opacity:0}
-.fin-wrap.s3 .cert-seal-ghost{animation:sealPress .42s var(--spring) var(--wdel,3.45s) both}
-@keyframes sealPress{0%{opacity:0;transform:scale(1.55)}30%{opacity:.55}100%{opacity:0;transform:scale(1)}}
-@media (prefers-reduced-motion:reduce){.cert-scribe{display:none}}
+.fin-wrap.ceremony.s3 #certCv{animation:certPrint 1.5s var(--ease) .2s both}
+@keyframes certPrint{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+html[dir="rtl"] .fin-wrap.ceremony.s3 #certCv{animation-name:certPrintR}
+@keyframes certPrintR{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0 0 0 0)}}
+.cert-nib{position:absolute;top:6%;bottom:6%;width:3px;left:0;z-index:2;pointer-events:none;opacity:0;border-radius:2px;
+  background:linear-gradient(180deg,transparent,var(--gold) 38%,#FFF3D4 50%,var(--gold) 62%,transparent);box-shadow:0 0 13px 1.5px rgba(201,162,39,.6)}
+.fin-wrap.ceremony.s3 .cert-nib{animation:nibRun 1.5s var(--ease) .2s both}
+@keyframes nibRun{0%{left:0;opacity:0}9%{opacity:1}88%{opacity:1}100%{left:100%;opacity:0}}
+html[dir="rtl"] .cert-nib{left:auto;right:0}
+html[dir="rtl"] .fin-wrap.ceremony.s3 .cert-nib{animation-name:nibRunR}
+@keyframes nibRunR{0%{right:0;opacity:0}9%{opacity:1}88%{opacity:1}100%{right:100%;opacity:0}}
+.cert-seal-ghost{position:absolute;border:2px solid var(--gold);border-radius:50%;opacity:0;z-index:2;pointer-events:none}
+.fin-wrap.ceremony.s3 .cert-seal-ghost{animation:sealPress .42s var(--spring) 1.75s both}
+@keyframes sealPress{0%{opacity:0;transform:scale(1.55)}30%{opacity:.85}100%{opacity:0;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.cert-nib,.cert-seal-ghost{display:none}}
 .fin-record{background:#fff;border:1px solid var(--rule);border-radius:16px;box-shadow:var(--shadow);max-width:640px;width:100%;margin:0 auto 36px;padding:22px 26px;text-align:start}
 .rec-h{font-family:var(--mono);font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--g2);margin-bottom:14px;display:flex;align-items:center;gap:9px}
 .rec-h::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);flex:0 0 auto}
@@ -839,7 +842,7 @@ html[dir="rtl"] .cert-write{transform-origin:0% 50%}
 .fin-wrap.s2 .fin-sub{animation-delay:.08s}
 .fin-wrap.s3 .cert-frame{opacity:1;animation:certIn .6s var(--ease) both}
 .fin-wrap.s3 .cert-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.45),transparent 60%);transform:translateX(-120%) skewX(-14deg);animation:certSweep 1.1s .4s var(--ease-out) both;pointer-events:none}
-.fin-wrap.ceremony.s3 .cert-frame::after{animation:certSweep 1.1s 4.45s var(--ease-out) both}   /* on the first finish the light passes only after the writing completes */
+.fin-wrap.ceremony.s3 .cert-frame::after{animation:certSweep 1.1s 2.2s var(--ease-out) both}   /* on the first finish the light passes just after the print-in and seal press */
 @keyframes certSweep{to{transform:translateX(120%) skewX(-14deg)}}
 @keyframes certIn{from{opacity:0;transform:translateY(26px) scale(.985)}to{opacity:1;transform:none}}
 .fin-wrap.s4 .fin-cta,.fin-wrap.s4 .next-h,.fin-wrap.s4 .res-list,.fin-wrap.s4 .next-grid,.fin-wrap.s4 .path-next,.fin-wrap.s4 .fin-record,.fin-wrap.s4 .fin-restart,.fin-wrap.s4 .fin-insight{opacity:1;pointer-events:auto;animation:rvlIn .5s both}
@@ -2385,6 +2388,7 @@ function ding(kind){
     }
     if(kind==="tick"){ tone(1680+Math.random()*340,t0,0.09,0.018); }
     if(kind==="stamp"){ tone(180,t0,0.16,0.05); tone(118,t0+0.02,0.24,0.042); }
+    if(kind==="scribe"){ for(var si=0;si<7;si++){ tone(1500+Math.random()*700,t0+0.12+si*0.19,0.06,0.012); } }   /* soft ink ticks scheduled across the 1.5s print, no timers */
     if(kind==="ok"){ tone(880,t0,0.16); tone(1318,t0+0.09,0.22); }
     if(kind==="station"){ tone(660,t0,0.18); tone(880,t0+0.1,0.18); tone(1175,t0+0.2,0.3,0.06); }
     if(kind==="spark"){ tone(1568,t0,0.12,0.035); }
@@ -3858,25 +3862,12 @@ function wireCheck(sp,i){
 /* =================================================================
    FINISH + CERTIFICATE
    ================================================================= */
-/* the issuing ceremony: paper-colored veils over the drawn canvas, wiped away in reading order at s3.
-   Zones are percentages of the 1500x1060 certificate. Choreography is pure CSS keyed to .fin-wrap.s3,
-   so navigation can never leave a timer behind; sounds ride animationstart events on the overlay. */
+/* the issuing ceremony: a gold nib and the seal-press ring over the sharp canvas print-in.
+   The clip wipe lives on #certCv (CSS above); this only adds the nib and the seal ghost.
+   Pure CSS keyed to .fin-wrap.ceremony.s3, so navigation never leaves a timer behind. */
 function certScribeHTML(){
-  function w(t,h,l,wd,dur,del,o){
-    return '<i class="cert-write"'+(o&&o.snd?' data-snd="1"':'')+
-      ' style="top:'+t+'%;height:'+h+'%;left:'+l+'%;width:'+wd+'%;--wd:'+dur+'s;--wdel:'+del+'s'+
-      (o&&o.tw?';animation-timing-function:steps(24,end)':'')+'"></i>';
-  }
-  return '<div class="cert-scribe" aria-hidden="true">'+
-    w(23.6,4.0,15,70,.35,.45)+                 /* imprint line */
-    w(28.9,8.3,12,76,.6,.8,{snd:1})+           /* Certificate of Completion + rule */
-    w(41.5,18.1,8,84,.85,1.5,{snd:1})+         /* certify line, the name, the deed (wide enough for the longest auto-shrunk name) */
-    w(59.4,8.1,10,80,.5,2.45)+                 /* module title */
-    w(72.6,4.3,12,76,.4,3.0)+                  /* score and date */
-    '<i class="cert-seal-veil" style="top:78.3%;height:14.15%;left:45%;width:10%;--wdel:3.45s"></i>'+
-    '<i class="cert-seal-ghost" style="top:79.7%;height:11.3%;left:46%;width:8%;--wdel:3.45s"></i>'+
-    w(90.4,3.6,4.5,91,.8,3.6,{snd:1,tw:1})+    /* record reference, typed in (inset inside the frame hairlines) */
-  '</div>';
+  return '<i class="cert-nib" aria-hidden="true"></i>'+
+    '<i class="cert-seal-ghost" aria-hidden="true" style="top:79.7%;height:11.3%;left:46%;width:8%"></i>';
 }
 function fmtDoneIn(n){
   if(n===1) return T("doneIn1");
@@ -3974,7 +3965,9 @@ function finishCourse(){
       /* the certificate is the emotional peak: make sure it is on screen when it slides in */
       var cf=$("#s-finish .cert-frame"); if(cf){ try{ cf.scrollIntoView({block:"center",behavior:"smooth"}); }catch(e){} }
     },700);
-    setTimeout(function(){ fw.classList.add("s4"); },1350);   /* let the certificate hold its beat before the working furniture arrives */
+    /* let the certificate hold its beat: on the first-finish ceremony the print runs to ~2.4s,
+       so the working furniture waits until it completes; revisits (no ceremony) stay snappy */
+    setTimeout(function(){ fw.classList.add("s4"); }, fw.classList.contains("ceremony")?2600:1350);
   }
   function announceScore(){ var sr=$("#finSr"); if(sr) sr.textContent=S.pts+" "+T("scoreOf")+". "+tr.lbl; }
   if(noMo){ el.textContent=S.pts; ding("finish"); announceScore(); }
@@ -3987,7 +3980,7 @@ function finishCourse(){
   /* ceremony sounds ride the CSS choreography: no timers to leak */
   var cst=$("#certStage");
   if(cst) cst.addEventListener("animationstart",function(e){
-    if(e.animationName==="certWipe" && e.target.hasAttribute && e.target.hasAttribute("data-snd")) ding("tick");
+    if(e.animationName==="certPrint"||e.animationName==="certPrintR") ding("scribe");   /* the ink whisper rides the print-in */
     else if(e.animationName==="sealPress") ding("stamp");
   });
   $("#dlCert").addEventListener("click",function(){
