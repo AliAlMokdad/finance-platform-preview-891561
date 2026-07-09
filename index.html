@@ -65,11 +65,6 @@ input,select{font-family:inherit}
 .wl-mark{display:inline-flex;align-items:center;background:#fff;border-radius:16px;
   padding:18px 28px;box-shadow:0 14px 50px rgba(227,10,11,.22);margin-bottom:30px}
 .rk-img{width:240px;height:auto;display:block}
-.wl-eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-on-dark);margin-bottom:4px;position:relative;display:inline-block;padding-bottom:10px}
-/* a gold hairline is ruled beneath the imprint as the page settles: the ledger is lit */
-.wl-eyebrow::after{content:"";position:absolute;left:50%;bottom:0;height:1px;width:140px;background:linear-gradient(90deg,transparent,var(--gold-on-dark),transparent);transform:translateX(-50%) scaleX(0);animation:wlRule .9s var(--ease) .6s both}
-@keyframes wlRule{to{transform:translateX(-50%) scaleX(1)}}
-@media (prefers-reduced-motion:reduce){.wl-eyebrow::after{animation:none;transform:translateX(-50%) scaleX(1)}}
 .wl-title{font-size:clamp(38px,6.2vw,62px);font-weight:var(--w-display);color:#fff;line-height:var(--lh-tight);letter-spacing:var(--tk-display);margin-bottom:14px}
 .wl-sub{font-size:18px;color:rgba(255,255,255,.62);max-width:520px;margin:0 auto 34px;line-height:1.55}
 .wl-pick{display:flex;gap:14px;justify-content:center;align-items:stretch;flex-wrap:wrap}
@@ -380,7 +375,7 @@ html .wl-title{line-height:1.14}
 html[dir="rtl"] .wl-title,html[dir="rtl"] .h1,html[dir="rtl"] .ln-h,html[dir="rtl"] .map-title,html[dir="rtl"] .fin-h,html[dir="rtl"] .sc-n,html[dir="rtl"] .ln-quote blockquote{font-family:inherit;font-weight:700}
 /* arabic typography */
 html[dir="rtl"] body{font-family:'IBM Plex Sans Arabic','Cairo','Inter',-apple-system,'Segoe UI',Tahoma,sans-serif}
-html[dir="rtl"] .wl-title,html[dir="rtl"] .h1,html[dir="rtl"] .ln-h,html[dir="rtl"] .fin-h,html[dir="rtl"] .kicker,html[dir="rtl"] .wl-eyebrow,html[dir="rtl"] .ln-kicker,html[dir="rtl"] .station-tag,html[dir="rtl"] .tb-sub,html[dir="rtl"] .tb-lbl,html[dir="rtl"] .pl-eyebrow,html[dir="rtl"] .map-foot,html[dir="rtl"] .map-prog-lbl,html[dir="rtl"] .sc-h,html[dir="rtl"] .next-h,html[dir="rtl"] .map-st .act,html[dir="rtl"] .map-st .sdt{letter-spacing:0}
+html[dir="rtl"] .wl-title,html[dir="rtl"] .h1,html[dir="rtl"] .ln-h,html[dir="rtl"] .fin-h,html[dir="rtl"] .kicker,html[dir="rtl"] .ln-kicker,html[dir="rtl"] .station-tag,html[dir="rtl"] .tb-sub,html[dir="rtl"] .tb-lbl,html[dir="rtl"] .pl-eyebrow,html[dir="rtl"] .map-foot,html[dir="rtl"] .map-prog-lbl,html[dir="rtl"] .sc-h,html[dir="rtl"] .next-h,html[dir="rtl"] .map-st .act,html[dir="rtl"] .map-st .sdt{letter-spacing:0}
 html[dir="rtl"] .wl-proto,html[dir="rtl"] .cat-count,html[dir="rtl"] .cat-acc-meta,html[dir="rtl"] .cat-acc-live,html[dir="rtl"] .cat-feat .cf-go,html[dir="rtl"] .pm-row b.tag,html[dir="rtl"] .pm-count,html[dir="rtl"] .ck-badge,html[dir="rtl"] .rec-h,html[dir="rtl"] .rec-row dt,html[dir="rtl"] .fin-insight-h,html[dir="rtl"] .pl-confide-q,html[dir="rtl"] .pl-ruling b.lead,html[dir="rtl"] .pl-standing,html[dir="rtl"] .vs-eyebrow,html[dir="rtl"] .vs-cap,html[dir="rtl"] .crumb-review,html[dir="rtl"] .style-c .badge,html[dir="rtl"] .wl-opt .soon-tag,html[dir="rtl"] .proto-note,html[dir="rtl"] .ck-skip{letter-spacing:0}
 /* Arabic glyphs inside mono-labelled chrome fall back to the body face, not the browser's default monospace Arabic */
 html[dir="rtl"]{--mono:'JetBrains Mono','IBM Plex Sans Arabic','Cairo',Consolas,monospace}
@@ -1241,7 +1236,6 @@ body.focusread header.show .tb-mid:hover,body.focusread header.show .tb-mid:focu
   <div class="wl-cloud" id="wlCloud" aria-hidden="true"></div>
   <div class="wl-inner">
     <div class="wl-mark"><img id="wlLogo" class="rk-img" alt="Røde Kors"></div>
-    <div class="wl-eyebrow" data-s="eyebrow">International Finance</div>
     <h1 class="wl-title" data-s="title">Welcome to the Finance Learning Platform</h1>
     <p class="wl-sub" data-s="sub">Your first steps in Danish Red Cross International Finance. Learn at your pace, in your language.</p>
     <div class="wl-pick">
